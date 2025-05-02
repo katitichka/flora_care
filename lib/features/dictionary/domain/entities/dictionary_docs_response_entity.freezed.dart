@@ -12,44 +12,41 @@ part of 'dictionary_docs_response_entity.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
-mixin _$DictionarysDocsResponseEntity {
+mixin _$DictionaryDocsResponseEntity {
 
- String get id;@JsonKey(name: 'scientific_name') String get scientificName;@JsonKey(name: 'common_name') String get commonName;@JsonKey(name: 'image_url') String? get imageUrl; String get light;@JsonKey(name: 'optimal_temp') double get optimalTemp;@JsonKey(name: 'watering_freq') int get wateringFreq; double get humidity; String get fertilizer; String get transplant;
-/// Create a copy of DictionarysDocsResponseEntity
+ String get id; String get scientificName; String get commonName; String? get imageUrl; String get light; double get optimalTemp; int get wateringFreq; double get humidity; String get fertilizer; String get transplant;
+/// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DictionarysDocsResponseEntityCopyWith<DictionarysDocsResponseEntity> get copyWith => _$DictionarysDocsResponseEntityCopyWithImpl<DictionarysDocsResponseEntity>(this as DictionarysDocsResponseEntity, _$identity);
+$DictionaryDocsResponseEntityCopyWith<DictionaryDocsResponseEntity> get copyWith => _$DictionaryDocsResponseEntityCopyWithImpl<DictionaryDocsResponseEntity>(this as DictionaryDocsResponseEntity, _$identity);
 
-  /// Serializes this DictionarysDocsResponseEntity to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionarysDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,scientificName,commonName,imageUrl,light,optimalTemp,wateringFreq,humidity,fertilizer,transplant);
 
 @override
 String toString() {
-  return 'DictionarysDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, imageUrl: $imageUrl, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
+  return 'DictionaryDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, imageUrl: $imageUrl, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DictionarysDocsResponseEntityCopyWith<$Res>  {
-  factory $DictionarysDocsResponseEntityCopyWith(DictionarysDocsResponseEntity value, $Res Function(DictionarysDocsResponseEntity) _then) = _$DictionarysDocsResponseEntityCopyWithImpl;
+abstract mixin class $DictionaryDocsResponseEntityCopyWith<$Res>  {
+  factory $DictionaryDocsResponseEntityCopyWith(DictionaryDocsResponseEntity value, $Res Function(DictionaryDocsResponseEntity) _then) = _$DictionaryDocsResponseEntityCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'scientific_name') String scientificName,@JsonKey(name: 'common_name') String commonName,@JsonKey(name: 'image_url') String? imageUrl, String light,@JsonKey(name: 'optimal_temp') double optimalTemp,@JsonKey(name: 'watering_freq') int wateringFreq, double humidity, String fertilizer, String transplant
+ String id, String scientificName, String commonName, String? imageUrl, String light, double optimalTemp, int wateringFreq, double humidity, String fertilizer, String transplant
 });
 
 
@@ -57,14 +54,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$DictionarysDocsResponseEntityCopyWithImpl<$Res>
-    implements $DictionarysDocsResponseEntityCopyWith<$Res> {
-  _$DictionarysDocsResponseEntityCopyWithImpl(this._self, this._then);
+class _$DictionaryDocsResponseEntityCopyWithImpl<$Res>
+    implements $DictionaryDocsResponseEntityCopyWith<$Res> {
+  _$DictionaryDocsResponseEntityCopyWithImpl(this._self, this._then);
 
-  final DictionarysDocsResponseEntity _self;
-  final $Res Function(DictionarysDocsResponseEntity) _then;
+  final DictionaryDocsResponseEntity _self;
+  final $Res Function(DictionaryDocsResponseEntity) _then;
 
-/// Create a copy of DictionarysDocsResponseEntity
+/// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? scientificName = null,Object? commonName = null,Object? imageUrl = freezed,Object? light = null,Object? optimalTemp = null,Object? wateringFreq = null,Object? humidity = null,Object? fertilizer = null,Object? transplant = null,}) {
   return _then(_self.copyWith(
@@ -86,57 +83,54 @@ as String,
 
 
 /// @nodoc
-@JsonSerializable()
 
-class _DictionarysDocsResponseEntity implements DictionarysDocsResponseEntity {
-  const _DictionarysDocsResponseEntity({required this.id, @JsonKey(name: 'scientific_name') required this.scientificName, @JsonKey(name: 'common_name') required this.commonName, @JsonKey(name: 'image_url') this.imageUrl, required this.light, @JsonKey(name: 'optimal_temp') required this.optimalTemp, @JsonKey(name: 'watering_freq') required this.wateringFreq, required this.humidity, required this.fertilizer, required this.transplant});
-  factory _DictionarysDocsResponseEntity.fromJson(Map<String, dynamic> json) => _$DictionarysDocsResponseEntityFromJson(json);
+
+class _DictionaryDocsResponseEntity implements DictionaryDocsResponseEntity {
+  const _DictionaryDocsResponseEntity({required this.id, required this.scientificName, required this.commonName, this.imageUrl, required this.light, required this.optimalTemp, required this.wateringFreq, required this.humidity, required this.fertilizer, required this.transplant});
+  
 
 @override final  String id;
-@override@JsonKey(name: 'scientific_name') final  String scientificName;
-@override@JsonKey(name: 'common_name') final  String commonName;
-@override@JsonKey(name: 'image_url') final  String? imageUrl;
+@override final  String scientificName;
+@override final  String commonName;
+@override final  String? imageUrl;
 @override final  String light;
-@override@JsonKey(name: 'optimal_temp') final  double optimalTemp;
-@override@JsonKey(name: 'watering_freq') final  int wateringFreq;
+@override final  double optimalTemp;
+@override final  int wateringFreq;
 @override final  double humidity;
 @override final  String fertilizer;
 @override final  String transplant;
 
-/// Create a copy of DictionarysDocsResponseEntity
+/// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$DictionarysDocsResponseEntityCopyWith<_DictionarysDocsResponseEntity> get copyWith => __$DictionarysDocsResponseEntityCopyWithImpl<_DictionarysDocsResponseEntity>(this, _$identity);
+_$DictionaryDocsResponseEntityCopyWith<_DictionaryDocsResponseEntity> get copyWith => __$DictionaryDocsResponseEntityCopyWithImpl<_DictionaryDocsResponseEntity>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$DictionarysDocsResponseEntityToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DictionarysDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DictionaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,scientificName,commonName,imageUrl,light,optimalTemp,wateringFreq,humidity,fertilizer,transplant);
 
 @override
 String toString() {
-  return 'DictionarysDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, imageUrl: $imageUrl, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
+  return 'DictionaryDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, imageUrl: $imageUrl, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$DictionarysDocsResponseEntityCopyWith<$Res> implements $DictionarysDocsResponseEntityCopyWith<$Res> {
-  factory _$DictionarysDocsResponseEntityCopyWith(_DictionarysDocsResponseEntity value, $Res Function(_DictionarysDocsResponseEntity) _then) = __$DictionarysDocsResponseEntityCopyWithImpl;
+abstract mixin class _$DictionaryDocsResponseEntityCopyWith<$Res> implements $DictionaryDocsResponseEntityCopyWith<$Res> {
+  factory _$DictionaryDocsResponseEntityCopyWith(_DictionaryDocsResponseEntity value, $Res Function(_DictionaryDocsResponseEntity) _then) = __$DictionaryDocsResponseEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'scientific_name') String scientificName,@JsonKey(name: 'common_name') String commonName,@JsonKey(name: 'image_url') String? imageUrl, String light,@JsonKey(name: 'optimal_temp') double optimalTemp,@JsonKey(name: 'watering_freq') int wateringFreq, double humidity, String fertilizer, String transplant
+ String id, String scientificName, String commonName, String? imageUrl, String light, double optimalTemp, int wateringFreq, double humidity, String fertilizer, String transplant
 });
 
 
@@ -144,17 +138,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$DictionarysDocsResponseEntityCopyWithImpl<$Res>
-    implements _$DictionarysDocsResponseEntityCopyWith<$Res> {
-  __$DictionarysDocsResponseEntityCopyWithImpl(this._self, this._then);
+class __$DictionaryDocsResponseEntityCopyWithImpl<$Res>
+    implements _$DictionaryDocsResponseEntityCopyWith<$Res> {
+  __$DictionaryDocsResponseEntityCopyWithImpl(this._self, this._then);
 
-  final _DictionarysDocsResponseEntity _self;
-  final $Res Function(_DictionarysDocsResponseEntity) _then;
+  final _DictionaryDocsResponseEntity _self;
+  final $Res Function(_DictionaryDocsResponseEntity) _then;
 
-/// Create a copy of DictionarysDocsResponseEntity
+/// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? scientificName = null,Object? commonName = null,Object? imageUrl = freezed,Object? light = null,Object? optimalTemp = null,Object? wateringFreq = null,Object? humidity = null,Object? fertilizer = null,Object? transplant = null,}) {
-  return _then(_DictionarysDocsResponseEntity(
+  return _then(_DictionaryDocsResponseEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scientificName: null == scientificName ? _self.scientificName : scientificName // ignore: cast_nullable_to_non_nullable
 as String,commonName: null == commonName ? _self.commonName : commonName // ignore: cast_nullable_to_non_nullable

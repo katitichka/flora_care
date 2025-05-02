@@ -344,11 +344,11 @@ String toString() {
 
 
 class Loaded implements DictionaryState {
-  const Loaded({required final  List<DictionarysDocsResponseEntity> plants}): _plants = plants;
+  const Loaded({required final  List<DictionaryDocsResponseEntity> plants}): _plants = plants;
   
 
- final  List<DictionarysDocsResponseEntity> _plants;
- List<DictionarysDocsResponseEntity> get plants {
+ final  List<DictionaryDocsResponseEntity> _plants;
+ List<DictionaryDocsResponseEntity> get plants {
   if (_plants is EqualUnmodifiableListView) return _plants;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_plants);
@@ -385,7 +385,7 @@ abstract mixin class $LoadedCopyWith<$Res> implements $DictionaryStateCopyWith<$
   factory $LoadedCopyWith(Loaded value, $Res Function(Loaded) _then) = _$LoadedCopyWithImpl;
 @useResult
 $Res call({
- List<DictionarysDocsResponseEntity> plants
+ List<DictionaryDocsResponseEntity> plants
 });
 
 
@@ -405,7 +405,7 @@ class _$LoadedCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? plants = null,}) {
   return _then(Loaded(
 plants: null == plants ? _self._plants : plants // ignore: cast_nullable_to_non_nullable
-as List<DictionarysDocsResponseEntity>,
+as List<DictionaryDocsResponseEntity>,
   ));
 }
 

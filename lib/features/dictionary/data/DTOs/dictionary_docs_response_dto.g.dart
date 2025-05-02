@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'dictionary_docs_response_entity.dart';
+part of 'dictionary_docs_response_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_DictionarysDocsResponseEntity _$DictionarysDocsResponseEntityFromJson(
+_DictionaryDocsResponseDto _$DictionaryDocsResponseDtoFromJson(
   Map<String, dynamic> json,
-) => _DictionarysDocsResponseEntity(
+) => _DictionaryDocsResponseDto(
   id: json['id'] as String,
   scientificName: json['scientific_name'] as String,
   commonName: json['common_name'] as String,
@@ -21,8 +21,8 @@ _DictionarysDocsResponseEntity _$DictionarysDocsResponseEntityFromJson(
   transplant: json['transplant'] as String,
 );
 
-Map<String, dynamic> _$DictionarysDocsResponseEntityToJson(
-  _DictionarysDocsResponseEntity instance,
+Map<String, dynamic> _$DictionaryDocsResponseDtoToJson(
+  _DictionaryDocsResponseDto instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'scientific_name': instance.scientificName,

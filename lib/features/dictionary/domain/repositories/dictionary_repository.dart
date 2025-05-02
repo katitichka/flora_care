@@ -1,14 +1,14 @@
 import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_response_entity.dart';
 
 abstract class DictionaryRepository {
-  Future<List<DictionarysDocsResponseEntity>> getAllPlants({
+  Future<List<DictionaryDocsResponseEntity>> getAllPlants({
     required int page,
     required int limit,
   }); 
-  Future<DictionarysDocsResponseEntity> getPlantById(
+  Future<DictionaryDocsResponseEntity> getPlantById(
     String id,
   ); 
-  Future<List<DictionarysDocsResponseEntity>> searchPlants({
+  Future<List<DictionaryDocsResponseEntity>> searchPlants({
     required int page,
     required int limit,
     required String query,
