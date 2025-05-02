@@ -1,0 +1,10 @@
+{
+    "cmake.sourceDirectory": "C:/Users/89511/Pancir/flora_care/linux",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "executionPolicy": "RemoteSigned"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell"
+    
+}
