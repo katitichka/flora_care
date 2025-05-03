@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DictionaryDocsResponseDto {
 
- String get id;@JsonKey(name: 'scientific_name') String get scientificName;@JsonKey(name: 'common_name') String get commonName;@JsonKey(name: 'image_url') String? get imageUrl; String get light;@JsonKey(name: 'optimal_temp') double get optimalTemp;@JsonKey(name: 'watering_freq') int get wateringFreq; double get humidity; String get fertilizer; String get transplant;
+ String get id; String get scientificName; String get commonName;@JsonKey(name: 'image_url') String? get imageUrl; String get light; int get optimalTemp; int get wateringFreq; int get humidity; String get fertilizer; String get transplant;
 /// Create a copy of DictionaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $DictionaryDocsResponseDtoCopyWith<$Res>  {
   factory $DictionaryDocsResponseDtoCopyWith(DictionaryDocsResponseDto value, $Res Function(DictionaryDocsResponseDto) _then) = _$DictionaryDocsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'scientific_name') String scientificName,@JsonKey(name: 'common_name') String commonName,@JsonKey(name: 'image_url') String? imageUrl, String light,@JsonKey(name: 'optimal_temp') double optimalTemp,@JsonKey(name: 'watering_freq') int wateringFreq, double humidity, String fertilizer, String transplant
+ String id, String scientificName, String commonName,@JsonKey(name: 'image_url') String? imageUrl, String light, int optimalTemp, int wateringFreq, int humidity, String fertilizer, String transplant
 });
 
 
@@ -74,9 +74,9 @@ as String,commonName: null == commonName ? _self.commonName : commonName // igno
 as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,light: null == light ? _self.light : light // ignore: cast_nullable_to_non_nullable
 as String,optimalTemp: null == optimalTemp ? _self.optimalTemp : optimalTemp // ignore: cast_nullable_to_non_nullable
-as double,wateringFreq: null == wateringFreq ? _self.wateringFreq : wateringFreq // ignore: cast_nullable_to_non_nullable
+as int,wateringFreq: null == wateringFreq ? _self.wateringFreq : wateringFreq // ignore: cast_nullable_to_non_nullable
 as int,humidity: null == humidity ? _self.humidity : humidity // ignore: cast_nullable_to_non_nullable
-as double,fertilizer: null == fertilizer ? _self.fertilizer : fertilizer // ignore: cast_nullable_to_non_nullable
+as int,fertilizer: null == fertilizer ? _self.fertilizer : fertilizer // ignore: cast_nullable_to_non_nullable
 as String,transplant: null == transplant ? _self.transplant : transplant // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -86,20 +86,20 @@ as String,
 
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _DictionaryDocsResponseDto implements DictionaryDocsResponseDto {
-  const _DictionaryDocsResponseDto({required this.id, @JsonKey(name: 'scientific_name') required this.scientificName, @JsonKey(name: 'common_name') required this.commonName, @JsonKey(name: 'image_url') this.imageUrl, required this.light, @JsonKey(name: 'optimal_temp') required this.optimalTemp, @JsonKey(name: 'watering_freq') required this.wateringFreq, required this.humidity, required this.fertilizer, required this.transplant});
+  const _DictionaryDocsResponseDto({required this.id, required this.scientificName, required this.commonName, @JsonKey(name: 'image_url') this.imageUrl, required this.light, required this.optimalTemp, required this.wateringFreq, required this.humidity, required this.fertilizer, required this.transplant});
   factory _DictionaryDocsResponseDto.fromJson(Map<String, dynamic> json) => _$DictionaryDocsResponseDtoFromJson(json);
 
 @override final  String id;
-@override@JsonKey(name: 'scientific_name') final  String scientificName;
-@override@JsonKey(name: 'common_name') final  String commonName;
+@override final  String scientificName;
+@override final  String commonName;
 @override@JsonKey(name: 'image_url') final  String? imageUrl;
 @override final  String light;
-@override@JsonKey(name: 'optimal_temp') final  double optimalTemp;
-@override@JsonKey(name: 'watering_freq') final  int wateringFreq;
-@override final  double humidity;
+@override final  int optimalTemp;
+@override final  int wateringFreq;
+@override final  int humidity;
 @override final  String fertilizer;
 @override final  String transplant;
 
@@ -136,7 +136,7 @@ abstract mixin class _$DictionaryDocsResponseDtoCopyWith<$Res> implements $Dicti
   factory _$DictionaryDocsResponseDtoCopyWith(_DictionaryDocsResponseDto value, $Res Function(_DictionaryDocsResponseDto) _then) = __$DictionaryDocsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'scientific_name') String scientificName,@JsonKey(name: 'common_name') String commonName,@JsonKey(name: 'image_url') String? imageUrl, String light,@JsonKey(name: 'optimal_temp') double optimalTemp,@JsonKey(name: 'watering_freq') int wateringFreq, double humidity, String fertilizer, String transplant
+ String id, String scientificName, String commonName,@JsonKey(name: 'image_url') String? imageUrl, String light, int optimalTemp, int wateringFreq, int humidity, String fertilizer, String transplant
 });
 
 
@@ -161,9 +161,9 @@ as String,commonName: null == commonName ? _self.commonName : commonName // igno
 as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,light: null == light ? _self.light : light // ignore: cast_nullable_to_non_nullable
 as String,optimalTemp: null == optimalTemp ? _self.optimalTemp : optimalTemp // ignore: cast_nullable_to_non_nullable
-as double,wateringFreq: null == wateringFreq ? _self.wateringFreq : wateringFreq // ignore: cast_nullable_to_non_nullable
+as int,wateringFreq: null == wateringFreq ? _self.wateringFreq : wateringFreq // ignore: cast_nullable_to_non_nullable
 as int,humidity: null == humidity ? _self.humidity : humidity // ignore: cast_nullable_to_non_nullable
-as double,fertilizer: null == fertilizer ? _self.fertilizer : fertilizer // ignore: cast_nullable_to_non_nullable
+as int,fertilizer: null == fertilizer ? _self.fertilizer : fertilizer // ignore: cast_nullable_to_non_nullable
 as String,transplant: null == transplant ? _self.transplant : transplant // ignore: cast_nullable_to_non_nullable
 as String,
   ));

@@ -6,17 +6,14 @@ import 'package:pocketbase/pocketbase.dart';
 
 class App extends StatelessWidget {
   final PocketBase pb;
-  
+
   const App({super.key, required this.pb});
 
   @override
-    Widget build(BuildContext context) {
-      return DictionaryProvider(
-        pb: pb,
-        child: MaterialApp(
-          theme: appTheme,
-          home: const DictionaryScreen(),
-        ),  
-      );
-    }
+  Widget build(BuildContext context) {
+    return DictionaryProvider(
+      pb: pb,
+      child: MaterialApp(theme: appTheme, home: const DictionaryScreen()),
+    );
+  }
 }

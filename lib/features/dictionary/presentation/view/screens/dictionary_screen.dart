@@ -23,9 +23,29 @@ class DictionaryScreen extends StatelessWidget {
                 itemCount: plants.length,
                 itemBuilder: (context, index) {
                   final plant = plants[index];
-                  return ListTile(
-                    title: Text(plant.commonName),
-                    subtitle: Text(plant.scientificName),
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    child: ListTile(
+                      leading: plant.imageUrl != null 
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                plant.imageUrl!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => 
+                                    const Icon(Icons.image_not_supported),
+                              ),
+                            )
+                          : const Icon(Icons.local_florist, size: 40),
+                      title: Text(plant.scientificName),
+                      subtitle: Text(plant.commonName),
+                      onTap: () {
+                        // Действие при нажатии
+                      },
+                    )
+                  
                   );
                 },
               );
@@ -35,14 +55,7 @@ class DictionaryScreen extends StatelessWidget {
         },
         
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<DictionaryBloc>().add(
-                const DictionaryEvent.getAll(page: 1, limit: 50),
-              );
-        },
-        child: const Icon(Icons.refresh),
-      ),
+    
     );
   }
 }

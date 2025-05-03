@@ -14,9 +14,9 @@ _DictionaryDocsResponseDto _$DictionaryDocsResponseDtoFromJson(
   commonName: json['common_name'] as String,
   imageUrl: json['image_url'] as String?,
   light: json['light'] as String,
-  optimalTemp: (json['optimal_temp'] as num).toDouble(),
+  optimalTemp: (json['optimal_temp'] as num).toInt(),
   wateringFreq: (json['watering_freq'] as num).toInt(),
-  humidity: (json['humidity'] as num).toDouble(),
+  humidity: (json['humidity'] as num).toInt(),
   fertilizer: json['fertilizer'] as String,
   transplant: json['transplant'] as String,
 );

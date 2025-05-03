@@ -1,7 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flora_care/features/dictionary/data/repositoties/dictionary_repository_impl.dart';
 import 'package:flora_care/features/dictionary/presentation/bloc/dictionary_bloc.dart';
-import 'package:flora_care/features/dictionary/presentation/view/screens/dictionary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pocketbase/pocketbase.dart';

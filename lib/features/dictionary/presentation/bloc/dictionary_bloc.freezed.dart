@@ -343,6 +343,38 @@ String toString() {
 /// @nodoc
 
 
+class Empty implements DictionaryState {
+  const Empty();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Empty);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'DictionaryState.empty()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
 class Loaded implements DictionaryState {
   const Loaded({required final  List<DictionaryDocsResponseEntity> plants}): _plants = plants;
   
@@ -416,10 +448,19 @@ as List<DictionaryDocsResponseEntity>,
 
 
 class Error implements DictionaryState {
-  const Error({required this.message});
+  const Error({required this.message, final  Map<String, dynamic>? details}): _details = details;
   
 
  final  String message;
+ final  Map<String, dynamic>? _details;
+ Map<String, dynamic>? get details {
+  final value = _details;
+  if (value == null) return null;
+  if (_details is EqualUnmodifiableMapView) return _details;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
 
 /// Create a copy of DictionaryState
 /// with the given fields replaced by the non-null parameter values.
@@ -431,16 +472,16 @@ $ErrorCopyWith<Error> get copyWith => _$ErrorCopyWithImpl<Error>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._details, _details));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,message,const DeepCollectionEquality().hash(_details));
 
 @override
 String toString() {
-  return 'DictionaryState.error(message: $message)';
+  return 'DictionaryState.error(message: $message, details: $details)';
 }
 
 
@@ -451,7 +492,7 @@ abstract mixin class $ErrorCopyWith<$Res> implements $DictionaryStateCopyWith<$R
   factory $ErrorCopyWith(Error value, $Res Function(Error) _then) = _$ErrorCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String message, Map<String, dynamic>? details
 });
 
 
@@ -468,10 +509,11 @@ class _$ErrorCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? details = freezed,}) {
   return _then(Error(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+as String,details: freezed == details ? _self._details : details // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
   ));
 }
 

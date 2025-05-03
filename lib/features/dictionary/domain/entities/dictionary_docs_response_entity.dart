@@ -10,9 +10,9 @@ sealed class DictionaryDocsResponseEntity with _$DictionaryDocsResponseEntity {
     required String commonName,
     String? imageUrl,
     required String light,
-    required double optimalTemp,
+    required int optimalTemp,
     required int wateringFreq,
-    required double humidity,
+    required int humidity,
     required String fertilizer,
     required String transplant,
   }) = _DictionaryDocsResponseEntity;
