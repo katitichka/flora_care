@@ -22,18 +22,6 @@ class DictionaryRepositoryImpl implements DictionaryRepository {
     return _mapItems(result.items);
   }
 
-  List<DictionaryDocsResponseEntity> _mapItems(List<RecordModel> items) {
-    return items.map((e) {
-      try {
-        return DictionaryDocsResponseMapper.fromDto(
-          dto: DictionaryDocsResponseDto.fromJson(e.data),
-        );
-      } catch (e) {
-        throw FormatException('Failed to map plant data: ${e.toString()}');
-      }
-    }).toList();
-  }
-
   @override
   Future<DictionaryDocsResponseEntity> getPlantById(String id) async {
     try {
@@ -60,12 +48,23 @@ class DictionaryRepositoryImpl implements DictionaryRepository {
         filter: 'common_name ~ "$query" || scientific_name ~ "$query"',
       );
       debugPrint('Response data: ${result.items}');
-      return result.items.map((e) => DictionaryDocsResponseMapper.fromDto(
-            dto: DictionaryDocsResponseDto.fromJson(e.data),
-          )).toList();
+      return _mapItems(result.items);
     } catch (e) {
       debugPrint('Error in searchPlants: $e');
       rethrow;
     }
+  }
+
+
+    List<DictionaryDocsResponseEntity> _mapItems(List<RecordModel> items) {
+    return items.map((e) {
+      try {
+        return DictionaryDocsResponseMapper.fromDto(
+          dto: DictionaryDocsResponseDto.fromJson(e.data),
+        );
+      } catch (e) {
+        throw FormatException('Failed to map plant data: ${e.toString()}');
+      }
+    }).toList();
   }
 }

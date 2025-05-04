@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flora_care/common/plants_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -12,10 +13,12 @@ Future<void> main() async {
       /*await dotenv.load(fileName: ".env");
 
       final pb = PocketBase(dotenv.get('POCKETBASE_URL'));*/
-      final pb = PocketBase('https://testovoe.pockethost.io');
+      setupDependencies();
 
-      print("Starting app...");
-  
+      final pb = getIt<PocketBase>();
+
+      print("Starting app... $pb");
+
       runApp(App(pb: pb));
     },
     (error, stack) {

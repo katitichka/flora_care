@@ -3,6 +3,11 @@
         android:label="flora_care"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Добавила чтобы не было проблем с соединением -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
