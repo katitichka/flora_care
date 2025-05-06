@@ -1,5 +1,4 @@
 import 'package:flora_care/features/dictionary/presentation/view/components/dictionary_plant_card.dart';
-import 'package:flora_care/shared/components/plant_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flora_care/features/dictionary/presentation/bloc/dictionary_bloc.dart';

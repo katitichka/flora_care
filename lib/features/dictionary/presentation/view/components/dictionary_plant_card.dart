@@ -34,9 +34,8 @@ class DictionaryPlantCard extends StatelessWidget {
                       ),
                       clipBehavior: Clip.antiAlias,
                       child:
-                          plant.imageUrl != null
-                              ? Image.network(
-                                plant.imageUrl!,
+                          Image.network(
+                                plant.image!,
                                 fit: BoxFit.cover,
                                 height: 85,
                                 width: double.infinity,
@@ -49,10 +48,6 @@ class DictionaryPlantCard extends StatelessWidget {
                                       ),
                                     ),
                               )
-                              : Container(
-                                color: Colors.grey[200],
-                                child: const Icon(Icons.local_florist, size: 40),
-                              ),
                     ),
                   ),
                 ),

@@ -14,8 +14,7 @@ class PlantCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            if (plant.imageUrl != null)
-              Image.network(plant.imageUrl!),
+            Image.network(plant.image),
             const SizedBox(height: 16),
             Text(
               plant.scientificName,

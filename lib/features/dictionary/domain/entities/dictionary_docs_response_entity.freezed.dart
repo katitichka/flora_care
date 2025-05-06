@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DictionaryDocsResponseEntity {
 
- String get id; String get scientificName; String get commonName; String? get imageUrl; String get light; int get optimalTemp; int get wateringFreq; int get humidity; String get fertilizer; String get transplant;
+ String get id; String get scientificName; String get commonName; String get image; String get light; int get optimalTemp; int get wateringFreq; int get humidity; String get fertilizer; String get transplant;
 /// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $DictionaryDocsResponseEntityCopyWith<DictionaryDocsResponseEntity> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.image, image) || other.image == image)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,scientificName,commonName,imageUrl,light,optimalTemp,wateringFreq,humidity,fertilizer,transplant);
+int get hashCode => Object.hash(runtimeType,id,scientificName,commonName,image,light,optimalTemp,wateringFreq,humidity,fertilizer,transplant);
 
 @override
 String toString() {
-  return 'DictionaryDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, imageUrl: $imageUrl, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
+  return 'DictionaryDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, image: $image, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $DictionaryDocsResponseEntityCopyWith<$Res>  {
   factory $DictionaryDocsResponseEntityCopyWith(DictionaryDocsResponseEntity value, $Res Function(DictionaryDocsResponseEntity) _then) = _$DictionaryDocsResponseEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, String scientificName, String commonName, String? imageUrl, String light, int optimalTemp, int wateringFreq, int humidity, String fertilizer, String transplant
+ String id, String scientificName, String commonName, String image, String light, int optimalTemp, int wateringFreq, int humidity, String fertilizer, String transplant
 });
 
 
@@ -63,13 +63,13 @@ class _$DictionaryDocsResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? scientificName = null,Object? commonName = null,Object? imageUrl = freezed,Object? light = null,Object? optimalTemp = null,Object? wateringFreq = null,Object? humidity = null,Object? fertilizer = null,Object? transplant = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? scientificName = null,Object? commonName = null,Object? image = null,Object? light = null,Object? optimalTemp = null,Object? wateringFreq = null,Object? humidity = null,Object? fertilizer = null,Object? transplant = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scientificName: null == scientificName ? _self.scientificName : scientificName // ignore: cast_nullable_to_non_nullable
 as String,commonName: null == commonName ? _self.commonName : commonName // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,light: null == light ? _self.light : light // ignore: cast_nullable_to_non_nullable
+as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String,light: null == light ? _self.light : light // ignore: cast_nullable_to_non_nullable
 as String,optimalTemp: null == optimalTemp ? _self.optimalTemp : optimalTemp // ignore: cast_nullable_to_non_nullable
 as int,wateringFreq: null == wateringFreq ? _self.wateringFreq : wateringFreq // ignore: cast_nullable_to_non_nullable
 as int,humidity: null == humidity ? _self.humidity : humidity // ignore: cast_nullable_to_non_nullable
@@ -86,13 +86,13 @@ as String,
 
 
 class _DictionaryDocsResponseEntity implements DictionaryDocsResponseEntity {
-  const _DictionaryDocsResponseEntity({required this.id, required this.scientificName, required this.commonName, this.imageUrl, required this.light, required this.optimalTemp, required this.wateringFreq, required this.humidity, required this.fertilizer, required this.transplant});
+  const _DictionaryDocsResponseEntity({required this.id, required this.scientificName, required this.commonName, required this.image, required this.light, required this.optimalTemp, required this.wateringFreq, required this.humidity, required this.fertilizer, required this.transplant});
   
 
 @override final  String id;
 @override final  String scientificName;
 @override final  String commonName;
-@override final  String? imageUrl;
+@override final  String image;
 @override final  String light;
 @override final  int optimalTemp;
 @override final  int wateringFreq;
@@ -110,16 +110,16 @@ _$DictionaryDocsResponseEntityCopyWith<_DictionaryDocsResponseEntity> get copyWi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DictionaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DictionaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.scientificName, scientificName) || other.scientificName == scientificName)&&(identical(other.commonName, commonName) || other.commonName == commonName)&&(identical(other.image, image) || other.image == image)&&(identical(other.light, light) || other.light == light)&&(identical(other.optimalTemp, optimalTemp) || other.optimalTemp == optimalTemp)&&(identical(other.wateringFreq, wateringFreq) || other.wateringFreq == wateringFreq)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.fertilizer, fertilizer) || other.fertilizer == fertilizer)&&(identical(other.transplant, transplant) || other.transplant == transplant));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,scientificName,commonName,imageUrl,light,optimalTemp,wateringFreq,humidity,fertilizer,transplant);
+int get hashCode => Object.hash(runtimeType,id,scientificName,commonName,image,light,optimalTemp,wateringFreq,humidity,fertilizer,transplant);
 
 @override
 String toString() {
-  return 'DictionaryDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, imageUrl: $imageUrl, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
+  return 'DictionaryDocsResponseEntity(id: $id, scientificName: $scientificName, commonName: $commonName, image: $image, light: $light, optimalTemp: $optimalTemp, wateringFreq: $wateringFreq, humidity: $humidity, fertilizer: $fertilizer, transplant: $transplant)';
 }
 
 
@@ -130,7 +130,7 @@ abstract mixin class _$DictionaryDocsResponseEntityCopyWith<$Res> implements $Di
   factory _$DictionaryDocsResponseEntityCopyWith(_DictionaryDocsResponseEntity value, $Res Function(_DictionaryDocsResponseEntity) _then) = __$DictionaryDocsResponseEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String scientificName, String commonName, String? imageUrl, String light, int optimalTemp, int wateringFreq, int humidity, String fertilizer, String transplant
+ String id, String scientificName, String commonName, String image, String light, int optimalTemp, int wateringFreq, int humidity, String fertilizer, String transplant
 });
 
 
@@ -147,13 +147,13 @@ class __$DictionaryDocsResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? scientificName = null,Object? commonName = null,Object? imageUrl = freezed,Object? light = null,Object? optimalTemp = null,Object? wateringFreq = null,Object? humidity = null,Object? fertilizer = null,Object? transplant = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? scientificName = null,Object? commonName = null,Object? image = null,Object? light = null,Object? optimalTemp = null,Object? wateringFreq = null,Object? humidity = null,Object? fertilizer = null,Object? transplant = null,}) {
   return _then(_DictionaryDocsResponseEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,scientificName: null == scientificName ? _self.scientificName : scientificName // ignore: cast_nullable_to_non_nullable
 as String,commonName: null == commonName ? _self.commonName : commonName // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,light: null == light ? _self.light : light // ignore: cast_nullable_to_non_nullable
+as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String,light: null == light ? _self.light : light // ignore: cast_nullable_to_non_nullable
 as String,optimalTemp: null == optimalTemp ? _self.optimalTemp : optimalTemp // ignore: cast_nullable_to_non_nullable
 as int,wateringFreq: null == wateringFreq ? _self.wateringFreq : wateringFreq // ignore: cast_nullable_to_non_nullable
 as int,humidity: null == humidity ? _self.humidity : humidity // ignore: cast_nullable_to_non_nullable

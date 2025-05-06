@@ -7,7 +7,7 @@ abstract class DictionaryDocsResponseMapper {
       id: dto.id,
       scientificName: dto.scientificName,
       commonName: dto.commonName,
-      imageUrl: dto.imageUrl,
+      image: dto.image,
       light: dto.light,
       optimalTemp: dto.optimalTemp,
       wateringFreq: dto.wateringFreq,

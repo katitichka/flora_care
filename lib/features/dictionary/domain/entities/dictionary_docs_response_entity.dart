@@ -8,7 +8,7 @@ sealed class DictionaryDocsResponseEntity with _$DictionaryDocsResponseEntity {
     required String id,
     required String scientificName,
     required String commonName,
-    String? imageUrl,
+    required String image,
     required String light,
     required int optimalTemp,
     required int wateringFreq,

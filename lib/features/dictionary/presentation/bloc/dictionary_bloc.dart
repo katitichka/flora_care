@@ -23,13 +23,13 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
           page: page,
           limit: limit,
         ),
-        _GetById(:final id) => _getById(emit: emit, id: id),
         _Search(:final query, :final page, :final limit) => _search(
           emit: emit,
           query: query,
           page: page,
           limit: limit,
         ),
+         // _GetById(:final id) => _getById(emit: emit, id: id),
       },
     );
   }
@@ -45,11 +45,8 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
         page: page,
         limit: limit,
       );
-      if (allPlants.isEmpty) {
-        emit(const DictionaryState.empty());
-      } else {
-        emit(DictionaryState.loaded(plants: allPlants));
-      }
+
+    emit(DictionaryState.loaded(plants: allPlants));
     } catch (e) {
       String message;
       if (e is DictionaryDocsResponseException) {
@@ -62,31 +59,6 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
       emit(
         DictionaryState.error(
           message: message,
-          details: {'error': e.toString()},
-        ),
-      );
-    }
-  }
-
-  Future<void> _getById({
-    required Emitter<DictionaryState> emit,
-    required String id,
-  }) async {
-    emit(const DictionaryState.loading());
-    try {
-      final plant = await _dictionaryRepository.getPlantById(id);
-      emit(DictionaryState.loaded(plants: [plant]));
-    } catch (e) {
-      String message;
-      if (e is DictionaryDocsResponseException) {
-        message = e.message;
-      } else {
-        message = handleError(e);
-      }
-      emit(
-        DictionaryState.error(
-          message: message,
-          details: {'error': e.toString()},
         ),
       );
     }
@@ -116,9 +88,31 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
       emit(
         DictionaryState.error(
           message: message,
-          details: {'error': e.toString()},
         ),
       );
     }
   }
+
+   // Future<void> _getById({
+  //   required Emitter<DictionaryState> emit,
+  //   required String id,
+  // }) async {
+  //   emit(const DictionaryState.loading());
+  //   try {
+  //     final plant = await _dictionaryRepository.getPlantById(id);
+  //     emit(DictionaryState.loaded(plants: [plant]));
+  //   } catch (e) {
+  //     String message;
+  //     if (e is DictionaryDocsResponseException) {
+  //       message = e.message;
+  //     } else {
+  //       message = handleError(e);
+  //     }
+  //     emit(
+  //       DictionaryState.error(
+  //         message: message,
+  //       ),
+  //     );
+  //   }
+  // }
 }

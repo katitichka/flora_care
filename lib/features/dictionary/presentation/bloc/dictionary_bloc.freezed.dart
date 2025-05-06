@@ -15,30 +15,62 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DictionaryEvent {
 
-
+ int get page; int get limit;
+/// Create a copy of DictionaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DictionaryEventCopyWith<DictionaryEvent> get copyWith => _$DictionaryEventCopyWithImpl<DictionaryEvent>(this as DictionaryEvent, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryEvent);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryEvent&&(identical(other.page, page) || other.page == page)&&(identical(other.limit, limit) || other.limit == limit));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,page,limit);
 
 @override
 String toString() {
-  return 'DictionaryEvent()';
+  return 'DictionaryEvent(page: $page, limit: $limit)';
 }
 
 
 }
 
 /// @nodoc
-class $DictionaryEventCopyWith<$Res>  {
-$DictionaryEventCopyWith(DictionaryEvent _, $Res Function(DictionaryEvent) __);
+abstract mixin class $DictionaryEventCopyWith<$Res>  {
+  factory $DictionaryEventCopyWith(DictionaryEvent value, $Res Function(DictionaryEvent) _then) = _$DictionaryEventCopyWithImpl;
+@useResult
+$Res call({
+ int page, int limit
+});
+
+
+
+
+}
+/// @nodoc
+class _$DictionaryEventCopyWithImpl<$Res>
+    implements $DictionaryEventCopyWith<$Res> {
+  _$DictionaryEventCopyWithImpl(this._self, this._then);
+
+  final DictionaryEvent _self;
+  final $Res Function(DictionaryEvent) _then;
+
+/// Create a copy of DictionaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? page = null,Object? limit = null,}) {
+  return _then(_self.copyWith(
+page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
 }
 
 
@@ -49,12 +81,12 @@ class _GetAll implements DictionaryEvent {
   const _GetAll({required this.page, required this.limit});
   
 
- final  int page;
- final  int limit;
+@override final  int page;
+@override final  int limit;
 
 /// Create a copy of DictionaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$GetAllCopyWith<_GetAll> get copyWith => __$GetAllCopyWithImpl<_GetAll>(this, _$identity);
 
@@ -80,7 +112,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$GetAllCopyWith<$Res> implements $DictionaryEventCopyWith<$Res> {
   factory _$GetAllCopyWith(_GetAll value, $Res Function(_GetAll) _then) = __$GetAllCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  int page, int limit
 });
@@ -99,77 +131,11 @@ class __$GetAllCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? page = null,Object? limit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? page = null,Object? limit = null,}) {
   return _then(_GetAll(
 page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
 as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
 as int,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class _GetById implements DictionaryEvent {
-  const _GetById({required this.id});
-  
-
- final  String id;
-
-/// Create a copy of DictionaryEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$GetByIdCopyWith<_GetById> get copyWith => __$GetByIdCopyWithImpl<_GetById>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetById&&(identical(other.id, id) || other.id == id));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,id);
-
-@override
-String toString() {
-  return 'DictionaryEvent.getById(id: $id)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$GetByIdCopyWith<$Res> implements $DictionaryEventCopyWith<$Res> {
-  factory _$GetByIdCopyWith(_GetById value, $Res Function(_GetById) _then) = __$GetByIdCopyWithImpl;
-@useResult
-$Res call({
- String id
-});
-
-
-
-
-}
-/// @nodoc
-class __$GetByIdCopyWithImpl<$Res>
-    implements _$GetByIdCopyWith<$Res> {
-  __$GetByIdCopyWithImpl(this._self, this._then);
-
-  final _GetById _self;
-  final $Res Function(_GetById) _then;
-
-/// Create a copy of DictionaryEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
-  return _then(_GetById(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,
   ));
 }
 
@@ -184,12 +150,12 @@ class _Search implements DictionaryEvent {
   
 
  final  String query;
- final  int page;
- final  int limit;
+@override final  int page;
+@override final  int limit;
 
 /// Create a copy of DictionaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$SearchCopyWith<_Search> get copyWith => __$SearchCopyWithImpl<_Search>(this, _$identity);
 
@@ -215,7 +181,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$SearchCopyWith<$Res> implements $DictionaryEventCopyWith<$Res> {
   factory _$SearchCopyWith(_Search value, $Res Function(_Search) _then) = __$SearchCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  String query, int page, int limit
 });
@@ -234,7 +200,7 @@ class __$SearchCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? query = null,Object? page = null,Object? limit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? query = null,Object? page = null,Object? limit = null,}) {
   return _then(_Search(
 query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
 as String,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
@@ -343,38 +309,6 @@ String toString() {
 /// @nodoc
 
 
-class Empty implements DictionaryState {
-  const Empty();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Empty);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'DictionaryState.empty()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
 class Loaded implements DictionaryState {
   const Loaded({required final  List<DictionaryDocsResponseEntity> plants}): _plants = plants;
   
@@ -448,19 +382,10 @@ as List<DictionaryDocsResponseEntity>,
 
 
 class Error implements DictionaryState {
-  const Error({required this.message, final  Map<String, dynamic>? details}): _details = details;
+  const Error({required this.message});
   
 
  final  String message;
- final  Map<String, dynamic>? _details;
- Map<String, dynamic>? get details {
-  final value = _details;
-  if (value == null) return null;
-  if (_details is EqualUnmodifiableMapView) return _details;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(value);
-}
-
 
 /// Create a copy of DictionaryState
 /// with the given fields replaced by the non-null parameter values.
@@ -472,16 +397,16 @@ $ErrorCopyWith<Error> get copyWith => _$ErrorCopyWithImpl<Error>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._details, _details));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message,const DeepCollectionEquality().hash(_details));
+int get hashCode => Object.hash(runtimeType,message);
 
 @override
 String toString() {
-  return 'DictionaryState.error(message: $message, details: $details)';
+  return 'DictionaryState.error(message: $message)';
 }
 
 
@@ -492,7 +417,7 @@ abstract mixin class $ErrorCopyWith<$Res> implements $DictionaryStateCopyWith<$R
   factory $ErrorCopyWith(Error value, $Res Function(Error) _then) = _$ErrorCopyWithImpl;
 @useResult
 $Res call({
- String message, Map<String, dynamic>? details
+ String message
 });
 
 
@@ -509,11 +434,10 @@ class _$ErrorCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? details = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(Error(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,details: freezed == details ? _self._details : details // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,
+as String,
   ));
 }
 
