@@ -24,34 +24,32 @@ class DictionaryPlantCard extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  height: 115,
-                  child: AspectRatio(
-                    aspectRatio: 1,
+                  height: 100,
+                    width: 80,
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(8),
                       ),
                       clipBehavior: Clip.antiAlias,
-                      child:
-                          Image.network(
-                                plant.image!,
-                                fit: BoxFit.cover,
-                                height: 85,
-                                width: double.infinity,
-                                errorBuilder:
-                                    (context, error, stackTrace) => Container(
-                                      color: Colors.grey[200],
-                                      child: const Icon(
-                                        Icons.image_not_supported,
-                                        size: 40,
-                                      ),
-                                    ),
-                              )
+                      child: Image.network(
+                        plant.image,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (context, error, stackTrace) => Container(
+                              color: Colors.grey[200],
+                              child: const Icon(
+                                Icons.image_not_supported,
+                                size: 40,
+                              ),
+                            ),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20), // Отступ между изображением и текстом
+                const SizedBox(
+                  width: 20,
+                ), // Отступ между изображением и текстом
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +57,9 @@ class DictionaryPlantCard extends StatelessWidget {
                     children: [
                       Text(
                         plant.scientificName,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
@@ -70,7 +70,10 @@ class DictionaryPlantCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         plant.commonName,
-                        style: const TextStyle(fontSize: 14, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -81,7 +84,7 @@ class DictionaryPlantCard extends StatelessWidget {
             ),
           ),
         ),
-      )
-      );
-    }
+      ),
+    );
   }
+}

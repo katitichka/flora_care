@@ -15,25 +15,25 @@ class DictionaryDataProviderImpl implements DictionaryDataProvider {
   }) async {
     try {
       final records = await _pocketBase.collection('plants').getList();
-      // final result =
-      //     records.items.map((item) {
-      //       final url = _pocketBase.files.getURL(
-      //         item,
-      //         item.getStringValue('image'),
-      //       );
-      //       final dto = DictionaryDocsResponseDto.fromJson(item.toJson());
-      //       return dto.copyWith(image: url.toString());
-      //     }).toList();
-      final List<DictionaryDocsResponseDto> result = [];
-      for (final record in records.items) {
-        final url = _pocketBase.files.getURL(
-          record,
-          record.getStringValue('image'),
-        );
+      final result =
+          records.items.map((item) {
+            final url = _pocketBase.files.getURL(
+              item,
+              item.getStringValue('image'),
+            );
+            final dto = DictionaryDocsResponseDto.fromJson(item.toJson());
+            return dto.copyWith(image: url.toString());
+          }).toList();
+      // final List<DictionaryDocsResponseDto> result = [];
+      // for (final record in records.items) {
+      //   final url = _pocketBase.files.getURL(
+      //     record,
+      //     record.getStringValue('image'),
+      //   );
 
-        final dto = DictionaryDocsResponseDto.fromJson(record.toJson());
-        result.add(dto.copyWith(image: url.toString()));
-      }
+      //   final dto = DictionaryDocsResponseDto.fromJson(record.toJson());
+      //   result.add(dto.copyWith(image: url.toString()));
+      // }
 
       return result;
     } catch (error) {
