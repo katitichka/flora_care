@@ -16,7 +16,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return DictionaryProvider(
       dictionaryRepository: dictionaryRepository,
-      child: MaterialApp(theme: appTheme, routes: routes),
+      child: MaterialApp(
+        theme: appTheme,
+        initialRoute: '/',
+        routes: routes),
     );
   }
 }

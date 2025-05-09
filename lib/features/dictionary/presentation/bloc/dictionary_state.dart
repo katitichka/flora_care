@@ -9,6 +9,5 @@ class DictionaryState with _$DictionaryState {
   }) = Loaded;
   const factory DictionaryState.error({
     required String message,
-    //Map<String, dynamic>? details,
   }) = Error;
 }

@@ -80,6 +80,16 @@ class DictionaryPlantCard extends StatelessWidget {
                     ],
                   ),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/home',
+                      arguments: plant,
+                    );
+                  },
+                  child: const Text('+'),
+                ),
               ],
             ),
           ),

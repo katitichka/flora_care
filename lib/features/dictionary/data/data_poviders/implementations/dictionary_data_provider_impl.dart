@@ -24,17 +24,6 @@ class DictionaryDataProviderImpl implements DictionaryDataProvider {
             final dto = DictionaryDocsResponseDto.fromJson(item.toJson());
             return dto.copyWith(image: url.toString());
           }).toList();
-      // final List<DictionaryDocsResponseDto> result = [];
-      // for (final record in records.items) {
-      //   final url = _pocketBase.files.getURL(
-      //     record,
-      //     record.getStringValue('image'),
-      //   );
-
-      //   final dto = DictionaryDocsResponseDto.fromJson(record.toJson());
-      //   result.add(dto.copyWith(image: url.toString()));
-      // }
-
       return result;
     } catch (error) {
       throw Exception(error);
@@ -76,3 +65,13 @@ class DictionaryDataProviderImpl implements DictionaryDataProvider {
   //     )
   //     .toList();
 
+      // final List<DictionaryDocsResponseDto> result = [];
+      // for (final record in records.items) {
+      //   final url = _pocketBase.files.getURL(
+      //     record,
+      //     record.getStringValue('image'),
+      //   );
+
+      //   final dto = DictionaryDocsResponseDto.fromJson(record.toJson());
+      //   result.add(dto.copyWith(image: url.toString()));
+      // }
