@@ -5,45 +5,52 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserPlantsScreen extends StatelessWidget {
   const UserPlantsScreen({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Мои растения')),
       body: BlocBuilder<UserPlantsBloc, UserPlantsState>(
         builder: (context, state) {
-        switch (state) {
-          case Initial():
-            return const Center(child: Text('Ничего не загружено'));
-          case Loading():
-            return const Center(child: CircularProgressIndicator());
-          case Error(message: final msg):
-            return Center(child: Text('Ошибка: $msg'));
-          case Loaded(userPlants: final userPlants):
-            if (userPlants.isEmpty) {
+          switch (state) {
+            case Initial():
+              return const Center(child: Text('Ничего не загружено'));
+            case Loading():
+              return const Center(child: CircularProgressIndicator());
+            case Error(message: final msg):
+              return Center(child: Text('Ошибка: $msg'));
+            case Loaded(userPlants: final userPlants):
+              if (userPlants.isEmpty) {
                 return const Center(child: Text('У вас пока нет растений'));
               }
+              
               return ListView.builder(
                 itemCount: userPlants.length,
-                itemBuilder: (context, index) => UserPlantCard(
-                  userPlant: userPlants[index],
-                  onTap:
-                        () => Navigator.pushNamed(
+                itemBuilder: (context, index) {
+                  final plantData = userPlants[index].plantData;
+                  print('User plant data: ${plantData}');
+
+                  return UserPlantCard(
+                     userPlant: userPlants[index],
+                    onTap: () {
+                      if (plantData != null) {
+                        Navigator.pushNamed(
                           context,
                           '/plant',
-                          arguments: userPlants,
-                        ),),
+                          arguments: plantData,
+                        );
+                      }
+                    },
+                  );
+                },
               );
 
-          case ActionSuccess():
-             
-          case ActionFail():
-          return const Center(child: Text('Произошла ошибка при действии'));
-            
-        }
-        }
-      )
-    
+            case ActionSuccess():
+            case ActionFail():
+              return const Center(child: Text('Произошла ошибка при действии'));
+          }
+        },
+      ),
     );
   }
 }

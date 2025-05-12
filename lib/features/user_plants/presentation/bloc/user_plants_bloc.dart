@@ -89,7 +89,8 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
     required String userId,
     required String userPlantName,
   }) async {
-    final List<UserPlantsDocsResponseEntity> currentPlants = state is Loaded ? (state as Loaded).userPlants : [];
+    final List<UserPlantsDocsResponseEntity> currentPlants =
+        state is Loaded ? (state as Loaded).userPlants : [];
 
     try {
       await _userPlantsRepository.addUserPlant(
@@ -116,8 +117,14 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
   }) async {
     try {
       await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
+      if (state is Loaded) {
+        final currentPlants = (state as Loaded).userPlants;
+        final updatedPlants =
+            currentPlants.where((plant) => plant.id != userPlantId).toList();
+        emit(UserPlantsState.loaded(userPlants: updatedPlants));
+      }
+
       emit(const UserPlantsState.actionSuccess(message: 'Растение удалено'));
-      _getAllUserPlants(emit: emit, page: 1, limit: 10);
     } catch (e) {
       emit(UserPlantsState.actionFail(message: handleError(e)));
     }

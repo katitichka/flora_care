@@ -7,20 +7,48 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
   UserPlantDataProviderImpl({required PocketBase pocketBase})
     : _pocketBase = pocketBase;
 
-  @override
+ @override
   Future<List<UserPlantsDocsResponseDto>> getAllUserPlants({
     required int page,
     required int limit,
   }) async {
     try {
-      final records = await _pocketBase.collection('user_plants').getList();
-      return records.items
-          .map((record) => UserPlantsDocsResponseDto.fromJson(record.toJson()))
-          .toList();
+      final records = await _pocketBase.collection('user_plants').getList(
+        page: page,
+        perPage: limit,
+        expand: 'plant_id',
+      );
+
+      final result = records.items.map((record) {
+        final dto = UserPlantsDocsResponseDto.fromJson(record.toJson());
+
+        // Handle expanded plant data
+        final expandedPlants = record.expand['plant_id'];
+        if (expandedPlants is List) {
+          final expandedPlant = expandedPlants!.first;
+          final imageValue = expandedPlant.getStringValue('image');
+          if (imageValue != null) {
+            final imageUrl = _pocketBase.files
+                .getUrl(expandedPlant, imageValue)
+                .toString();
+
+            if (dto.plantData != null) {
+              final updatedPlant = dto.plantData!.copyWith(image: imageUrl);
+              return dto.copyWith(plantData: updatedPlant);
+            }
+          }
+        }
+
+        return dto;
+      }).toList();
+
+      return result;
     } catch (e) {
-      throw Exception(e);
+      throw Exception('Failed to get user plants: $e');
     }
   }
+
+
 
   @override
   Future<List<UserPlantsDocsResponseDto>> addUserPlant({

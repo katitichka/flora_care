@@ -14,9 +14,11 @@ final Map<String, Widget Function(BuildContext)> routes = {
   '/dictionary': (context) => DictionaryScreen(),
   '/home': (context) => UserPlantsScreen(),
   '/plant': (context) {
-    final plant =
-        ModalRoute.of(context)!.settings.arguments
-            as DictionaryDocsResponseEntity;
-    return PlantCard(plant: plant);
+    final plant = ModalRoute.of(context)!.settings.arguments as DictionaryDocsResponseEntity?;
+    if (plant != null) {
+      return PlantCard(plant: plant); 
+    } else {
+      return const Scaffold(body: Center(child: Text("Invalid plant data!")));
+    }
   },
 };

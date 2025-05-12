@@ -23,7 +23,12 @@ class UserPlantCard extends StatelessWidget {
               SizedBox(
                 height: 100,
                 width: 80,
-                child: Container(
+                child: userPlant.plantData?.image != null
+                  ? Image.network(
+                    userPlant.plantData!.image,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(8),
