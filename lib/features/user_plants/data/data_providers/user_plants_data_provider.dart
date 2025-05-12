@@ -14,6 +14,7 @@ abstract interface class UserPlantsDataProvider {
   Future<List<UserPlantsDocsResponseDto>> addUserPlant({
     required String plantId,
     required String userId,
+    required String userPlantName,
   });
   
   Future<List<UserPlantsDocsResponseDto>> deleteUserPlant({

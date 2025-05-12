@@ -1,5 +1,5 @@
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
-import 'package:flora_care/features/user_plants/data/data_providers/implementations/user_plants_data_provider.dart';
+import 'package:flora_care/features/user_plants/data/data_providers/user_plants_data_provider.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class UserPlantDataProviderImpl implements UserPlantsDataProvider {
@@ -26,16 +26,19 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
   Future<List<UserPlantsDocsResponseDto>> addUserPlant({
     required String userId,
     required String plantId,
+    required String userPlantName,
   }) async {
-     try {
-      final record = await _pocketBase.collection('user_plants').create(
-        body: {
-          'user_id': userId,
-          'plant_id': plantId,
-          'added_plant': DateTime.now().toString(),
-        },
-      );
-      return [UserPlantsDocsResponseDto.fromJson(record.toJson())];
+    try {
+      await _pocketBase
+          .collection('user_plants')
+          .create(
+            body: {
+              'user_id': userId,
+              'plant_id': plantId,
+              'user_plant_name': userPlantName,
+            },
+          );
+      return getAllUserPlants(page: 1, limit: 20);
     } catch (e) {
       throw Exception('Failed to add plant: $e');
     }
@@ -47,7 +50,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
   }) async {
     try {
       await _pocketBase.collection('user_plants').delete(userPlantId);
-      return [];
+      return getAllUserPlants(page: 1, limit: 20);
     } catch (e) {
       throw Exception('Failed to delete plant: $e');
     }

@@ -13,6 +13,7 @@ abstract interface class UserPlantsRepository {
   Future<List<UserPlantsDocsResponseEntity>> addUserPlant({
     required String plantId,
     required String userId,
+    required String userPlantName,
   });
   Future<List<UserPlantsDocsResponseEntity>> deleteUserPlant({
     required String userPlantId,

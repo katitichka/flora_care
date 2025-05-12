@@ -2,12 +2,28 @@ import 'dart:async';
 import 'package:flora_care/features/dictionary/data/data_poviders/implementations/dictionary_data_provider_impl.dart';
 import 'package:flora_care/features/dictionary/data/repositoties/dictionary_repository_impl.dart';
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
+import 'package:flora_care/features/user_plants/data/data_providers/implementations/user_plant_data_provider_impl.dart';
+import 'package:flora_care/features/user_plants/data/data_providers/user_plants_data_provider.dart';
+import 'package:flora_care/features/user_plants/data/repositories/user_plants_repository_impl.dart';
+import 'package:flora_care/features/user_plants/domain/repositories/user_plants_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flora_care/app.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 final pocketBase = PocketBase('https://testovoe.pockethost.io');
+final dictionaryDataProvider = DictionaryDataProviderImpl(
+  pocketBase: pocketBase,
+);
+final dictionaryRepository = DictionaryRepositoryImpl(
+  dictionaryDataProvider: dictionaryDataProvider,
+);
+final userPlantsDataProvider = UserPlantDataProviderImpl(
+  pocketBase: pocketBase,
+);
+final userPlantsRepository = UserPlantsRepositoryImpl(
+  userPlantsDataProvider: userPlantsDataProvider,
+);
 Future<void> main() async {
   runZonedGuarded(
     () async {
@@ -17,22 +33,21 @@ Future<void> main() async {
           .collection('users')
           .authWithPassword('testemail@email.com', 'test12345');
 
-      final dictionaryDataProvider = DictionaryDataProviderImpl(
-        pocketBase: pocketBase,
-      );
-      final dictionaryRepository = DictionaryRepositoryImpl(
-        dictionaryDataProvider: dictionaryDataProvider,
-      );
-
       final userPlant = await pocketBase.collection('user_plants').getList();
-      final resUserPlants = userPlant.items.map((item) {
-        final dto = UserPlantsDocsResponseDto.fromJson(item.toJson());
-        print('UserPlants $dto');
-      });
-      
+      final resUserPlants =
+          userPlant.items
+              .map((item) => UserPlantsDocsResponseDto.fromJson(item.toJson()))
+              .toList();
+      print('UserPlants $resUserPlants');
+
       // print("Starting app...");
 
-      runApp(App(dictionaryRepository: dictionaryRepository));
+      runApp(
+        App(
+          dictionaryRepository: dictionaryRepository,
+          userPlantsRepository: userPlantsRepository,
+        ),
+      );
     },
     (error, stack) {
       print("Error: $error\n$stack");

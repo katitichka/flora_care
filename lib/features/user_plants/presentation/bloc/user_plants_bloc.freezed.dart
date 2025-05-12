@@ -126,11 +126,12 @@ as int,
 
 
 class _AddUserPlant with DiagnosticableTreeMixin implements UserPlantsEvent {
-  const _AddUserPlant({required this.plantId, required this.userId});
+  const _AddUserPlant({required this.plantId, required this.userId, required this.userPlantName});
   
 
  final  String plantId;
  final  String userId;
+ final  String userPlantName;
 
 /// Create a copy of UserPlantsEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -143,21 +144,21 @@ _$AddUserPlantCopyWith<_AddUserPlant> get copyWith => __$AddUserPlantCopyWithImp
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'UserPlantsEvent.addUserPlant'))
-    ..add(DiagnosticsProperty('plantId', plantId))..add(DiagnosticsProperty('userId', userId));
+    ..add(DiagnosticsProperty('plantId', plantId))..add(DiagnosticsProperty('userId', userId))..add(DiagnosticsProperty('userPlantName', userPlantName));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddUserPlant&&(identical(other.plantId, plantId) || other.plantId == plantId)&&(identical(other.userId, userId) || other.userId == userId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddUserPlant&&(identical(other.plantId, plantId) || other.plantId == plantId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userPlantName, userPlantName) || other.userPlantName == userPlantName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,plantId,userId);
+int get hashCode => Object.hash(runtimeType,plantId,userId,userPlantName);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UserPlantsEvent.addUserPlant(plantId: $plantId, userId: $userId)';
+  return 'UserPlantsEvent.addUserPlant(plantId: $plantId, userId: $userId, userPlantName: $userPlantName)';
 }
 
 
@@ -168,7 +169,7 @@ abstract mixin class _$AddUserPlantCopyWith<$Res> implements $UserPlantsEventCop
   factory _$AddUserPlantCopyWith(_AddUserPlant value, $Res Function(_AddUserPlant) _then) = __$AddUserPlantCopyWithImpl;
 @useResult
 $Res call({
- String plantId, String userId
+ String plantId, String userId, String userPlantName
 });
 
 
@@ -185,10 +186,11 @@ class __$AddUserPlantCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? plantId = null,Object? userId = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? plantId = null,Object? userId = null,Object? userPlantName = null,}) {
   return _then(_AddUserPlant(
 plantId: null == plantId ? _self.plantId : plantId // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,userPlantName: null == userPlantName ? _self.userPlantName : userPlantName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

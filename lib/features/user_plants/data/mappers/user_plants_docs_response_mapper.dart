@@ -7,9 +7,9 @@ abstract class UserPlantsDocsResponseMapper {
   }) {
     return UserPlantsDocsResponseEntity(
       id: dto.id,
-      addedPlant: dto.addedPlant,
       userId: dto.userId,
       plantId: dto.plantId,
+      userPlantName: dto.userPlantName,
       );
   }
 }

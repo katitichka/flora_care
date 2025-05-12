@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserPlantsDocsResponseDto {
 
- String get id; String get created; String get updated;@JsonKey(name: 'added_plant') DateTime get addedPlant;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'plant_id') String get plantId;
+ String get id; String get created; String get updated;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'plant_id') String get plantId;@JsonKey(name: 'user_plant_name') String get userPlantName;
 /// Create a copy of UserPlantsDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $UserPlantsDocsResponseDtoCopyWith<UserPlantsDocsResponseDto> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserPlantsDocsResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.addedPlant, addedPlant) || other.addedPlant == addedPlant)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserPlantsDocsResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId)&&(identical(other.userPlantName, userPlantName) || other.userPlantName == userPlantName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,created,updated,addedPlant,userId,plantId);
+int get hashCode => Object.hash(runtimeType,id,created,updated,userId,plantId,userPlantName);
 
 @override
 String toString() {
-  return 'UserPlantsDocsResponseDto(id: $id, created: $created, updated: $updated, addedPlant: $addedPlant, userId: $userId, plantId: $plantId)';
+  return 'UserPlantsDocsResponseDto(id: $id, created: $created, updated: $updated, userId: $userId, plantId: $plantId, userPlantName: $userPlantName)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $UserPlantsDocsResponseDtoCopyWith<$Res>  {
   factory $UserPlantsDocsResponseDtoCopyWith(UserPlantsDocsResponseDto value, $Res Function(UserPlantsDocsResponseDto) _then) = _$UserPlantsDocsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String id, String created, String updated,@JsonKey(name: 'added_plant') DateTime addedPlant,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'plant_id') String plantId
+ String id, String created, String updated,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'plant_id') String plantId,@JsonKey(name: 'user_plant_name') String userPlantName
 });
 
 
@@ -66,14 +66,14 @@ class _$UserPlantsDocsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? created = null,Object? updated = null,Object? addedPlant = null,Object? userId = null,Object? plantId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? created = null,Object? updated = null,Object? userId = null,Object? plantId = null,Object? userPlantName = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,created: null == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as String,updated: null == updated ? _self.updated : updated // ignore: cast_nullable_to_non_nullable
-as String,addedPlant: null == addedPlant ? _self.addedPlant : addedPlant // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,plantId: null == plantId ? _self.plantId : plantId // ignore: cast_nullable_to_non_nullable
+as String,userPlantName: null == userPlantName ? _self.userPlantName : userPlantName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -85,15 +85,15 @@ as String,
 @JsonSerializable()
 
 class _UserPlantsDocsResponseDto implements UserPlantsDocsResponseDto {
-  const _UserPlantsDocsResponseDto({required this.id, required this.created, required this.updated, @JsonKey(name: 'added_plant') required this.addedPlant, @JsonKey(name: 'user_id') required this.userId, @JsonKey(name: 'plant_id') required this.plantId});
+  const _UserPlantsDocsResponseDto({required this.id, required this.created, required this.updated, @JsonKey(name: 'user_id') required this.userId, @JsonKey(name: 'plant_id') required this.plantId, @JsonKey(name: 'user_plant_name') required this.userPlantName});
   factory _UserPlantsDocsResponseDto.fromJson(Map<String, dynamic> json) => _$UserPlantsDocsResponseDtoFromJson(json);
 
 @override final  String id;
 @override final  String created;
 @override final  String updated;
-@override@JsonKey(name: 'added_plant') final  DateTime addedPlant;
 @override@JsonKey(name: 'user_id') final  String userId;
 @override@JsonKey(name: 'plant_id') final  String plantId;
+@override@JsonKey(name: 'user_plant_name') final  String userPlantName;
 
 /// Create a copy of UserPlantsDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -108,16 +108,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserPlantsDocsResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.addedPlant, addedPlant) || other.addedPlant == addedPlant)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserPlantsDocsResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId)&&(identical(other.userPlantName, userPlantName) || other.userPlantName == userPlantName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,created,updated,addedPlant,userId,plantId);
+int get hashCode => Object.hash(runtimeType,id,created,updated,userId,plantId,userPlantName);
 
 @override
 String toString() {
-  return 'UserPlantsDocsResponseDto(id: $id, created: $created, updated: $updated, addedPlant: $addedPlant, userId: $userId, plantId: $plantId)';
+  return 'UserPlantsDocsResponseDto(id: $id, created: $created, updated: $updated, userId: $userId, plantId: $plantId, userPlantName: $userPlantName)';
 }
 
 
@@ -128,7 +128,7 @@ abstract mixin class _$UserPlantsDocsResponseDtoCopyWith<$Res> implements $UserP
   factory _$UserPlantsDocsResponseDtoCopyWith(_UserPlantsDocsResponseDto value, $Res Function(_UserPlantsDocsResponseDto) _then) = __$UserPlantsDocsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String created, String updated,@JsonKey(name: 'added_plant') DateTime addedPlant,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'plant_id') String plantId
+ String id, String created, String updated,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'plant_id') String plantId,@JsonKey(name: 'user_plant_name') String userPlantName
 });
 
 
@@ -145,14 +145,14 @@ class __$UserPlantsDocsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? created = null,Object? updated = null,Object? addedPlant = null,Object? userId = null,Object? plantId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? created = null,Object? updated = null,Object? userId = null,Object? plantId = null,Object? userPlantName = null,}) {
   return _then(_UserPlantsDocsResponseDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,created: null == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as String,updated: null == updated ? _self.updated : updated // ignore: cast_nullable_to_non_nullable
-as String,addedPlant: null == addedPlant ? _self.addedPlant : addedPlant // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,plantId: null == plantId ? _self.plantId : plantId // ignore: cast_nullable_to_non_nullable
+as String,userPlantName: null == userPlantName ? _self.userPlantName : userPlantName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

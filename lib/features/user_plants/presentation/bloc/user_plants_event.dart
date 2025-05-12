@@ -10,6 +10,7 @@ sealed class UserPlantsEvent with _$UserPlantsEvent {
   const factory UserPlantsEvent.addUserPlant({
     required String plantId,
     required String userId,
+    required String userPlantName,
   }) = _AddUserPlant;
 
   const factory UserPlantsEvent.deleteUserPlant({

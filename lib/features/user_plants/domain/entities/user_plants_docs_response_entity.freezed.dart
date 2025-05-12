@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserPlantsDocsResponseEntity {
 
- String get id; DateTime get addedPlant; String get userId; String get plantId;
+ String get id; String get userId; String get plantId; String get userPlantName;
 /// Create a copy of UserPlantsDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $UserPlantsDocsResponseEntityCopyWith<UserPlantsDocsResponseEntity> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserPlantsDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.addedPlant, addedPlant) || other.addedPlant == addedPlant)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserPlantsDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId)&&(identical(other.userPlantName, userPlantName) || other.userPlantName == userPlantName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,addedPlant,userId,plantId);
+int get hashCode => Object.hash(runtimeType,id,userId,plantId,userPlantName);
 
 @override
 String toString() {
-  return 'UserPlantsDocsResponseEntity(id: $id, addedPlant: $addedPlant, userId: $userId, plantId: $plantId)';
+  return 'UserPlantsDocsResponseEntity(id: $id, userId: $userId, plantId: $plantId, userPlantName: $userPlantName)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $UserPlantsDocsResponseEntityCopyWith<$Res>  {
   factory $UserPlantsDocsResponseEntityCopyWith(UserPlantsDocsResponseEntity value, $Res Function(UserPlantsDocsResponseEntity) _then) = _$UserPlantsDocsResponseEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime addedPlant, String userId, String plantId
+ String id, String userId, String plantId, String userPlantName
 });
 
 
@@ -63,12 +63,12 @@ class _$UserPlantsDocsResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? addedPlant = null,Object? userId = null,Object? plantId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? plantId = null,Object? userPlantName = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,addedPlant: null == addedPlant ? _self.addedPlant : addedPlant // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,plantId: null == plantId ? _self.plantId : plantId // ignore: cast_nullable_to_non_nullable
+as String,userPlantName: null == userPlantName ? _self.userPlantName : userPlantName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -80,13 +80,13 @@ as String,
 
 
 class _UserPlantsDocsResponseEntity implements UserPlantsDocsResponseEntity {
-  const _UserPlantsDocsResponseEntity({required this.id, required this.addedPlant, required this.userId, required this.plantId});
+  const _UserPlantsDocsResponseEntity({required this.id, required this.userId, required this.plantId, required this.userPlantName});
   
 
 @override final  String id;
-@override final  DateTime addedPlant;
 @override final  String userId;
 @override final  String plantId;
+@override final  String userPlantName;
 
 /// Create a copy of UserPlantsDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -98,16 +98,16 @@ _$UserPlantsDocsResponseEntityCopyWith<_UserPlantsDocsResponseEntity> get copyWi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserPlantsDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.addedPlant, addedPlant) || other.addedPlant == addedPlant)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserPlantsDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.plantId, plantId) || other.plantId == plantId)&&(identical(other.userPlantName, userPlantName) || other.userPlantName == userPlantName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,addedPlant,userId,plantId);
+int get hashCode => Object.hash(runtimeType,id,userId,plantId,userPlantName);
 
 @override
 String toString() {
-  return 'UserPlantsDocsResponseEntity(id: $id, addedPlant: $addedPlant, userId: $userId, plantId: $plantId)';
+  return 'UserPlantsDocsResponseEntity(id: $id, userId: $userId, plantId: $plantId, userPlantName: $userPlantName)';
 }
 
 
@@ -118,7 +118,7 @@ abstract mixin class _$UserPlantsDocsResponseEntityCopyWith<$Res> implements $Us
   factory _$UserPlantsDocsResponseEntityCopyWith(_UserPlantsDocsResponseEntity value, $Res Function(_UserPlantsDocsResponseEntity) _then) = __$UserPlantsDocsResponseEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime addedPlant, String userId, String plantId
+ String id, String userId, String plantId, String userPlantName
 });
 
 
@@ -135,12 +135,12 @@ class __$UserPlantsDocsResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? addedPlant = null,Object? userId = null,Object? plantId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? plantId = null,Object? userPlantName = null,}) {
   return _then(_UserPlantsDocsResponseEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,addedPlant: null == addedPlant ? _self.addedPlant : addedPlant // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,plantId: null == plantId ? _self.plantId : plantId // ignore: cast_nullable_to_non_nullable
+as String,userPlantName: null == userPlantName ? _self.userPlantName : userPlantName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

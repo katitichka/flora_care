@@ -1,5 +1,8 @@
 import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_response_entity.dart';
+import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart';
+import 'package:flora_care/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DictionaryPlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
@@ -25,28 +28,28 @@ class DictionaryPlantCard extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 100,
-                    width: 80,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image.network(
-                        plant.image,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) => Container(
-                              color: Colors.grey[200],
-                              child: const Icon(
-                                Icons.image_not_supported,
-                                size: 40,
-                              ),
+                  width: 80,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.network(
+                      plant.image,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (context, error, stackTrace) => Container(
+                            color: Colors.grey[200],
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              size: 40,
                             ),
-                      ),
+                          ),
                     ),
                   ),
+                ),
                 const SizedBox(
                   width: 20,
                 ), // Отступ между изображением и текстом
@@ -80,15 +83,28 @@ class DictionaryPlantCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/home',
-                      arguments: plant,
+                IconButton(
+                  icon: const Icon(
+                    Icons.add_circle_outline,
+                    color: Color.fromARGB(255, 0, 89, 33),
+                  ),
+                  onPressed: () async {
+                    final userId = pocketBase.authStore.model?.id ?? '';
+                    context.read<UserPlantsBloc>().add(
+                      UserPlantsEvent.addUserPlant(
+                        plantId: plant.id,
+                        userId: userId,
+                        userPlantName: plant.commonName,
+                      ),
                     );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Растение добавлено в "Мои растения"'),
+                      ),
+                    );
+
+                    Navigator.pushReplacementNamed(context, '/home');
                   },
-                  child: const Text('+'),
                 ),
               ],
             ),

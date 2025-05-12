@@ -4,7 +4,6 @@ import 'package:flora_care/features/user_plants/domain/repositories/user_plants_
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:http/http.dart';
 
 part 'user_plants_event.dart';
 part 'user_plants_state.dart';
@@ -29,11 +28,13 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
           page: page,
           limit: limit,
         ),
-        _AddUserPlant(:final userId, :final plantId) => _addUserPlant(
-          emit: emit,
-          userId: userId,
-          plantId: plantId,
-        ),
+        _AddUserPlant(:final userId, :final plantId, :final userPlantName) =>
+          _addUserPlant(
+            emit: emit,
+            userId: userId,
+            plantId: plantId,
+            userPlantName: userPlantName,
+          ),
         _DeleteUserPlant(:final userPlantId) => _deleteUserPlant(
           emit: emit,
           userPlantId: userPlantId,
@@ -84,18 +85,28 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
 
   Future<void> _addUserPlant({
     required Emitter<UserPlantsState> emit,
-    required String plantId, 
+    required String plantId,
     required String userId,
+    required String userPlantName,
   }) async {
+    final List<UserPlantsDocsResponseEntity> currentPlants = state is Loaded ? (state as Loaded).userPlants : [];
+
     try {
       await _userPlantsRepository.addUserPlant(
         plantId: plantId,
         userId: userId,
-        );
-      emit(const UserPlantsState.actionSuccess(message: 'Растение добавлено'));
-      _getAllUserPlants(emit: emit, page: 1, limit: 10);
+        userPlantName: userPlantName,
+      );
+      final updatedPlants = await _userPlantsRepository.getAllUserPlants(
+        page: 1,
+        limit: 10,
+      );
+      emit(UserPlantsState.loaded(userPlants: updatedPlants));
     } catch (e) {
-      emit(UserPlantsState.actionFail(message: handleError(e)));
+      emit(UserPlantsState.error(message: handleError(e)));
+      if (currentPlants.isNotEmpty) {
+        emit(UserPlantsState.loaded(userPlants: currentPlants));
+      }
     }
   }
 
@@ -105,7 +116,7 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
   }) async {
     try {
       await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
-      emit(const UserPlantsState.actionSuccess(message: 'Растение добавлено'));
+      emit(const UserPlantsState.actionSuccess(message: 'Растение удалено'));
       _getAllUserPlants(emit: emit, page: 1, limit: 10);
     } catch (e) {
       emit(UserPlantsState.actionFail(message: handleError(e)));

@@ -10,12 +10,12 @@ sealed class UserPlantsDocsResponseDto with _$UserPlantsDocsResponseDto {
     required String id,
     required String created,
     required String updated,
-    @JsonKey(name: 'added_plant')
-    required DateTime addedPlant,
     @JsonKey(name: 'user_id')
     required String userId,
     @JsonKey(name: 'plant_id')
     required String plantId,
+    @JsonKey(name: 'user_plant_name')
+    required String userPlantName,
   }) = _UserPlantsDocsResponseDto;
 
   factory UserPlantsDocsResponseDto.fromJson(Map<String, dynamic> json) =>

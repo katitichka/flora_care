@@ -12,9 +12,9 @@ _UserPlantsDocsResponseDto _$UserPlantsDocsResponseDtoFromJson(
   id: json['id'] as String,
   created: json['created'] as String,
   updated: json['updated'] as String,
-  addedPlant: DateTime.parse(json['added_plant'] as String),
   userId: json['user_id'] as String,
   plantId: json['plant_id'] as String,
+  userPlantName: json['user_plant_name'] as String,
 );
 
 Map<String, dynamic> _$UserPlantsDocsResponseDtoToJson(
@@ -23,7 +23,7 @@ Map<String, dynamic> _$UserPlantsDocsResponseDtoToJson(
   'id': instance.id,
   'created': instance.created,
   'updated': instance.updated,
-  'added_plant': instance.addedPlant.toIso8601String(),
   'user_id': instance.userId,
   'plant_id': instance.plantId,
+  'user_plant_name': instance.userPlantName,
 };

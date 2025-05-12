@@ -1,4 +1,4 @@
-import 'package:flora_care/features/user_plants/data/data_providers/implementations/user_plants_data_provider.dart';
+import 'package:flora_care/features/user_plants/data/data_providers/user_plants_data_provider.dart';
 import 'package:flora_care/features/user_plants/data/mappers/user_plants_docs_response_mapper.dart';
 import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs_response_entity.dart';
 import 'package:flora_care/features/user_plants/domain/repositories/user_plants_repository.dart';
@@ -28,10 +28,12 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
   Future<List<UserPlantsDocsResponseEntity>> addUserPlant({
     required String plantId,
     required String userId,
+    required String userPlantName,
   }) async {
-    final dtos = await _userPlantsDataProvider.addUserPlant(
+    await _userPlantsDataProvider.addUserPlant(
       plantId: plantId,
       userId: userId,
+      userPlantName: userPlantName,
     );
     return getAllUserPlants(page: 1, limit: 10);
   }
@@ -40,7 +42,7 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
   Future<List<UserPlantsDocsResponseEntity>> deleteUserPlant({
     required String userPlantId,
   }) async {
-    final dtos = await _userPlantsDataProvider.deleteUserPlant(
+    await _userPlantsDataProvider.deleteUserPlant(
       userPlantId: userPlantId,
     );
     return getAllUserPlants(page: 1, limit: 10);
