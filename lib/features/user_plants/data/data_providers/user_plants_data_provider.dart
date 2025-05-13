@@ -2,13 +2,8 @@
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
 
 abstract interface class UserPlantsDataProvider {
-  Future<List<UserPlantsDocsResponseDto>> getAllUserPlants({
-    required int page,
-    required int limit,
-  });
+  Future<List<UserPlantsDocsResponseDto>> getAllUserPlants();
   Future<List<UserPlantsDocsResponseDto>> searchPlants({
-    required int page,
-    required int limit,
     required String query,
   });
   Future<List<UserPlantsDocsResponseDto>> addUserPlant({

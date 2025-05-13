@@ -8,22 +8,16 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
     : _pocketBase = pocketBase;
 
  @override
-  Future<List<UserPlantsDocsResponseDto>> getAllUserPlants({
-    required int page,
-    required int limit,
-  }) async {
+  Future<List<UserPlantsDocsResponseDto>> getAllUserPlants() async {
     try {
       final records = await _pocketBase.collection('user_plants').getList(
-        page: page,
-        perPage: limit,
         expand: 'plant_id',
       );
 
       final result = records.items.map((record) {
         final dto = UserPlantsDocsResponseDto.fromJson(record.toJson());
 
-        // Handle expanded plant data
-        final expandedPlants = record.expand['plant_id'];
+        final expandedPlants = record.get<List<RecordModel>?>('plant_id');
         if (expandedPlants is List) {
           final expandedPlant = expandedPlants!.first;
           final imageValue = expandedPlant.getStringValue('image');
@@ -31,7 +25,6 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
             final imageUrl = _pocketBase.files
                 .getUrl(expandedPlant, imageValue)
                 .toString();
-
             if (dto.plantData != null) {
               final updatedPlant = dto.plantData!.copyWith(image: imageUrl);
               return dto.copyWith(plantData: updatedPlant);
@@ -66,7 +59,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
               'user_plant_name': userPlantName,
             },
           );
-      return getAllUserPlants(page: 1, limit: 20);
+      return getAllUserPlants();
     } catch (e) {
       throw Exception('Failed to add plant: $e');
     }
@@ -78,7 +71,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
   }) async {
     try {
       await _pocketBase.collection('user_plants').delete(userPlantId);
-      return getAllUserPlants(page: 1, limit: 20);
+      return getAllUserPlants();
     } catch (e) {
       throw Exception('Failed to delete plant: $e');
     }
@@ -86,15 +79,11 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
 
   @override
   Future<List<UserPlantsDocsResponseDto>> searchPlants({
-    required int page,
-    required int limit,
     required String query,
   }) async {
     final records = await _pocketBase
         .collection('plants')
         .getList(
-          page: page,
-          perPage: limit,
           filter: 'common_name ~ "$query" || scientific_name ~ "$query"',
         );
     return records.items

@@ -52,75 +52,39 @@ $UserPlantsEventCopyWith(UserPlantsEvent _, $Res Function(UserPlantsEvent) __);
 
 
 class _GetAllUserPlants with DiagnosticableTreeMixin implements UserPlantsEvent {
-  const _GetAllUserPlants({required this.page, required this.limit});
+  const _GetAllUserPlants();
   
 
- final  int page;
- final  int limit;
 
-/// Create a copy of UserPlantsEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$GetAllUserPlantsCopyWith<_GetAllUserPlants> get copyWith => __$GetAllUserPlantsCopyWithImpl<_GetAllUserPlants>(this, _$identity);
+
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'UserPlantsEvent.getAllUserPlants'))
-    ..add(DiagnosticsProperty('page', page))..add(DiagnosticsProperty('limit', limit));
+    ;
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetAllUserPlants&&(identical(other.page, page) || other.page == page)&&(identical(other.limit, limit) || other.limit == limit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetAllUserPlants);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,page,limit);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UserPlantsEvent.getAllUserPlants(page: $page, limit: $limit)';
+  return 'UserPlantsEvent.getAllUserPlants()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class _$GetAllUserPlantsCopyWith<$Res> implements $UserPlantsEventCopyWith<$Res> {
-  factory _$GetAllUserPlantsCopyWith(_GetAllUserPlants value, $Res Function(_GetAllUserPlants) _then) = __$GetAllUserPlantsCopyWithImpl;
-@useResult
-$Res call({
- int page, int limit
-});
 
 
-
-
-}
-/// @nodoc
-class __$GetAllUserPlantsCopyWithImpl<$Res>
-    implements _$GetAllUserPlantsCopyWith<$Res> {
-  __$GetAllUserPlantsCopyWithImpl(this._self, this._then);
-
-  final _GetAllUserPlants _self;
-  final $Res Function(_GetAllUserPlants) _then;
-
-/// Create a copy of UserPlantsEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? page = null,Object? limit = null,}) {
-  return _then(_GetAllUserPlants(
-page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
@@ -274,12 +238,10 @@ as String,
 
 
 class _Search with DiagnosticableTreeMixin implements UserPlantsEvent {
-  const _Search({required this.query, required this.page, required this.limit});
+  const _Search({required this.query});
   
 
  final  String query;
- final  int page;
- final  int limit;
 
 /// Create a copy of UserPlantsEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -292,21 +254,21 @@ _$SearchCopyWith<_Search> get copyWith => __$SearchCopyWithImpl<_Search>(this, _
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'UserPlantsEvent.search'))
-    ..add(DiagnosticsProperty('query', query))..add(DiagnosticsProperty('page', page))..add(DiagnosticsProperty('limit', limit));
+    ..add(DiagnosticsProperty('query', query));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Search&&(identical(other.query, query) || other.query == query)&&(identical(other.page, page) || other.page == page)&&(identical(other.limit, limit) || other.limit == limit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Search&&(identical(other.query, query) || other.query == query));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,query,page,limit);
+int get hashCode => Object.hash(runtimeType,query);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UserPlantsEvent.search(query: $query, page: $page, limit: $limit)';
+  return 'UserPlantsEvent.search(query: $query)';
 }
 
 
@@ -317,7 +279,7 @@ abstract mixin class _$SearchCopyWith<$Res> implements $UserPlantsEventCopyWith<
   factory _$SearchCopyWith(_Search value, $Res Function(_Search) _then) = __$SearchCopyWithImpl;
 @useResult
 $Res call({
- String query, int page, int limit
+ String query
 });
 
 
@@ -334,12 +296,10 @@ class __$SearchCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? query = null,Object? page = null,Object? limit = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? query = null,}) {
   return _then(_Search(
 query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
-as String,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
-as int,
+as String,
   ));
 }
 

@@ -11,14 +11,8 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
   }) : _userPlantsDataProvider = userPlantsDataProvider;
 
   @override
-  Future<List<UserPlantsDocsResponseEntity>> getAllUserPlants({
-    required int page,
-    required int limit,
-  }) async {
-    final dtos = await _userPlantsDataProvider.getAllUserPlants(
-      page: page,
-      limit: limit,
-    );
+  Future<List<UserPlantsDocsResponseEntity>> getAllUserPlants() async {
+    final dtos = await _userPlantsDataProvider.getAllUserPlants();
     return dtos
         .map((dto) => UserPlantsDocsResponseMapper.fromDto(dto: dto))
         .toList();
@@ -35,7 +29,7 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
       userId: userId,
       userPlantName: userPlantName,
     );
-    return getAllUserPlants(page: 1, limit: 10);
+    return getAllUserPlants();
   }
 
   @override
@@ -45,18 +39,14 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
     await _userPlantsDataProvider.deleteUserPlant(
       userPlantId: userPlantId,
     );
-    return getAllUserPlants(page: 1, limit: 10);
+    return getAllUserPlants();
   }
 
   @override
   Future<List<UserPlantsDocsResponseEntity>> searchPlants({
-    required int page,
-    required int limit,
     required String query,
   }) async {
     final dtos = await _userPlantsDataProvider.searchPlants(
-      page: page,
-      limit: limit,
       query: query,
     );
     return dtos

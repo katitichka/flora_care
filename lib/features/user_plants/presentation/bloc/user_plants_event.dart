@@ -2,10 +2,7 @@ part of 'user_plants_bloc.dart';
 
 @freezed
 sealed class UserPlantsEvent with _$UserPlantsEvent {
-  const factory UserPlantsEvent.getAllUserPlants({
-    required int page,
-    required int limit,
-  }) = _GetAllUserPlants;
+  const factory UserPlantsEvent.getAllUserPlants() = _GetAllUserPlants;
 
   const factory UserPlantsEvent.addUserPlant({
     required String plantId,
@@ -19,7 +16,5 @@ sealed class UserPlantsEvent with _$UserPlantsEvent {
 
   const factory UserPlantsEvent.search({
     required String query,
-    required int page,
-    required int limit,
   }) = _Search;
 }

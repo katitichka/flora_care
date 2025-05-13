@@ -18,7 +18,7 @@ class UserPlantsProvider extends StatelessWidget {
       create:
           (context) =>
               UserPlantsBloc(userPlantsRepository: userPlantsRepository)
-                ..add(const UserPlantsEvent.getAllUserPlants(page: 1, limit: 10)),
+                ..add(const UserPlantsEvent.getAllUserPlants()),
       child: child,
     );
   }

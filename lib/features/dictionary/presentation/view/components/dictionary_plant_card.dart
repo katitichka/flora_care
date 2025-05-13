@@ -23,7 +23,6 @@ class DictionaryPlantCard extends StatelessWidget {
           height: 115,
           child: Container(
             padding: const EdgeInsets.all(15),
-            height: 115,
             child: Row(
               children: [
                 SizedBox(
@@ -37,7 +36,6 @@ class DictionaryPlantCard extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: Image.network(
                       plant.image,
-                      height: 100,
                       fit: BoxFit.cover,
                       errorBuilder:
                           (context, error, stackTrace) => Container(

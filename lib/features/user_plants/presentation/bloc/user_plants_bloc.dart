@@ -17,17 +17,8 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
       super(const UserPlantsState.initial()) {
     on<UserPlantsEvent>(
       (event, emit) => switch (event) {
-        _GetAllUserPlants(:final page, :final limit) => _getAllUserPlants(
-          emit: emit,
-          page: page,
-          limit: limit,
-        ),
-        _Search(:final query, :final page, :final limit) => _search(
-          emit: emit,
-          query: query,
-          page: page,
-          limit: limit,
-        ),
+        _GetAllUserPlants() => _getAllUserPlants(emit: emit),
+        _Search(:final query) => _search(emit: emit, query: query),
         _AddUserPlant(:final userId, :final plantId, :final userPlantName) =>
           _addUserPlant(
             emit: emit,
@@ -44,15 +35,10 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
   }
   Future<void> _getAllUserPlants({
     required Emitter<UserPlantsState> emit,
-    required int page,
-    required int limit,
   }) async {
     emit(const UserPlantsState.loading());
     try {
-      final allUserPlants = await _userPlantsRepository.getAllUserPlants(
-        page: page,
-        limit: limit,
-      );
+      final allUserPlants = await _userPlantsRepository.getAllUserPlants();
 
       emit(UserPlantsState.loaded(userPlants: allUserPlants));
     } catch (e) {
@@ -65,16 +51,10 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
   Future<void> _search({
     required Emitter<UserPlantsState> emit,
     required String query,
-    required int page,
-    required int limit,
   }) async {
     emit(const UserPlantsState.loading());
     try {
-      final plants = await _userPlantsRepository.searchPlants(
-        query: query,
-        page: page,
-        limit: limit,
-      );
+      final plants = await _userPlantsRepository.searchPlants(query: query);
 
       emit(UserPlantsState.loaded(userPlants: plants));
     } catch (e) {
@@ -98,10 +78,7 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
         userId: userId,
         userPlantName: userPlantName,
       );
-      final updatedPlants = await _userPlantsRepository.getAllUserPlants(
-        page: 1,
-        limit: 10,
-      );
+      final updatedPlants = await _userPlantsRepository.getAllUserPlants();
       emit(UserPlantsState.loaded(userPlants: updatedPlants));
     } catch (e) {
       emit(UserPlantsState.error(message: handleError(e)));
@@ -115,16 +92,17 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
     required Emitter<UserPlantsState> emit,
     required String userPlantId,
   }) async {
+    final currentPlants = (state as Loaded).userPlants;
     try {
-      await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
       if (state is Loaded) {
-        final currentPlants = (state as Loaded).userPlants;
         final updatedPlants =
             currentPlants.where((plant) => plant.id != userPlantId).toList();
         emit(UserPlantsState.loaded(userPlants: updatedPlants));
       }
-
-      emit(const UserPlantsState.actionSuccess(message: 'Растение удалено'));
+      await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
+      final freshPlants = await _userPlantsRepository.getAllUserPlants();
+      emit(UserPlantsState.loaded(userPlants: freshPlants));
+      emit(const UserPlantsState.actionSuccess(message: 'Растение успешно удалено'));
     } catch (e) {
       emit(UserPlantsState.actionFail(message: handleError(e)));
     }
