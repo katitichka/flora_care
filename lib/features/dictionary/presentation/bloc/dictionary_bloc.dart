@@ -29,7 +29,7 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
           page: page,
           limit: limit,
         ),
-         // _GetById(:final id) => _getById(emit: emit, id: id),
+        // _GetById(:final id) => _getById(emit: emit, id: id),
       },
     );
   }
@@ -46,21 +46,15 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
         limit: limit,
       );
 
-    emit(DictionaryState.loaded(plants: allPlants));
+      emit(DictionaryState.loaded(plants: allPlants, filterPlants: []));
     } catch (e) {
       String message;
       if (e is DictionaryDocsResponseException) {
-        message = e.message; 
+        message = e.message;
       } else {
-        message = handleError(
-          e,
-        ); 
+        message = handleError(e);
       }
-      emit(
-        DictionaryState.error(
-          message: message,
-        ),
-      );
+      emit(DictionaryState.error(message: message));
     }
   }
 
@@ -70,14 +64,28 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
     required int page,
     required int limit,
   }) async {
-    emit(const DictionaryState.loading());
+    // emit(const DictionaryState.loading());
     try {
-      final plants = await _dictionaryRepository.searchPlants(
-        query: query,
-        page: page,
-        limit: limit,
-      );
-      emit(DictionaryState.loaded(plants: plants));
+      final List<DictionaryDocsResponseEntity> plants;
+      List<DictionaryDocsResponseEntity> filterPlants = [];
+      if (state.getPlants != null) {
+        plants = state.getPlants!;
+        filterPlants =
+            plants
+                .where(
+                  (item) =>
+                      (item.scientificName.toString().toLowerCase().contains(
+                            query.toLowerCase(),
+                          ) ||
+                          (item.commonName.toString().toLowerCase().contains(
+                            query,
+                          ))),
+                )
+                .toList();
+      } else {
+        plants = [];
+      }
+      emit(DictionaryState.loaded(plants: plants, filterPlants: filterPlants));
     } catch (e) {
       String message;
       if (e is DictionaryDocsResponseException) {
@@ -85,15 +93,11 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
       } else {
         message = handleError(e);
       }
-      emit(
-        DictionaryState.error(
-          message: message,
-        ),
-      );
+      emit(DictionaryState.error(message: message));
     }
   }
 
-   // Future<void> _getById({
+  // Future<void> _getById({
   //   required Emitter<DictionaryState> emit,
   //   required String id,
   // }) async {

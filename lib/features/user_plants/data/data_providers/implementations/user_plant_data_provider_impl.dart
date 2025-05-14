@@ -17,7 +17,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
       final result = records.items.map((record) {
         final dto = UserPlantsDocsResponseDto.fromJson(record.toJson());
 
-        final expandedPlants = record.get<List<RecordModel>?>('plant_id');
+        final expandedPlants = record.expand['plant_id'] as List<dynamic>?;
         if (expandedPlants is List) {
           final expandedPlant = expandedPlants!.first;
           final imageValue = expandedPlant.getStringValue('image');
@@ -29,6 +29,8 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
               final updatedPlant = dto.plantData!.copyWith(image: imageUrl);
               return dto.copyWith(plantData: updatedPlant);
             }
+            print('Expanded plant data: ${expandedPlant.toJson()}');
+            print('Image files: $imageValue');
           }
         }
 
@@ -84,7 +86,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
     final records = await _pocketBase
         .collection('plants')
         .getList(
-          filter: 'common_name ~ "$query" || scientific_name ~ "$query"',
+          filter: 'common_name ~* "$query" || scientific_name ~* "$query"',
         );
     return records.items
         .map((record) => UserPlantsDocsResponseDto.fromJson(record.toJson()))

@@ -245,8 +245,8 @@ $DictionaryStateCopyWith(DictionaryState _, $Res Function(DictionaryState) __);
 /// @nodoc
 
 
-class Initial implements DictionaryState {
-  const Initial();
+class Initial extends DictionaryState {
+  const Initial(): super._();
   
 
 
@@ -277,8 +277,8 @@ String toString() {
 /// @nodoc
 
 
-class Loading implements DictionaryState {
-  const Loading();
+class Loading extends DictionaryState {
+  const Loading(): super._();
   
 
 
@@ -309,8 +309,8 @@ String toString() {
 /// @nodoc
 
 
-class Loaded implements DictionaryState {
-  const Loaded({required final  List<DictionaryDocsResponseEntity> plants}): _plants = plants;
+class Loaded extends DictionaryState {
+  const Loaded({required final  List<DictionaryDocsResponseEntity> plants, required final  List<DictionaryDocsResponseEntity> filterPlants}): _plants = plants,_filterPlants = filterPlants,super._();
   
 
  final  List<DictionaryDocsResponseEntity> _plants;
@@ -318,6 +318,13 @@ class Loaded implements DictionaryState {
   if (_plants is EqualUnmodifiableListView) return _plants;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_plants);
+}
+
+ final  List<DictionaryDocsResponseEntity> _filterPlants;
+ List<DictionaryDocsResponseEntity> get filterPlants {
+  if (_filterPlants is EqualUnmodifiableListView) return _filterPlants;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_filterPlants);
 }
 
 
@@ -331,16 +338,16 @@ $LoadedCopyWith<Loaded> get copyWith => _$LoadedCopyWithImpl<Loaded>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&const DeepCollectionEquality().equals(other._plants, _plants));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&const DeepCollectionEquality().equals(other._plants, _plants)&&const DeepCollectionEquality().equals(other._filterPlants, _filterPlants));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_plants));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_plants),const DeepCollectionEquality().hash(_filterPlants));
 
 @override
 String toString() {
-  return 'DictionaryState.loaded(plants: $plants)';
+  return 'DictionaryState.loaded(plants: $plants, filterPlants: $filterPlants)';
 }
 
 
@@ -351,7 +358,7 @@ abstract mixin class $LoadedCopyWith<$Res> implements $DictionaryStateCopyWith<$
   factory $LoadedCopyWith(Loaded value, $Res Function(Loaded) _then) = _$LoadedCopyWithImpl;
 @useResult
 $Res call({
- List<DictionaryDocsResponseEntity> plants
+ List<DictionaryDocsResponseEntity> plants, List<DictionaryDocsResponseEntity> filterPlants
 });
 
 
@@ -368,9 +375,10 @@ class _$LoadedCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? plants = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? plants = null,Object? filterPlants = null,}) {
   return _then(Loaded(
 plants: null == plants ? _self._plants : plants // ignore: cast_nullable_to_non_nullable
+as List<DictionaryDocsResponseEntity>,filterPlants: null == filterPlants ? _self._filterPlants : filterPlants // ignore: cast_nullable_to_non_nullable
 as List<DictionaryDocsResponseEntity>,
   ));
 }
@@ -381,8 +389,8 @@ as List<DictionaryDocsResponseEntity>,
 /// @nodoc
 
 
-class Error implements DictionaryState {
-  const Error({required this.message});
+class Error extends DictionaryState {
+  const Error({required this.message}): super._();
   
 
  final  String message;

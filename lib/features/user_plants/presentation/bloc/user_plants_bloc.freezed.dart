@@ -500,10 +500,17 @@ as List<UserPlantsDocsResponseEntity>,
 
 
 class ActionSuccess with DiagnosticableTreeMixin implements UserPlantsState {
-  const ActionSuccess({required this.message});
+  const ActionSuccess({required this.message, required final  List<UserPlantsDocsResponseEntity> userPlants}): _userPlants = userPlants;
   
 
  final  String message;
+ final  List<UserPlantsDocsResponseEntity> _userPlants;
+ List<UserPlantsDocsResponseEntity> get userPlants {
+  if (_userPlants is EqualUnmodifiableListView) return _userPlants;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_userPlants);
+}
+
 
 /// Create a copy of UserPlantsState
 /// with the given fields replaced by the non-null parameter values.
@@ -516,21 +523,21 @@ $ActionSuccessCopyWith<ActionSuccess> get copyWith => _$ActionSuccessCopyWithImp
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'UserPlantsState.actionSuccess'))
-    ..add(DiagnosticsProperty('message', message));
+    ..add(DiagnosticsProperty('message', message))..add(DiagnosticsProperty('userPlants', userPlants));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionSuccess&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionSuccess&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._userPlants, _userPlants));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,message,const DeepCollectionEquality().hash(_userPlants));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UserPlantsState.actionSuccess(message: $message)';
+  return 'UserPlantsState.actionSuccess(message: $message, userPlants: $userPlants)';
 }
 
 
@@ -541,7 +548,7 @@ abstract mixin class $ActionSuccessCopyWith<$Res> implements $UserPlantsStateCop
   factory $ActionSuccessCopyWith(ActionSuccess value, $Res Function(ActionSuccess) _then) = _$ActionSuccessCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String message, List<UserPlantsDocsResponseEntity> userPlants
 });
 
 
@@ -558,10 +565,11 @@ class _$ActionSuccessCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? userPlants = null,}) {
   return _then(ActionSuccess(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+as String,userPlants: null == userPlants ? _self._userPlants : userPlants // ignore: cast_nullable_to_non_nullable
+as List<UserPlantsDocsResponseEntity>,
   ));
 }
 
@@ -572,10 +580,17 @@ as String,
 
 
 class ActionFail with DiagnosticableTreeMixin implements UserPlantsState {
-  const ActionFail({required this.message});
+  const ActionFail({required this.message, required final  List<UserPlantsDocsResponseEntity> userPlants}): _userPlants = userPlants;
   
 
  final  String message;
+ final  List<UserPlantsDocsResponseEntity> _userPlants;
+ List<UserPlantsDocsResponseEntity> get userPlants {
+  if (_userPlants is EqualUnmodifiableListView) return _userPlants;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_userPlants);
+}
+
 
 /// Create a copy of UserPlantsState
 /// with the given fields replaced by the non-null parameter values.
@@ -588,21 +603,21 @@ $ActionFailCopyWith<ActionFail> get copyWith => _$ActionFailCopyWithImpl<ActionF
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'UserPlantsState.actionFail'))
-    ..add(DiagnosticsProperty('message', message));
+    ..add(DiagnosticsProperty('message', message))..add(DiagnosticsProperty('userPlants', userPlants));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionFail&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionFail&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._userPlants, _userPlants));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,message,const DeepCollectionEquality().hash(_userPlants));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UserPlantsState.actionFail(message: $message)';
+  return 'UserPlantsState.actionFail(message: $message, userPlants: $userPlants)';
 }
 
 
@@ -613,7 +628,7 @@ abstract mixin class $ActionFailCopyWith<$Res> implements $UserPlantsStateCopyWi
   factory $ActionFailCopyWith(ActionFail value, $Res Function(ActionFail) _then) = _$ActionFailCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String message, List<UserPlantsDocsResponseEntity> userPlants
 });
 
 
@@ -630,10 +645,11 @@ class _$ActionFailCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? userPlants = null,}) {
   return _then(ActionFail(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+as String,userPlants: null == userPlants ? _self._userPlants : userPlants // ignore: cast_nullable_to_non_nullable
+as List<UserPlantsDocsResponseEntity>,
   ));
 }
 

@@ -99,12 +99,22 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
             currentPlants.where((plant) => plant.id != userPlantId).toList();
         emit(UserPlantsState.loaded(userPlants: updatedPlants));
       }
+
       await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
-      final freshPlants = await _userPlantsRepository.getAllUserPlants();
-      emit(UserPlantsState.loaded(userPlants: freshPlants));
-      emit(const UserPlantsState.actionSuccess(message: 'Растение успешно удалено'));
+
+      // final freshPlants = await _userPlantsRepository.getAllUserPlants();
+    
+      // emit(UserPlantsState.actionSuccess(
+      //   message: 'Растение успешно удалено',
+      //   userPlants: freshPlants,
+      // ));
     } catch (e) {
-      emit(UserPlantsState.actionFail(message: handleError(e)));
+      emit(
+        UserPlantsState.actionFail(
+          message: handleError(e),
+          userPlants: currentPlants,
+        ),
+      );
     }
   }
 }

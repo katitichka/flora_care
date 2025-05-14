@@ -9,7 +9,12 @@ class UserPlantsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Мои растения')),
+      appBar: AppBar(
+        title: const Text('Мои растения'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/dictionary'),
+        ),),
       body: BlocListener<UserPlantsBloc, UserPlantsState>(
         listener: (context, state) {
           if (state is ActionSuccess) {
@@ -18,7 +23,14 @@ class UserPlantsScreen extends StatelessWidget {
             ).showSnackBar(const SnackBar(content: Text('Растение удалено')));
           }
         },
-        child: BlocBuilder<UserPlantsBloc, UserPlantsState>(
+        child: BlocConsumer<UserPlantsBloc, UserPlantsState>(
+          listener: (context, state) {
+            if (state is ActionSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
           builder: (context, state) {
             switch (state) {
               case Initial():

@@ -93,11 +93,6 @@ class UserPlantCard extends StatelessWidget {
                 _confirmDelete(context);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.cancel),
-              title: const Text('Отмена'),
-              onTap: () => Navigator.pop(context),
-            ),
           ],
         ),
       );
