@@ -10,14 +10,14 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
  @override
   Future<List<UserPlantsDocsResponseDto>> getAllUserPlants() async {
     try {
-      final records = await _pocketBase.collection('user_plants').getList(
+      final plantModels = await _pocketBase.collection('user_plants').getList(
         expand: 'plant_id',
       );
 
-      final result = records.items.map((record) {
-        final dto = UserPlantsDocsResponseDto.fromJson(record.toJson());
+      final plantsList = plantModels.items.map((plantModel) {
+        final dto = UserPlantsDocsResponseDto.fromJson(plantModel.toJson());
 
-        final expandedPlants = record.expand['plant_id'] as List<dynamic>?;
+        final expandedPlants = plantModel.expand['plant_id'] as List<dynamic>?;
         if (expandedPlants is List) {
           final expandedPlant = expandedPlants!.first;
           final imageValue = expandedPlant.getStringValue('image');
@@ -37,7 +37,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
         return dto;
       }).toList();
 
-      return result;
+      return plantsList;
     } catch (e) {
       throw Exception('Failed to get user plants: $e');
     }

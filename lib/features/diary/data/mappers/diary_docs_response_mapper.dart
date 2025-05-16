@@ -6,7 +6,7 @@ abstract class DiaryDocsResponseMapper {
   static DiaryDocsResponseEntity fromDto({required DiaryDocsResponseDto dto}) {
     return DiaryDocsResponseEntity(
       id: dto.id,
-      notes: dto.notes,
+      note: dto.note,
       eventDate: dto.eventDate,
       userPlantId: dto.userPlantId,
     );

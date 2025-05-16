@@ -1,6 +1,7 @@
 import 'package:flora_care/common/utils/error_handler.dart';
 import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs_response_entity.dart';
 import 'package:flora_care/features/user_plants/domain/repositories/user_plants_repository.dart';
+import 'package:flora_care/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -88,6 +89,17 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
     }
   }
 
+  Future<bool> isPlantNameUnique(String name, String userId) async {
+    try {
+      await pocketBase
+          .collection('user_plants')
+          .getFirstListItem('user_id = "$userId" && user_pant_name = "$name"');
+      return false;
+    } catch (e) {
+      return true;
+    }
+  }
+
   Future<void> _deleteUserPlant({
     required Emitter<UserPlantsState> emit,
     required String userPlantId,
@@ -103,7 +115,7 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
       await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
 
       // final freshPlants = await _userPlantsRepository.getAllUserPlants();
-    
+
       // emit(UserPlantsState.actionSuccess(
       //   message: 'Растение успешно удалено',
       //   userPlants: freshPlants,

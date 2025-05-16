@@ -5,9 +5,4 @@ abstract interface class DictionaryDataProvider {
     required int page,
     required int limit,
   });
-  Future<List<DictionaryDocsResponseDto>> searchPlants({
-    required int page,
-    required int limit,
-    required String query,
-  });
 }

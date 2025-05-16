@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryDocsResponseDto {
 
- String get collectionId; String get collectionName; String get id; String get created; String get updated;@JsonKey(name: 'event_date') DateTime get eventDate; String? get notes;@JsonKey(name: 'user_plant_id') String get userPlantId;@JsonKey(name: 'expand') Map<String, dynamic>? get expand;
+ String get collectionId; String get collectionName; String get id; String get created; String get updated;@JsonKey(name: 'event_date') DateTime? get eventDate; String? get note;@JsonKey(name: 'user_plant_id') String get userPlantId;@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) UserPlantsDocsResponseDto? get userPlantData;
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $DiaryDocsResponseDtoCopyWith<DiaryDocsResponseDto> get copyWith => _$DiaryDocsR
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDocsResponseDto&&(identical(other.collectionId, collectionId) || other.collectionId == collectionId)&&(identical(other.collectionName, collectionName) || other.collectionName == collectionName)&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&const DeepCollectionEquality().equals(other.expand, expand));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDocsResponseDto&&(identical(other.collectionId, collectionId) || other.collectionId == collectionId)&&(identical(other.collectionName, collectionName) || other.collectionName == collectionName)&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.note, note) || other.note == note)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.userPlantData, userPlantData) || other.userPlantData == userPlantData));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,collectionId,collectionName,id,created,updated,eventDate,notes,userPlantId,const DeepCollectionEquality().hash(expand));
+int get hashCode => Object.hash(runtimeType,collectionId,collectionName,id,created,updated,eventDate,note,userPlantId,userPlantData);
 
 @override
 String toString() {
-  return 'DiaryDocsResponseDto(collectionId: $collectionId, collectionName: $collectionName, id: $id, created: $created, updated: $updated, eventDate: $eventDate, notes: $notes, userPlantId: $userPlantId, expand: $expand)';
+  return 'DiaryDocsResponseDto(collectionId: $collectionId, collectionName: $collectionName, id: $id, created: $created, updated: $updated, eventDate: $eventDate, note: $note, userPlantId: $userPlantId, userPlantData: $userPlantData)';
 }
 
 
@@ -49,11 +49,11 @@ abstract mixin class $DiaryDocsResponseDtoCopyWith<$Res>  {
   factory $DiaryDocsResponseDtoCopyWith(DiaryDocsResponseDto value, $Res Function(DiaryDocsResponseDto) _then) = _$DiaryDocsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime eventDate, String? notes,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand') Map<String, dynamic>? expand
+ String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) UserPlantsDocsResponseDto? userPlantData
 });
 
 
-
+$UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData;
 
 }
 /// @nodoc
@@ -66,21 +66,33 @@ class _$DiaryDocsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? collectionId = null,Object? collectionName = null,Object? id = null,Object? created = null,Object? updated = null,Object? eventDate = null,Object? notes = freezed,Object? userPlantId = null,Object? expand = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? collectionId = null,Object? collectionName = null,Object? id = null,Object? created = null,Object? updated = null,Object? eventDate = freezed,Object? note = freezed,Object? userPlantId = null,Object? userPlantData = freezed,}) {
   return _then(_self.copyWith(
 collectionId: null == collectionId ? _self.collectionId : collectionId // ignore: cast_nullable_to_non_nullable
 as String,collectionName: null == collectionName ? _self.collectionName : collectionName // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,created: null == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as String,updated: null == updated ? _self.updated : updated // ignore: cast_nullable_to_non_nullable
-as String,eventDate: null == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
-as DateTime,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String,eventDate: freezed == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
-as String,expand: freezed == expand ? _self.expand : expand // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,
+as String,userPlantData: freezed == userPlantData ? _self.userPlantData : userPlantData // ignore: cast_nullable_to_non_nullable
+as UserPlantsDocsResponseDto?,
   ));
 }
+/// Create a copy of DiaryDocsResponseDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData {
+    if (_self.userPlantData == null) {
+    return null;
+  }
 
+  return $UserPlantsDocsResponseDtoCopyWith<$Res>(_self.userPlantData!, (value) {
+    return _then(_self.copyWith(userPlantData: value));
+  });
+}
 }
 
 
@@ -88,7 +100,7 @@ as Map<String, dynamic>?,
 @JsonSerializable()
 
 class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
-  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date') required this.eventDate, this.notes, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand') final  Map<String, dynamic>? expand}): _expand = expand;
+  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date') this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) this.userPlantData});
   factory _DiaryDocsResponseDto.fromJson(Map<String, dynamic> json) => _$DiaryDocsResponseDtoFromJson(json);
 
 @override final  String collectionId;
@@ -96,18 +108,10 @@ class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
 @override final  String id;
 @override final  String created;
 @override final  String updated;
-@override@JsonKey(name: 'event_date') final  DateTime eventDate;
-@override final  String? notes;
+@override@JsonKey(name: 'event_date') final  DateTime? eventDate;
+@override final  String? note;
 @override@JsonKey(name: 'user_plant_id') final  String userPlantId;
- final  Map<String, dynamic>? _expand;
-@override@JsonKey(name: 'expand') Map<String, dynamic>? get expand {
-  final value = _expand;
-  if (value == null) return null;
-  if (_expand is EqualUnmodifiableMapView) return _expand;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(value);
-}
-
+@override@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) final  UserPlantsDocsResponseDto? userPlantData;
 
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -122,16 +126,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryDocsResponseDto&&(identical(other.collectionId, collectionId) || other.collectionId == collectionId)&&(identical(other.collectionName, collectionName) || other.collectionName == collectionName)&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&const DeepCollectionEquality().equals(other._expand, _expand));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryDocsResponseDto&&(identical(other.collectionId, collectionId) || other.collectionId == collectionId)&&(identical(other.collectionName, collectionName) || other.collectionName == collectionName)&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.note, note) || other.note == note)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.userPlantData, userPlantData) || other.userPlantData == userPlantData));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,collectionId,collectionName,id,created,updated,eventDate,notes,userPlantId,const DeepCollectionEquality().hash(_expand));
+int get hashCode => Object.hash(runtimeType,collectionId,collectionName,id,created,updated,eventDate,note,userPlantId,userPlantData);
 
 @override
 String toString() {
-  return 'DiaryDocsResponseDto(collectionId: $collectionId, collectionName: $collectionName, id: $id, created: $created, updated: $updated, eventDate: $eventDate, notes: $notes, userPlantId: $userPlantId, expand: $expand)';
+  return 'DiaryDocsResponseDto(collectionId: $collectionId, collectionName: $collectionName, id: $id, created: $created, updated: $updated, eventDate: $eventDate, note: $note, userPlantId: $userPlantId, userPlantData: $userPlantData)';
 }
 
 
@@ -142,11 +146,11 @@ abstract mixin class _$DiaryDocsResponseDtoCopyWith<$Res> implements $DiaryDocsR
   factory _$DiaryDocsResponseDtoCopyWith(_DiaryDocsResponseDto value, $Res Function(_DiaryDocsResponseDto) _then) = __$DiaryDocsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime eventDate, String? notes,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand') Map<String, dynamic>? expand
+ String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) UserPlantsDocsResponseDto? userPlantData
 });
 
 
-
+@override $UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData;
 
 }
 /// @nodoc
@@ -159,22 +163,34 @@ class __$DiaryDocsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? collectionId = null,Object? collectionName = null,Object? id = null,Object? created = null,Object? updated = null,Object? eventDate = null,Object? notes = freezed,Object? userPlantId = null,Object? expand = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? collectionId = null,Object? collectionName = null,Object? id = null,Object? created = null,Object? updated = null,Object? eventDate = freezed,Object? note = freezed,Object? userPlantId = null,Object? userPlantData = freezed,}) {
   return _then(_DiaryDocsResponseDto(
 collectionId: null == collectionId ? _self.collectionId : collectionId // ignore: cast_nullable_to_non_nullable
 as String,collectionName: null == collectionName ? _self.collectionName : collectionName // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,created: null == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as String,updated: null == updated ? _self.updated : updated // ignore: cast_nullable_to_non_nullable
-as String,eventDate: null == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
-as DateTime,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String,eventDate: freezed == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
-as String,expand: freezed == expand ? _self._expand : expand // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,
+as String,userPlantData: freezed == userPlantData ? _self.userPlantData : userPlantData // ignore: cast_nullable_to_non_nullable
+as UserPlantsDocsResponseDto?,
   ));
 }
 
+/// Create a copy of DiaryDocsResponseDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData {
+    if (_self.userPlantData == null) {
+    return null;
+  }
 
+  return $UserPlantsDocsResponseDtoCopyWith<$Res>(_self.userPlantData!, (value) {
+    return _then(_self.copyWith(userPlantData: value));
+  });
+}
 }
 
 // dart format on

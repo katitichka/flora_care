@@ -1,7 +1,7 @@
 part of 'dictionary_bloc.dart';
 
 @freezed
-class DictionaryState with _$DictionaryState {
+sealed class DictionaryState with _$DictionaryState {
   const DictionaryState._();
   List<DictionaryDocsResponseEntity>? get getPlants => switch (this) {
     Loaded(:final plants) => plants,

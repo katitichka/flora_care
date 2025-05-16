@@ -1,4 +1,3 @@
-
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
 
 abstract interface class UserPlantsDataProvider {

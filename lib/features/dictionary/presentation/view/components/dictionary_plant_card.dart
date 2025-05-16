@@ -88,20 +88,99 @@ class DictionaryPlantCard extends StatelessWidget {
                   ),
                   onPressed: () async {
                     final userId = pocketBase.authStore.model?.id ?? '';
-                    context.read<UserPlantsBloc>().add(
-                      UserPlantsEvent.addUserPlant(
-                        plantId: plant.id,
-                        userId: userId,
-                        userPlantName: plant.commonName,
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Растение добавлено в "Мои растения"'),
-                      ),
+                    final textController = TextEditingController();
+
+                    final userPlantName = await showDialog<String>(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Дайте имя растению'),
+                            content: TextField(
+                              controller: textController,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                hintText: 'Введите уникальное имя растения',
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('Отмена'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  if (textController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Введите имя растения'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  final isUnique = await context
+                                      .read<UserPlantsBloc>()
+                                      .isPlantNameUnique(
+                                        textController.text,
+                                        userId,
+                                      );
+                                  if (!isUnique) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Растение с такм именем уже существует',
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.pop(context, textController.text);
+                                  }
+                                },
+                                child: const Text('Готово'),
+                              ),
+                            ],
+                          ),
                     );
 
-                    Navigator.pushReplacementNamed(context, '/home');
+                    if (userPlantName != null && userPlantName.isNotEmpty) {
+                      try {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Row(
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(width: 10),
+                                Text('Добавляем растение...'),
+                              ],
+                            ),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+
+                        context.read<UserPlantsBloc>().add(
+                          UserPlantsEvent.addUserPlant(
+                            plantId: plant.id,
+                            userId: userId,
+                            userPlantName: userPlantName,
+                          ),
+                        );
+
+                        await Future.delayed(const Duration(seconds: 1));
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Растение добавлено')),
+                        );
+
+                        Navigator.pushReplacementNamed(context, '/');
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Ошибка при добавлении: ${e.toString()}',
+                            ),
+                          ),
+                        );
+                      }
+                    }
                   },
                 ),
               ],

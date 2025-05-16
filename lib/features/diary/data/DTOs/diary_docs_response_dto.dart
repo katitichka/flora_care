@@ -12,22 +12,35 @@ sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
     required String id,
     required String created,
     required String updated,
-    @JsonKey(name: 'event_date') required DateTime eventDate,
-    String? notes,
+    @JsonKey(name: 'event_date') DateTime? eventDate,
+    String? note,
     @JsonKey(name: 'user_plant_id') required String userPlantId,
-    @JsonKey(name: 'expand') Map<String, dynamic>? expand,
+    @JsonKey(
+      name: 'expand',
+      fromJson: _userPlantDataFromJson,
+      toJson: _userPlantDataToJson,
+    )
+    UserPlantsDocsResponseDto? userPlantData,
   }) = _DiaryDocsResponseDto;
 
   factory DiaryDocsResponseDto.fromJson(Map<String, dynamic> json) =>
       _$DiaryDocsResponseDtoFromJson(json);
 }
 
-extension DiaryDocsResponseDtoX on DiaryDocsResponseDto {
-  UserPlantsDocsResponseDto? get userPlantData {
-    final raw = expand?['user_plant_id'];
-    if (raw is Map<String, dynamic>) {
-      return UserPlantsDocsResponseDto.fromJson(raw);
-    }
-    return null; 
+UserPlantsDocsResponseDto? _userPlantDataFromJson(Map<String, dynamic> json) {
+  if (json == null) {
+    print("Received null plant data");
+    return null;
   }
+  if (!json.containsKey('user_plant_id')) {
+    print("Expand data does not contain 'user_plant_id'");
+    return null;
+  }
+  final userPlantDataJson = json['user_plant_id'] as Map<String, dynamic>;
+  return UserPlantsDocsResponseDto.fromJson(userPlantDataJson);
+}
+
+Map<String, dynamic>? _userPlantDataToJson(UserPlantsDocsResponseDto? dto) {
+  if (dto == null) return null;
+  return dto.toJson();
 }

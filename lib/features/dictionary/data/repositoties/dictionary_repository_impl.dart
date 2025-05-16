@@ -24,23 +24,6 @@ class DictionaryRepositoryImpl implements DictionaryRepository {
   }
 
 
-  @override
-  Future<List<DictionaryDocsResponseEntity>> searchPlants({
-    required int page,
-    required int limit,
-    required String query,
-  }) async {
-    final dtos = await _dictionaryDataProvider.searchPlants(
-      page: page,
-      limit: limit,
-      query: query,
-    );
-    return dtos
-        .map((dto) => DictionaryDocsResponseMapper.fromDto(dto: dto))
-        .toList();
-  }
-
-
     // @override
   // Future<DictionaryDocsResponseEntity> getPlantById(String id) async {
   //   try {
