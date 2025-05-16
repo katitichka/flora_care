@@ -42,19 +42,23 @@ class UserPlantsScreen extends StatelessWidget {
                 return ListView.builder(
                   itemCount: userPlants.length,
                   itemBuilder: (context, index) {
-                    final plantData = userPlants[index].plantData;
 
                     return UserPlantCard(
                       userPlant: userPlants[index],
                       onTap: () {
-                        if (plantData != null) {
-                          Navigator.pushNamed(
-                            context,
-                            '/diary',
-                            arguments: plantData,
-                          );
-                        }
+                        Navigator.pushNamed(
+                          context,
+                          '/diary',
+                          arguments: {
+                            'plantName':
+                                userPlants[index].userPlantName,
+                            'userPlantId':
+                                userPlants[index]
+                                    .id, 
+                          },
+                        );
                       },
+
                       onDelete: (String userPlantId) {
                         context.read<UserPlantsBloc>().add(
                           UserPlantsEvent.deleteUserPlant(

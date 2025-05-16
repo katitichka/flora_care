@@ -6,11 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class DiaryProvider extends StatelessWidget {
   final Widget child;
   final DiaryRepository diaryRepository;
+  final String userPlantId;
 
   const DiaryProvider({
     required this.child, 
     super.key, 
-    required this.diaryRepository});
+    required this.diaryRepository,
+    required this.userPlantId,});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class DiaryProvider extends StatelessWidget {
       create:
           (context) =>
               DiaryBloc(diaryRepository: diaryRepository)
-                ..add(const DiaryEvent.getDiary()),
+                ..add(DiaryEvent.getDiary(userPlantId: userPlantId)),
       child: child,
     );
   }

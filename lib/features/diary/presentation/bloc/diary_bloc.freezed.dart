@@ -46,33 +46,67 @@ $DiaryEventCopyWith(DiaryEvent _, $Res Function(DiaryEvent) __);
 
 
 class _GetDiary implements DiaryEvent {
-  const _GetDiary();
+  const _GetDiary({required this.userPlantId});
   
 
+ final  String userPlantId;
 
-
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GetDiaryCopyWith<_GetDiary> get copyWith => __$GetDiaryCopyWithImpl<_GetDiary>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetDiary);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetDiary&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,userPlantId);
 
 @override
 String toString() {
-  return 'DiaryEvent.getDiary()';
+  return 'DiaryEvent.getDiary(userPlantId: $userPlantId)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$GetDiaryCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
+  factory _$GetDiaryCopyWith(_GetDiary value, $Res Function(_GetDiary) _then) = __$GetDiaryCopyWithImpl;
+@useResult
+$Res call({
+ String userPlantId
+});
 
 
+
+
+}
+/// @nodoc
+class __$GetDiaryCopyWithImpl<$Res>
+    implements _$GetDiaryCopyWith<$Res> {
+  __$GetDiaryCopyWithImpl(this._self, this._then);
+
+  final _GetDiary _self;
+  final $Res Function(_GetDiary) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,}) {
+  return _then(_GetDiary(
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -278,11 +312,12 @@ as String,
 
 
 class _ModifyEvent implements DiaryEvent {
-  const _ModifyEvent({required this.isDelete, required this.eventId});
+  const _ModifyEvent({required this.isDelete, required this.eventId, this.newEventDate});
   
 
  final  bool isDelete;
  final  String eventId;
+ final  DateTime? newEventDate;
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -294,16 +329,16 @@ _$ModifyEventCopyWith<_ModifyEvent> get copyWith => __$ModifyEventCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModifyEvent&&(identical(other.isDelete, isDelete) || other.isDelete == isDelete)&&(identical(other.eventId, eventId) || other.eventId == eventId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModifyEvent&&(identical(other.isDelete, isDelete) || other.isDelete == isDelete)&&(identical(other.eventId, eventId) || other.eventId == eventId)&&(identical(other.newEventDate, newEventDate) || other.newEventDate == newEventDate));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isDelete,eventId);
+int get hashCode => Object.hash(runtimeType,isDelete,eventId,newEventDate);
 
 @override
 String toString() {
-  return 'DiaryEvent.modifyEvent(isDelete: $isDelete, eventId: $eventId)';
+  return 'DiaryEvent.modifyEvent(isDelete: $isDelete, eventId: $eventId, newEventDate: $newEventDate)';
 }
 
 
@@ -314,7 +349,7 @@ abstract mixin class _$ModifyEventCopyWith<$Res> implements $DiaryEventCopyWith<
   factory _$ModifyEventCopyWith(_ModifyEvent value, $Res Function(_ModifyEvent) _then) = __$ModifyEventCopyWithImpl;
 @useResult
 $Res call({
- bool isDelete, String eventId
+ bool isDelete, String eventId, DateTime? newEventDate
 });
 
 
@@ -331,11 +366,12 @@ class __$ModifyEventCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? isDelete = null,Object? eventId = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? isDelete = null,Object? eventId = null,Object? newEventDate = freezed,}) {
   return _then(_ModifyEvent(
 isDelete: null == isDelete ? _self.isDelete : isDelete // ignore: cast_nullable_to_non_nullable
 as bool,eventId: null == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
-as String,
+as String,newEventDate: freezed == newEventDate ? _self.newEventDate : newEventDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

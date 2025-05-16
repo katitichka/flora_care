@@ -15,13 +15,24 @@ final Map<String, Widget Function(BuildContext)> routes = {
     final isAuthenticated = pocketBase.authStore.isValid;
     return isAuthenticated ? const MainScreen() : const LoginScreen();
   },
-  '/diary': (context) => const DiaryScreen(plantName: 'Имя',), 
+  '/diary': (context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+
+    final plantName = args?['plantName'] as String? ?? 'Без имени';
+    final userPlantId = args?['userPlantId'] as String? ?? '';
+
+    return DiaryScreen(plantName: plantName, userPlantId: userPlantId);
+  },
+
   '/dictionary': (context) => DictionaryScreen(),
   '/home': (context) => UserPlantsScreen(),
   '/plant': (context) {
-    final plant = ModalRoute.of(context)!.settings.arguments as DictionaryDocsResponseEntity?;
+    final plant =
+        ModalRoute.of(context)!.settings.arguments
+            as DictionaryDocsResponseEntity?;
     if (plant != null) {
-      return PlantCard(plant: plant); 
+      return PlantCard(plant: plant);
     } else {
       return const Scaffold(body: Center(child: Text("Invalid plant data!")));
     }

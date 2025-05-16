@@ -2,7 +2,9 @@ part of 'diary_bloc.dart';
 
 @freezed
 sealed class DiaryEvent with _$DiaryEvent {
-  const factory DiaryEvent.getDiary() = _GetDiary;
+  const factory DiaryEvent.getDiary({
+    required String userPlantId,
+  }) = _GetDiary;
 
   const factory DiaryEvent.getEvents() = _GetEvents;
 
@@ -21,6 +23,7 @@ sealed class DiaryEvent with _$DiaryEvent {
   const factory DiaryEvent.modifyEvent({
     required bool isDelete,
     required String eventId,
+    DateTime? newEventDate,
   }) = _ModifyEvent;
 
   const factory DiaryEvent.modifyNote({

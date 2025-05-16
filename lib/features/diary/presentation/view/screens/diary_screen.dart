@@ -1,17 +1,110 @@
+import 'package:flora_care/features/diary/presentation/view/components/diary_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:flora_care/features/diary/domain/entities/diary_docs_response_entity.dart';
 
-class DiaryScreen extends StatelessWidget {
+class DiaryScreen extends StatefulWidget {
   final String plantName;
+  final String userPlantId;
 
-  const DiaryScreen({super.key, required this.plantName});
+  const DiaryScreen({
+    super.key,
+    required this.plantName,
+    required this.userPlantId,
+  });
+
+  @override
+  State<DiaryScreen> createState() => _DiaryScreenState();
+}
+
+class _DiaryScreenState extends State<DiaryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<DiaryBloc>().add(
+      DiaryEvent.getDiary(userPlantId: widget.userPlantId),
+    );
+  }
+
+  Future<void> _addEvent(BuildContext context) async {
+    final addedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2025),
+      lastDate: DateTime.now(),
+    );
+
+    if (addedDate == null) return;
+
+    final addedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (addedTime == null) return;
+
+    final DateTime resultDate = DateTime(
+      addedDate.year,
+      addedDate.month,
+      addedDate.day,
+      addedTime.hour,
+      addedTime.minute,
+    );
+
+    context.read<DiaryBloc>().add(
+      DiaryEvent.addEvent(
+        userPlantId: widget.userPlantId,
+        eventDate: resultDate,
+      ),
+    );
+  }
+
+  Future<void> _addNote(BuildContext context) async {
+    final noteController = TextEditingController();
+
+    final result = await showDialog<String>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Добавить заметку'),
+            content: TextField(
+              controller: noteController,
+              autofocus: true,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Введите текст заметки',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Отмена'),
+              ),
+              TextButton(
+                onPressed:
+                    () => Navigator.of(context).pop(noteController.text.trim()),
+                child: const Text('Добавить'),
+              ),
+            ],
+          ),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      context.read<DiaryBloc>().add(
+        DiaryEvent.addNote(userPlantId: widget.userPlantId, noteText: result),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Заметка не может быть пустой')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Дневник растения "$plantName"')),
+      appBar: AppBar(title: Text('Дневник растения "${widget.plantName}"')),
       body: BlocBuilder<DiaryBloc, DiaryState>(
         builder: (context, state) {
           return switch (state) {
@@ -20,29 +113,25 @@ class DiaryScreen extends StatelessWidget {
             Loaded(:final plantEvents, :final plantNotes) => Column(
               children: [
                 Expanded(
-                  child: _DiarySection(
+                  child: DiarySection(
                     title: 'События',
-                    entries: plantEvents
-                      .where((e) => e.eventDate != null)
-                      .toList()
-                      ..sort((a, b) => b.eventDate!.compareTo(a.eventDate!)),
-                    itemBuilder: (context, event) => ListTile(
-                      title: Text('Событие: ${event.eventDate?.toLocal().toString().split(" ")[0] ?? "-"}'),
-                      subtitle: Text('ID растения: ${event.userPlantId}'),
-                    ),
+                    entries: plantEvents,
+                    itemBuilder:
+                        (context, event) => ListTile(
+                          title: Text(
+                            'Событие: ${event.eventDate?.toLocal().toString().split(" ")[0] ?? "-"}',
+                          ),
+                        ),
                   ),
                 ),
                 const Divider(height: 1),
                 Expanded(
-                  child: _DiarySection(
+                  child: DiarySection(
                     title: 'Заметки',
-                    entries: plantNotes
-                      .where((e) => e.note != null)
-                      .toList(),
-                    itemBuilder: (context, note) => ListTile(
-                      title: Text(note.note ?? ''),
-                      subtitle: Text('ID растения: ${note.userPlantId}'),
-                    ),
+                    entries: plantNotes.where((e) => e.note != null).toList(),
+                    itemBuilder:
+                        (context, note) =>
+                            ListTile(title: Text(note.note ?? '')),
                   ),
                 ),
               ],
@@ -51,40 +140,24 @@ class DiaryScreen extends StatelessWidget {
           };
         },
       ),
-    );
-  }
-}
-
-class _DiarySection extends StatelessWidget {
-  final String title;
-  final List<DiaryDocsResponseEntity> entries;
-  final Widget Function(BuildContext, DiaryDocsResponseEntity) itemBuilder;
-
-  const _DiarySection({
-    required this.title,
-    required this.entries,
-    required this.itemBuilder,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(title, style: Theme.of(context).textTheme.titleLarge),
-        ),
-        Expanded(
-          child: entries.isEmpty
-              ? const Center(child: Text('Нет записей'))
-              : ListView.separated(
-                  itemCount: entries.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
-                  itemBuilder: (context, index) => itemBuilder(context, entries[index]),
-                ),
-        ),
-      ],
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.extended(
+            heroTag: 'add_event',
+            onPressed: () => _addEvent(context),
+            icon: const Icon(Icons.event),
+            label: const Text('Добавить событие'),
+          ),
+          const SizedBox(height: 12),
+          FloatingActionButton.extended(
+            heroTag: 'add_note',
+            onPressed: () => _addNote(context),
+            icon: const Icon(Icons.note_add),
+            label: const Text('Добавить заметку'),
+          ),
+        ],
+      ),
     );
   }
 }

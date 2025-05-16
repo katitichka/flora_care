@@ -29,8 +29,7 @@ class App extends StatelessWidget {
       child: UserPlantsProvider(
         userPlantsRepository: userPlantsRepository,
         child: BlocProvider(
-          create: (_) => DiaryBloc(diaryRepository: diaryRepository)..add(const DiaryEvent.getDiary()),
-
+          create: (_) => DiaryBloc(diaryRepository: diaryRepository),
           child: MaterialApp(
             theme: appTheme,
             initialRoute: '/',
