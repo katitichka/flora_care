@@ -21,7 +21,6 @@ abstract interface class DiaryRepository{
   Future<List<DiaryDocsResponseEntity>> modifyEvent({
     required String eventId,
     required bool isDelete,
-    DateTime? newEventDate,
   });
   
   Future<List<DiaryDocsResponseEntity>> modifyNote({

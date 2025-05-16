@@ -2,7 +2,6 @@ import 'package:flora_care/features/diary/presentation/view/components/diary_sec
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:flora_care/features/diary/domain/entities/diary_docs_response_entity.dart';
 
 class DiaryScreen extends StatefulWidget {
   final String plantName;
@@ -93,10 +92,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     if (result != null && result.isNotEmpty) {
       context.read<DiaryBloc>().add(
         DiaryEvent.addNote(userPlantId: widget.userPlantId, noteText: result),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Заметка не может быть пустой')),
       );
     }
   }

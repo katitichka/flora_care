@@ -20,7 +20,6 @@ abstract interface class DiaryDataProvider {
   Future<List<DiaryDocsResponseDto>> modifyEvent({
     required String eventId,
     required bool isDelete,
-    DateTime? newEventDate, 
   });
   
   Future<List<DiaryDocsResponseDto>> modifyNote({

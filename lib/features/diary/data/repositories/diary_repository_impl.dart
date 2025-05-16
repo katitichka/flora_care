@@ -43,32 +43,25 @@ class DiaryRepositoryImpl implements DiaryRepository {
   }
 
   @override
-Future<List<DiaryDocsResponseEntity>> addNote({
-  required String userPlantId,
-  required String noteText,
-}) async {
-  try {
-    final dtos = await _diaryDataProvider.addNote(
+  Future<List<DiaryDocsResponseEntity>> addNote({
+    required String userPlantId,
+    required String noteText,
+  }) async {
+    await _diaryDataProvider.addNote(
       userPlantId: userPlantId,
       noteText: noteText,
     );
-    return dtos.map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto)).toList();
-  } catch (e) {
-    // Перебрасываем исключение с более понятным сообщением
-    throw Exception('Failed to add note in repository: ${e.toString()}');
+    return getNotes();
   }
-}
 
   @override
   Future<List<DiaryDocsResponseEntity>> modifyEvent({
     required String eventId,
     required bool isDelete,
-    DateTime? newEventDate,
   }) async {
     await _diaryDataProvider.modifyEvent(
       eventId: eventId,
       isDelete: isDelete,
-      newEventDate: newEventDate,
     );
     return getEvents();
   }

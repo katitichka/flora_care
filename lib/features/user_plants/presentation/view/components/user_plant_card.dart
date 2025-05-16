@@ -127,5 +127,3 @@ void _confirmDelete(BuildContext context) {
   );
 }
 }
-
-

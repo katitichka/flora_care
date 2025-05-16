@@ -97,15 +97,10 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     required Emitter<DiaryState> emit,
     required bool isDelete,
     required String eventId,
-    DateTime? newEventDate,
   }) async {
     emit(const DiaryState.loading());
     try {
-      await _diaryRepository.modifyEvent(
-        eventId: eventId,
-        isDelete: isDelete,
-        newEventDate: newEventDate,
-      );
+      await _diaryRepository.modifyEvent(eventId: eventId, isDelete: isDelete);
 
       final plantEvents = await _diaryRepository.getEvents();
 
@@ -159,11 +154,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     required DateTime eventDate,
   }) async {
     List<DiaryDocsResponseEntity> plantNotes = [];
-    if (state is Loaded) {
-      plantNotes = (state as Loaded).plantNotes;
-    }
+  if (state is Loaded) {
+    plantNotes = (state as Loaded).plantNotes;
+  }
 
-    emit(const DiaryState.loading());
+  emit(const DiaryState.loading());
     try {
       await _diaryRepository.addEvent(
         userPlantId: userPlantId,
@@ -182,39 +177,31 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   Future<void> _addNote({
-  required Emitter<DiaryState> emit,
-  required String userPlantId,
-  required String noteText,
-}) async {
-  emit(const DiaryState.loading());
-  try {
-    await _diaryRepository.addNote(
-      userPlantId: userPlantId,
-      noteText: noteText,
-    );
-
-    // Получаем обновленные данные
-    final allNotes = await _diaryRepository.getNotes();
-    final plantNotes = allNotes.where((n) => n.userPlantId == userPlantId).toList();
-
-    // Получаем текущие события, если они есть
-    List<DiaryDocsResponseEntity> currentEvents = [];
-    if (state is Loaded) {
-      currentEvents = (state as Loaded).plantEvents;
-    }
-
-    emit(DiaryState.loaded(
-      plantEvents: currentEvents,
-      plantNotes: plantNotes,
-    ));
-  } catch (e) {
-    final message = handleError(e);
-    // Более информативное сообщение об ошибке
-    emit(DiaryState.error(
-      message: 'Не удалось добавить заметку: $message',
-    ));
-    // Можно также добавить логирование ошибки
-    print('Error adding note: $e');
+    required Emitter<DiaryState> emit,
+    required String userPlantId,
+    required String noteText,
+  }) async {
+    List<DiaryDocsResponseEntity> plantEvents = [];
+  if (state is Loaded) {
+    plantEvents = (state as Loaded).plantEvents;
   }
-}
+
+  emit(const DiaryState.loading());
+    try {
+      await _diaryRepository.addNote(
+        userPlantId: userPlantId,
+        noteText: noteText,
+      );
+      final allNotes = await _diaryRepository.getNotes();
+      
+      final plantNotes =
+          allNotes.where((e) => e.userPlantId == userPlantId).toList();
+
+ 
+      emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: plantNotes));
+    } catch (e) {
+      final message = handleError(e);
+      emit(DiaryState.error(message: message));
+    }
+  }
 }

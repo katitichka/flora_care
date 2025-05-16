@@ -23,7 +23,6 @@ sealed class DiaryEvent with _$DiaryEvent {
   const factory DiaryEvent.modifyEvent({
     required bool isDelete,
     required String eventId,
-    DateTime? newEventDate,
   }) = _ModifyEvent;
 
   const factory DiaryEvent.modifyNote({
