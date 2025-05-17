@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryDocsResponseEntity implements DiagnosticableTreeMixin {
 
- String get id; String? get note; DateTime? get eventDat; String get userPlantId;
+ String get id; String? get note; DateTime? get eventDate; String get userPlantId;
 /// Create a copy of DiaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,21 +27,21 @@ $DiaryDocsResponseEntityCopyWith<DiaryDocsResponseEntity> get copyWith => _$Diar
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'DiaryDocsResponseEntity'))
-    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('eventDat', eventDat))..add(DiagnosticsProperty('userPlantId', userPlantId));
+    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('eventDate', eventDate))..add(DiagnosticsProperty('userPlantId', userPlantId));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.note, note) || other.note == note)&&(identical(other.eventDat, eventDat) || other.eventDat == eventDat)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.note, note) || other.note == note)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,note,eventDat,userPlantId);
+int get hashCode => Object.hash(runtimeType,id,note,eventDate,userPlantId);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'DiaryDocsResponseEntity(id: $id, note: $note, eventDat: $eventDat, userPlantId: $userPlantId)';
+  return 'DiaryDocsResponseEntity(id: $id, note: $note, eventDate: $eventDate, userPlantId: $userPlantId)';
 }
 
 
@@ -52,7 +52,7 @@ abstract mixin class $DiaryDocsResponseEntityCopyWith<$Res>  {
   factory $DiaryDocsResponseEntityCopyWith(DiaryDocsResponseEntity value, $Res Function(DiaryDocsResponseEntity) _then) = _$DiaryDocsResponseEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, String? note, DateTime? eventDat, String userPlantId
+ String id, String? note, DateTime? eventDate, String userPlantId
 });
 
 
@@ -69,11 +69,11 @@ class _$DiaryDocsResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of DiaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? note = freezed,Object? eventDat = freezed,Object? userPlantId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? note = freezed,Object? eventDate = freezed,Object? userPlantId = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
-as String?,eventDat: freezed == eventDat ? _self.eventDat : eventDat // ignore: cast_nullable_to_non_nullable
+as String?,eventDate: freezed == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -86,12 +86,12 @@ as String,
 
 
 class _DiaryDocsResponseEntity with DiagnosticableTreeMixin implements DiaryDocsResponseEntity {
-  const _DiaryDocsResponseEntity({required this.id, this.note, this.eventDat, required this.userPlantId});
+  const _DiaryDocsResponseEntity({required this.id, this.note, this.eventDate, required this.userPlantId});
   
 
 @override final  String id;
 @override final  String? note;
-@override final  DateTime? eventDat;
+@override final  DateTime? eventDate;
 @override final  String userPlantId;
 
 /// Create a copy of DiaryDocsResponseEntity
@@ -105,21 +105,21 @@ _$DiaryDocsResponseEntityCopyWith<_DiaryDocsResponseEntity> get copyWith => __$D
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'DiaryDocsResponseEntity'))
-    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('eventDat', eventDat))..add(DiagnosticsProperty('userPlantId', userPlantId));
+    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('eventDate', eventDate))..add(DiagnosticsProperty('userPlantId', userPlantId));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.note, note) || other.note == note)&&(identical(other.eventDat, eventDat) || other.eventDat == eventDat)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryDocsResponseEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.note, note) || other.note == note)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,note,eventDat,userPlantId);
+int get hashCode => Object.hash(runtimeType,id,note,eventDate,userPlantId);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'DiaryDocsResponseEntity(id: $id, note: $note, eventDat: $eventDat, userPlantId: $userPlantId)';
+  return 'DiaryDocsResponseEntity(id: $id, note: $note, eventDate: $eventDate, userPlantId: $userPlantId)';
 }
 
 
@@ -130,7 +130,7 @@ abstract mixin class _$DiaryDocsResponseEntityCopyWith<$Res> implements $DiaryDo
   factory _$DiaryDocsResponseEntityCopyWith(_DiaryDocsResponseEntity value, $Res Function(_DiaryDocsResponseEntity) _then) = __$DiaryDocsResponseEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? note, DateTime? eventDat, String userPlantId
+ String id, String? note, DateTime? eventDate, String userPlantId
 });
 
 
@@ -147,11 +147,11 @@ class __$DiaryDocsResponseEntityCopyWithImpl<$Res>
 
 /// Create a copy of DiaryDocsResponseEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? note = freezed,Object? eventDat = freezed,Object? userPlantId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? note = freezed,Object? eventDate = freezed,Object? userPlantId = null,}) {
   return _then(_DiaryDocsResponseEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
-as String?,eventDat: freezed == eventDat ? _self.eventDat : eventDat // ignore: cast_nullable_to_non_nullable
+as String?,eventDate: freezed == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
 as String,
   ));

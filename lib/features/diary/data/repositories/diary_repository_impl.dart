@@ -10,36 +10,36 @@ class DiaryRepositoryImpl implements DiaryRepository {
     : _diaryDataProvider = diaryDataProvider;
 
   @override
-  Future<List<DiaryDocsResponseEntity>> getDiary({required userPlantId}) async {
-    final dtos = await _diaryDataProvider.getDiary(userPlantId: userPlantId,);
+  Future<List<DiaryDocsResponseEntity>> getDiary({required String userPlantId}) async {
+    final dtos = await _diaryDataProvider.getDiary(userPlantId: userPlantId);
     return dtos
         .map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto))
         .toList();
   }
 
   @override
-  Future<List<DiaryDocsResponseEntity>> getEvents() async {
-    final dtos = await _diaryDataProvider.getEvents();
+  Future<List<DiaryDocsResponseEntity>> getEvents(String userPlantId) async {
+    final dtos = await _diaryDataProvider.getEvents(userPlantId);
     print("All events: $dtos");
     return dtos.map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto)).toList();
   }
 
   @override
-  Future<List<DiaryDocsResponseEntity>> getNotes() async {
-    final dtos = await _diaryDataProvider.getNotes();
+  Future<List<DiaryDocsResponseEntity>> getNotes(String userPlantId) async {
+    final dtos = await _diaryDataProvider.getNotes(userPlantId);
     return dtos.map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto)).toList();
   }
 
   @override
   Future<List<DiaryDocsResponseEntity>> addEvent({
     required String userPlantId,
-    final DateTime? eventDat,
+    required DateTime eventDate,
   }) async {
     await _diaryDataProvider.addEvent(
       userPlantId: userPlantId,
       eventDate: eventDate,
     );
-    return getEvents();
+    return getEvents(userPlantId);
   }
 
   @override
@@ -51,34 +51,38 @@ class DiaryRepositoryImpl implements DiaryRepository {
       userPlantId: userPlantId,
       noteText: noteText,
     );
-    return getNotes();
+    return getNotes(userPlantId);
   }
 
   @override
   Future<List<DiaryDocsResponseEntity>> modifyEvent({
+    required String userPlantId,
     required String eventId,
     required bool isDelete,
+    DateTime? newEventDate,
   }) async {
     await _diaryDataProvider.modifyEvent(
+      userPlantId: userPlantId,
       eventId: eventId,
       isDelete: isDelete,
+      newEventDate: newEventDate,
     );
-    return getEvents();
+    return getEvents(userPlantId);
   }
+  
   @override
   Future<List<DiaryDocsResponseEntity>> modifyNote({
+    required String userPlantId,
     required String noteId,
     required bool isDelete,
     String? noteText,
   }) async {
     await _diaryDataProvider.modifyNote(
+      userPlantId: userPlantId,
       noteId: noteId,
       isDelete: isDelete,
       noteText: noteText,
     );
-    return getNotes();
+    return getNotes(userPlantId);
   }
-
 }
-
-

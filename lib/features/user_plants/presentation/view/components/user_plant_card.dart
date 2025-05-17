@@ -5,12 +5,14 @@ class UserPlantCard extends StatelessWidget {
   final UserPlantsDocsResponseEntity userPlant;
   final VoidCallback? onTap;
   final Function(String) onDelete;
+  final Future<void> Function(String userPlantId)? onWater;
 
   const UserPlantCard({
     super.key,
     required this.userPlant,
     this.onTap,
     required this.onDelete,
+    this.onWater,
   });
 
   @override
@@ -63,67 +65,82 @@ class UserPlantCard extends StatelessWidget {
                   ],
                 ),
               ),
+              // IconButton(
+              //   icon: const Icon(Icons.opacity, color: Colors.blue),
+              //   tooltip: 'Записать полив',
+              //   onPressed: () {
+              //     onWatering(userPlant.id);
+              //     ScaffoldMessenger.of(context).showSnackBar(
+              //       SnackBar(
+              //         content: Text('Полив растения ${userPlant.userPlantName} записан'),
+              //         duration: const Duration(seconds: 2))
+              //       );
+              //       },
+              // ),
             ],
           ),
         ),
       ),
     );
   }
+
   void _showDeleteMenu(BuildContext context, String userPlantId) {
-  showModalBottomSheet(
-    context: context,
-    builder: (context) {
-      return Container(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 15),
-            ListTile(
-              leading: const Icon(
-                Icons.delete,
-                color: const Color.fromARGB(255, 21, 156, 25),
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 15),
+              ListTile(
+                leading: const Icon(
+                  Icons.delete,
+                  color: const Color.fromARGB(255, 21, 156, 25),
+                ),
+                title: const Text(
+                  'Удалить растение',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _confirmDelete(context);
+                },
               ),
-              title: const Text(
-                'Удалить растение',
-                style: TextStyle(color: Colors.red),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                _confirmDelete(context);
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
-void _confirmDelete(BuildContext context) {
-  showDialog(
-    context: context,
-    builder:
-        (context) => AlertDialog(
-          title: const Text('Подтверждение'),
-          content: const Text(
-            'Вы уверены, что хотите удалить растения из списка ваших растений?',
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Отмена'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                onDelete(userPlant.id);
-              },
-              child: const Text('Удалить', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        ),
+        );
+      },
+    );
+  }
 
-  );
-}
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Подтверждение'),
+            content: const Text(
+              'Вы уверены, что хотите удалить растения из списка ваших растений?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Отмена'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onDelete(userPlant.id);
+                },
+                child: const Text(
+                  'Удалить',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
 }

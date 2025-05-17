@@ -12,16 +12,19 @@ part of 'diary_docs_response_dto.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$DiaryDocsResponseDto {
 
- String get collectionId; String get collectionName; String get id; String get created; String get updated;@JsonKey(name: 'event_date') DateTime? get eventDate; String? get note;@JsonKey(name: 'user_plant_id') String get userPlantId;@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) UserPlantsDocsResponseDto? get userPlantData;
+ String get collectionId; String get collectionName; String get id; String get created; String get updated;@JsonKey(name: 'event_date') DateTime? get eventDate; String? get note;@JsonKey(name: 'user_plant_id') String get userPlantId;@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? get userPlantData;
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $DiaryDocsResponseDtoCopyWith<DiaryDocsResponseDto> get copyWith => _$DiaryDocsResponseDtoCopyWithImpl<DiaryDocsResponseDto>(this as DiaryDocsResponseDto, _$identity);
 
+  /// Serializes this DiaryDocsResponseDto to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -29,7 +32,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDocsResponseDto&&(identical(other.collectionId, collectionId) || other.collectionId == collectionId)&&(identical(other.collectionName, collectionName) || other.collectionName == collectionName)&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.note, note) || other.note == note)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.userPlantData, userPlantData) || other.userPlantData == userPlantData));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,collectionId,collectionName,id,created,updated,eventDate,note,userPlantId,userPlantData);
 
@@ -46,7 +49,7 @@ abstract mixin class $DiaryDocsResponseDtoCopyWith<$Res>  {
   factory $DiaryDocsResponseDtoCopyWith(DiaryDocsResponseDto value, $Res Function(DiaryDocsResponseDto) _then) = _$DiaryDocsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) UserPlantsDocsResponseDto? userPlantData
+ String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? userPlantData
 });
 
 
@@ -94,11 +97,11 @@ $UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData {
 
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
-  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date') this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) this.userPlantData});
-  
+  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date') this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) this.userPlantData});
+  factory _DiaryDocsResponseDto.fromJson(Map<String, dynamic> json) => _$DiaryDocsResponseDtoFromJson(json);
 
 @override final  String collectionId;
 @override final  String collectionName;
@@ -108,7 +111,7 @@ class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
 @override@JsonKey(name: 'event_date') final  DateTime? eventDate;
 @override final  String? note;
 @override@JsonKey(name: 'user_plant_id') final  String userPlantId;
-@override@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) final  UserPlantsDocsResponseDto? userPlantData;
+@override@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) final  UserPlantsDocsResponseDto? userPlantData;
 
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -116,14 +119,17 @@ class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
 @pragma('vm:prefer-inline')
 _$DiaryDocsResponseDtoCopyWith<_DiaryDocsResponseDto> get copyWith => __$DiaryDocsResponseDtoCopyWithImpl<_DiaryDocsResponseDto>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$DiaryDocsResponseDtoToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryDocsResponseDto&&(identical(other.collectionId, collectionId) || other.collectionId == collectionId)&&(identical(other.collectionName, collectionName) || other.collectionName == collectionName)&&(identical(other.id, id) || other.id == id)&&(identical(other.created, created) || other.created == created)&&(identical(other.updated, updated) || other.updated == updated)&&(identical(other.eventDate, eventDate) || other.eventDate == eventDate)&&(identical(other.note, note) || other.note == note)&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.userPlantData, userPlantData) || other.userPlantData == userPlantData));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,collectionId,collectionName,id,created,updated,eventDate,note,userPlantId,userPlantData);
 
@@ -140,7 +146,7 @@ abstract mixin class _$DiaryDocsResponseDtoCopyWith<$Res> implements $DiaryDocsR
   factory _$DiaryDocsResponseDtoCopyWith(_DiaryDocsResponseDto value, $Res Function(_DiaryDocsResponseDto) _then) = __$DiaryDocsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson, toJson: _userPlantDataToJson) UserPlantsDocsResponseDto? userPlantData
+ String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? userPlantData
 });
 
 

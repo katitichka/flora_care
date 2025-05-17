@@ -15,30 +15,61 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryEvent {
 
-
+ String get userPlantId;
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DiaryEventCopyWith<DiaryEvent> get copyWith => _$DiaryEventCopyWithImpl<DiaryEvent>(this as DiaryEvent, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEvent);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEvent&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,userPlantId);
 
 @override
 String toString() {
-  return 'DiaryEvent()';
+  return 'DiaryEvent(userPlantId: $userPlantId)';
 }
 
 
 }
 
 /// @nodoc
-class $DiaryEventCopyWith<$Res>  {
-$DiaryEventCopyWith(DiaryEvent _, $Res Function(DiaryEvent) __);
+abstract mixin class $DiaryEventCopyWith<$Res>  {
+  factory $DiaryEventCopyWith(DiaryEvent value, $Res Function(DiaryEvent) _then) = _$DiaryEventCopyWithImpl;
+@useResult
+$Res call({
+ String userPlantId
+});
+
+
+
+
+}
+/// @nodoc
+class _$DiaryEventCopyWithImpl<$Res>
+    implements $DiaryEventCopyWith<$Res> {
+  _$DiaryEventCopyWithImpl(this._self, this._then);
+
+  final DiaryEvent _self;
+  final $Res Function(DiaryEvent) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? userPlantId = null,}) {
+  return _then(_self.copyWith(
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
 }
 
 
@@ -49,11 +80,11 @@ class _GetDiary implements DiaryEvent {
   const _GetDiary({required this.userPlantId});
   
 
- final  String userPlantId;
+@override final  String userPlantId;
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$GetDiaryCopyWith<_GetDiary> get copyWith => __$GetDiaryCopyWithImpl<_GetDiary>(this, _$identity);
 
@@ -79,7 +110,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$GetDiaryCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
   factory _$GetDiaryCopyWith(_GetDiary value, $Res Function(_GetDiary) _then) = __$GetDiaryCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  String userPlantId
 });
@@ -98,7 +129,7 @@ class __$GetDiaryCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,}) {
   return _then(_GetDiary(
 userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
 as String,
@@ -112,65 +143,133 @@ as String,
 
 
 class _GetEvents implements DiaryEvent {
-  const _GetEvents();
+  const _GetEvents({required this.userPlantId});
   
 
+@override final  String userPlantId;
 
-
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GetEventsCopyWith<_GetEvents> get copyWith => __$GetEventsCopyWithImpl<_GetEvents>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetEvents);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetEvents&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,userPlantId);
 
 @override
 String toString() {
-  return 'DiaryEvent.getEvents()';
+  return 'DiaryEvent.getEvents(userPlantId: $userPlantId)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$GetEventsCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
+  factory _$GetEventsCopyWith(_GetEvents value, $Res Function(_GetEvents) _then) = __$GetEventsCopyWithImpl;
+@override @useResult
+$Res call({
+ String userPlantId
+});
 
 
+
+
+}
+/// @nodoc
+class __$GetEventsCopyWithImpl<$Res>
+    implements _$GetEventsCopyWith<$Res> {
+  __$GetEventsCopyWithImpl(this._self, this._then);
+
+  final _GetEvents _self;
+  final $Res Function(_GetEvents) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,}) {
+  return _then(_GetEvents(
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
 
 class _GetNotes implements DiaryEvent {
-  const _GetNotes();
+  const _GetNotes({required this.userPlantId});
   
 
+@override final  String userPlantId;
 
-
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GetNotesCopyWith<_GetNotes> get copyWith => __$GetNotesCopyWithImpl<_GetNotes>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetNotes);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetNotes&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,userPlantId);
 
 @override
 String toString() {
-  return 'DiaryEvent.getNotes()';
+  return 'DiaryEvent.getNotes(userPlantId: $userPlantId)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$GetNotesCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
+  factory _$GetNotesCopyWith(_GetNotes value, $Res Function(_GetNotes) _then) = __$GetNotesCopyWithImpl;
+@override @useResult
+$Res call({
+ String userPlantId
+});
 
 
+
+
+}
+/// @nodoc
+class __$GetNotesCopyWithImpl<$Res>
+    implements _$GetNotesCopyWith<$Res> {
+  __$GetNotesCopyWithImpl(this._self, this._then);
+
+  final _GetNotes _self;
+  final $Res Function(_GetNotes) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,}) {
+  return _then(_GetNotes(
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -179,12 +278,12 @@ class _AddEvent implements DiaryEvent {
   const _AddEvent({required this.userPlantId, required this.eventDate});
   
 
- final  String userPlantId;
+@override final  String userPlantId;
  final  DateTime eventDate;
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$AddEventCopyWith<_AddEvent> get copyWith => __$AddEventCopyWithImpl<_AddEvent>(this, _$identity);
 
@@ -210,7 +309,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$AddEventCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
   factory _$AddEventCopyWith(_AddEvent value, $Res Function(_AddEvent) _then) = __$AddEventCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  String userPlantId, DateTime eventDate
 });
@@ -229,7 +328,7 @@ class __$AddEventCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? eventDate = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? eventDate = null,}) {
   return _then(_AddEvent(
 userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
 as String,eventDate: null == eventDate ? _self.eventDate : eventDate // ignore: cast_nullable_to_non_nullable
@@ -247,12 +346,12 @@ class _AddNote implements DiaryEvent {
   const _AddNote({required this.userPlantId, required this.noteText});
   
 
- final  String userPlantId;
+@override final  String userPlantId;
  final  String noteText;
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$AddNoteCopyWith<_AddNote> get copyWith => __$AddNoteCopyWithImpl<_AddNote>(this, _$identity);
 
@@ -278,7 +377,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$AddNoteCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
   factory _$AddNoteCopyWith(_AddNote value, $Res Function(_AddNote) _then) = __$AddNoteCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  String userPlantId, String noteText
 });
@@ -297,7 +396,7 @@ class __$AddNoteCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? noteText = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? noteText = null,}) {
   return _then(_AddNote(
 userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
 as String,noteText: null == noteText ? _self.noteText : noteText // ignore: cast_nullable_to_non_nullable
@@ -312,15 +411,16 @@ as String,
 
 
 class _ModifyEvent implements DiaryEvent {
-  const _ModifyEvent({required this.isDelete, required this.eventId});
+  const _ModifyEvent({required this.userPlantId, required this.isDelete, required this.eventId});
   
 
+@override final  String userPlantId;
  final  bool isDelete;
  final  String eventId;
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$ModifyEventCopyWith<_ModifyEvent> get copyWith => __$ModifyEventCopyWithImpl<_ModifyEvent>(this, _$identity);
 
@@ -328,16 +428,16 @@ _$ModifyEventCopyWith<_ModifyEvent> get copyWith => __$ModifyEventCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModifyEvent&&(identical(other.isDelete, isDelete) || other.isDelete == isDelete)&&(identical(other.eventId, eventId) || other.eventId == eventId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModifyEvent&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.isDelete, isDelete) || other.isDelete == isDelete)&&(identical(other.eventId, eventId) || other.eventId == eventId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isDelete,eventId);
+int get hashCode => Object.hash(runtimeType,userPlantId,isDelete,eventId);
 
 @override
 String toString() {
-  return 'DiaryEvent.modifyEvent(isDelete: $isDelete, eventId: $eventId)';
+  return 'DiaryEvent.modifyEvent(userPlantId: $userPlantId, isDelete: $isDelete, eventId: $eventId)';
 }
 
 
@@ -346,9 +446,9 @@ String toString() {
 /// @nodoc
 abstract mixin class _$ModifyEventCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
   factory _$ModifyEventCopyWith(_ModifyEvent value, $Res Function(_ModifyEvent) _then) = __$ModifyEventCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
- bool isDelete, String eventId
+ String userPlantId, bool isDelete, String eventId
 });
 
 
@@ -365,9 +465,10 @@ class __$ModifyEventCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? isDelete = null,Object? eventId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? isDelete = null,Object? eventId = null,}) {
   return _then(_ModifyEvent(
-isDelete: null == isDelete ? _self.isDelete : isDelete // ignore: cast_nullable_to_non_nullable
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,isDelete: null == isDelete ? _self.isDelete : isDelete // ignore: cast_nullable_to_non_nullable
 as bool,eventId: null == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -380,16 +481,17 @@ as String,
 
 
 class _ModifyNote implements DiaryEvent {
-  const _ModifyNote({required this.isDelete, required this.noteId, this.noteText});
+  const _ModifyNote({required this.userPlantId, required this.isDelete, required this.noteId, this.noteText});
   
 
+@override final  String userPlantId;
  final  bool isDelete;
  final  String noteId;
  final  String? noteText;
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$ModifyNoteCopyWith<_ModifyNote> get copyWith => __$ModifyNoteCopyWithImpl<_ModifyNote>(this, _$identity);
 
@@ -397,16 +499,16 @@ _$ModifyNoteCopyWith<_ModifyNote> get copyWith => __$ModifyNoteCopyWithImpl<_Mod
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModifyNote&&(identical(other.isDelete, isDelete) || other.isDelete == isDelete)&&(identical(other.noteId, noteId) || other.noteId == noteId)&&(identical(other.noteText, noteText) || other.noteText == noteText));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModifyNote&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.isDelete, isDelete) || other.isDelete == isDelete)&&(identical(other.noteId, noteId) || other.noteId == noteId)&&(identical(other.noteText, noteText) || other.noteText == noteText));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isDelete,noteId,noteText);
+int get hashCode => Object.hash(runtimeType,userPlantId,isDelete,noteId,noteText);
 
 @override
 String toString() {
-  return 'DiaryEvent.modifyNote(isDelete: $isDelete, noteId: $noteId, noteText: $noteText)';
+  return 'DiaryEvent.modifyNote(userPlantId: $userPlantId, isDelete: $isDelete, noteId: $noteId, noteText: $noteText)';
 }
 
 
@@ -415,9 +517,9 @@ String toString() {
 /// @nodoc
 abstract mixin class _$ModifyNoteCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
   factory _$ModifyNoteCopyWith(_ModifyNote value, $Res Function(_ModifyNote) _then) = __$ModifyNoteCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
- bool isDelete, String noteId, String? noteText
+ String userPlantId, bool isDelete, String noteId, String? noteText
 });
 
 
@@ -434,9 +536,10 @@ class __$ModifyNoteCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? isDelete = null,Object? noteId = null,Object? noteText = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? isDelete = null,Object? noteId = null,Object? noteText = freezed,}) {
   return _then(_ModifyNote(
-isDelete: null == isDelete ? _self.isDelete : isDelete // ignore: cast_nullable_to_non_nullable
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,isDelete: null == isDelete ? _self.isDelete : isDelete // ignore: cast_nullable_to_non_nullable
 as bool,noteId: null == noteId ? _self.noteId : noteId // ignore: cast_nullable_to_non_nullable
 as String,noteText: freezed == noteText ? _self.noteText : noteText // ignore: cast_nullable_to_non_nullable
 as String?,

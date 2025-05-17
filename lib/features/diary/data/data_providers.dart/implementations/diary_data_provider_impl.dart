@@ -3,84 +3,71 @@ import 'package:flora_care/features/diary/data/data_providers.dart/diary_data_pr
 import 'package:pocketbase/pocketbase.dart';
 
 class DiaryDataProviderImpl implements DiaryDataProvider {
-  final PocketBase _pocketBase;
+  final PocketBase _pb;
 
-  DiaryDataProviderImpl({required PocketBase pocketBase})
-    : _pocketBase = pocketBase;
+  DiaryDataProviderImpl({required PocketBase pocketBase}) : _pb = pocketBase;
 
   @override
   Future<List<DiaryDocsResponseDto>> getDiary({
     required String userPlantId,
   }) async {
-    try {
-      final eventModels = await _pocketBase
-          .collection('diary')
-          .getList(
-            filter: 'user_plant_id = "$userPlantId"',
-            expand: 'user_plant_id',
-          );
-      print("Event Mosels list : $eventModels");
-      final eventsList =
-          eventModels.items.map((eventModel) {
-            final dto = DiaryDocsResponseDto.fromJson(eventModel.toJson());
-
-            return dto;
-          }).toList();
-      print("Events List: $eventsList");
-      return eventsList;
-    } catch (e) {
-      throw Exception('Failed to get diary events: $e');
-    }
+    final res = await _pb
+        .collection('diary')
+        .getList(
+          filter: 'user_plant_id = "$userPlantId"',
+          expand: 'user_plant_id',
+        );
+    print('GEBUG PRINT RES: $res');
+    return res.items
+        .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
+        .toList();
   }
 
   @override
   Future<List<DiaryDocsResponseDto>> getEvents(String userPlantId) async {
-    try {
-      final eventModels = await _pocketBase
-          .collection('diary')
-          .getList(filter: 'user_plant_id = "$userPlantId" && event_date != ""', expand: 'user_plant_id');
+    final res = await _pb
+        .collection('diary')
+        .getList(
+          filter:
+              'user_plant_id = "$userPlantId" && defined(event_date) && event_date != ""',
+          expand: 'user_plant_id',
+        );
 
-      return eventModels.items
-          .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
-          .toList();
-    } catch (e) {
-      throw Exception('Failed to get events: $e');
-    }
+    return res.items
+        .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
+        .toList();
   }
 
   @override
   Future<List<DiaryDocsResponseDto>> getNotes(String userPlantId) async {
-    try {
-      final noteModels = await _pocketBase
-          .collection('diary')
-          .getList(filter: 'user_plant_id = "$userPlantId" && note != ""', expand: 'user_plant_id');
+    final res = await _pb
+        .collection('diary')
+        .getList(
+          filter:
+              'user_plant_id = "$userPlantId" && defined(note) && note != ""',
+          expand: 'user_plant_id',
+        );
 
-      return noteModels.items
-          .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
-          .toList();
-    } catch (e) {
-      throw Exception('Failed to get notes: $e');
-    }
+    return res.items
+        .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
+        .toList();
   }
 
   @override
   Future<List<DiaryDocsResponseDto>> addEvent({
     required String userPlantId,
-    final DateTime? eventDate,
+    DateTime? eventDate,
   }) async {
-    try {
-      await _pocketBase
-          .collection('diary')
-          .create(
-            body: {
-              'user_plant_id': userPlantId,
-              'event_date': eventDate?.toIso8601String(),
-            },
-          );
-      return getEvents(userPlantId);
-    } catch (e) {
-      throw Exception('Failed to add plant: $e');
-    }
+    await _pb
+        .collection('diary')
+        .create(
+          body: {
+            'user_plant_id': userPlantId,
+            'event_date': eventDate?.toIso8601String(),
+          },
+        );
+
+    return getEvents(userPlantId);
   }
 
   @override
@@ -88,64 +75,62 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
     required String userPlantId,
     required String noteText,
   }) async {
-    try {
-      await _pocketBase
-          .collection('diary')
-          .create(
-            body: {'user_plant_id': userPlantId, 'note': noteText},
-          );
-      return getNotes();
-    } catch (e) {
-      throw Exception('Failed to add note: $e');
-    }
+    await _pb
+        .collection('diary')
+        .create(body: {'user_plant_id': userPlantId, 'note': noteText});
+
+    return getNotes(userPlantId);
   }
 
   @override
   Future<List<DiaryDocsResponseDto>> modifyEvent({
+    required String userPlantId,
     required String eventId,
     required bool isDelete,
     DateTime? newEventDate,
   }) async {
-    try {
-      if (isDelete) {
-        await _pocketBase.collection('diary').delete(eventId);
-      } else {
-        if (newEventDate == null) {
-          throw ArgumentError('newEventDate is required when not deleting');
-        }
-        await _pocketBase
-            .collection('diary')
-            .update(
-              eventId,
-              body: {'event_date': newEventDate.toIso8601String()},
-            );
+    if (isDelete) {
+      await _pb.collection('diary').delete(eventId);
+    } else {
+      if (newEventDate == null) {
+        throw ArgumentError('newEventDate is required when updating');
       }
-      return getEvents();
-    } catch (e) {
-      throw Exception('Failed to update event: $e');
+      await _pb
+          .collection('diary')
+          .update(
+            eventId,
+            body: {'event_date': newEventDate.toIso8601String()},
+          );
     }
+    return getEvents(userPlantId);
   }
 
   @override
   Future<List<DiaryDocsResponseDto>> modifyNote({
+    required String userPlantId,
     required String noteId,
     required bool isDelete,
     String? noteText,
   }) async {
-    try {
-      if (isDelete) {
-        await _pocketBase.collection('diary').delete(noteId);
-      } else {
-        if (noteText == null) {
-          throw ArgumentError('noteText is required when not deleting');
-        }
-        await _pocketBase
-            .collection('diary')
-            .update(noteId, body: {'note': noteText});
+    if (isDelete) {
+      await _pb.collection('diary').delete(noteId);
+    } else {
+      if (noteText == null) {
+        throw ArgumentError('noteText is required when updating');
       }
-      return getNotes();
-    } catch (e) {
-      throw Exception('Failed to update note: $e');
+      await _pb.collection('diary').update(noteId, body: {'note': noteText});
     }
+    return getNotes(userPlantId);
   }
+  Future<void> debugDiaryRaw(String userPlantId) async {
+  final res = await _pb.collection('diary').getList(
+    filter: 'user_plant_id = "$userPlantId"',
+    perPage: 50,
+  );
+  // Выводим то, что вернул сервер
+  for (final item in res.items) {
+    print(item.toJson());
+  }
+}
+
 }

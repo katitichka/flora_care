@@ -6,9 +6,9 @@ sealed class DiaryEvent with _$DiaryEvent {
     required String userPlantId,
   }) = _GetDiary;
 
-  const factory DiaryEvent.getEvents() = _GetEvents;
+  const factory DiaryEvent.getEvents({required String userPlantId,}) = _GetEvents;
 
-  const factory DiaryEvent.getNotes() = _GetNotes;
+  const factory DiaryEvent.getNotes({required String userPlantId,}) = _GetNotes;
 
   const factory DiaryEvent.addEvent({
     required String userPlantId,
@@ -21,11 +21,13 @@ sealed class DiaryEvent with _$DiaryEvent {
   }) = _AddNote;
 
   const factory DiaryEvent.modifyEvent({
+    required String userPlantId,
     required bool isDelete,
     required String eventId,
   }) = _ModifyEvent;
 
   const factory DiaryEvent.modifyNote({
+    required String userPlantId,
     required bool isDelete,
     required String noteId,
     String? noteText,
