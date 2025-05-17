@@ -7,8 +7,8 @@ part 'diary_docs_response_entity.freezed.dart';
 sealed class DiaryDocsResponseEntity with _$DiaryDocsResponseEntity {
   const factory DiaryDocsResponseEntity({
     required String id,
-    String? note,
-    DateTime? eventDate,
+    final String? note,
+    final DateTime? eventDate,
     required String userPlantId,
   }) = _DiaryDocsResponseEntity;
 }

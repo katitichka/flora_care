@@ -1,7 +1,7 @@
 import 'package:flora_care/features/diary/data/DTOs/diary_docs_response_dto.dart';
 
 abstract interface class DiaryDataProvider {
-  Future<List<DiaryDocsResponseDto>> getDiary();
+  Future<List<DiaryDocsResponseDto>> getDiary({required String userPlantId});
 
   Future<List<DiaryDocsResponseDto>> getEvents();
 
@@ -9,7 +9,7 @@ abstract interface class DiaryDataProvider {
 
   Future<List<DiaryDocsResponseDto>> addEvent({
     required String userPlantId,
-    required DateTime eventDate,
+    final DateTime? eventDate,
   });
 
   Future<List<DiaryDocsResponseDto>> addNote({
@@ -21,7 +21,7 @@ abstract interface class DiaryDataProvider {
     required String eventId,
     required bool isDelete,
   });
-  
+
   Future<List<DiaryDocsResponseDto>> modifyNote({
     required String noteId,
     required bool isDelete,

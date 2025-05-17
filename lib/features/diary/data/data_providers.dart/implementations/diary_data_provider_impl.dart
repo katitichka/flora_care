@@ -9,20 +9,24 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
     : _pocketBase = pocketBase;
 
   @override
-  Future<List<DiaryDocsResponseDto>> getDiary() async {
+  Future<List<DiaryDocsResponseDto>> getDiary({
+    required String userPlantId,
+  }) async {
     try {
       final eventModels = await _pocketBase
           .collection('diary')
-          .getList(expand: 'user_plant_id');
-
+          .getList(
+            filter: 'user_plant_id = "$userPlantId"',
+            expand: 'user_plant_id',
+          );
+      print("Event Mosels list : $eventModels");
       final eventsList =
-          eventModels.items
-              .map(
-                (eventModel) =>
-                    DiaryDocsResponseDto.fromJson(eventModel.toJson()),
-              )
-              .toList();
+          eventModels.items.map((eventModel) {
+            final dto = DiaryDocsResponseDto.fromJson(eventModel.toJson());
 
+            return dto;
+          }).toList();
+      print("Events List: $eventsList");
       return eventsList;
     } catch (e) {
       throw Exception('Failed to get diary events: $e');
@@ -30,11 +34,11 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
   }
 
   @override
-  Future<List<DiaryDocsResponseDto>> getEvents() async {
+  Future<List<DiaryDocsResponseDto>> getEvents(String userPlantId) async {
     try {
       final eventModels = await _pocketBase
           .collection('diary')
-          .getList(filter: 'event_date != ""', expand: 'user_plant_id');
+          .getList(filter: 'user_plant_id = "$userPlantId" && event_date != ""', expand: 'user_plant_id');
 
       return eventModels.items
           .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
@@ -45,11 +49,11 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
   }
 
   @override
-  Future<List<DiaryDocsResponseDto>> getNotes() async {
+  Future<List<DiaryDocsResponseDto>> getNotes(String userPlantId) async {
     try {
       final noteModels = await _pocketBase
           .collection('diary')
-          .getList(filter: 'note != ""', expand: 'user_plant_id');
+          .getList(filter: 'user_plant_id = "$userPlantId" && note != ""', expand: 'user_plant_id');
 
       return noteModels.items
           .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
@@ -62,7 +66,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
   @override
   Future<List<DiaryDocsResponseDto>> addEvent({
     required String userPlantId,
-    required DateTime eventDate,
+    final DateTime? eventDate,
   }) async {
     try {
       await _pocketBase
@@ -70,10 +74,10 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
           .create(
             body: {
               'user_plant_id': userPlantId,
-              'event_date': eventDate.toIso8601String(),
+              'event_date': eventDate?.toIso8601String(),
             },
           );
-      return getDiary();
+      return getEvents(userPlantId);
     } catch (e) {
       throw Exception('Failed to add plant: $e');
     }
@@ -89,7 +93,6 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
           .collection('diary')
           .create(
             body: {'user_plant_id': userPlantId, 'note': noteText},
-            expand: 'user_plant_id',
           );
       return getNotes();
     } catch (e) {
@@ -117,7 +120,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
               body: {'event_date': newEventDate.toIso8601String()},
             );
       }
-      return getDiary();
+      return getEvents();
     } catch (e) {
       throw Exception('Failed to update event: $e');
     }
@@ -140,7 +143,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
             .collection('diary')
             .update(noteId, body: {'note': noteText});
       }
-      return getDiary();
+      return getNotes();
     } catch (e) {
       throw Exception('Failed to update note: $e');
     }

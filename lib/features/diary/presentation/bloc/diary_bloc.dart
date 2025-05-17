@@ -54,17 +54,13 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }) async {
     emit(const DiaryState.loading());
     try {
-      final allEvents = await _diaryRepository.getEvents();
-      final allNotes = await _diaryRepository.getNotes();
+      final plantEvents  = await _diaryRepository.getEvents(userPlantId);
+      final plantNotes  = await _diaryRepository.getNotes(userPlantId);
 
-      final plantEvents =
-          allEvents.where((e) => e.userPlantId == userPlantId).toList();
-      print('Requested userPlantId: $userPlantId');
-      print('Matching events: $plantEvents');
-      final plantNotes =
-          allNotes.where((n) => n.userPlantId == userPlantId).toList();
-
-      emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: plantNotes));
+      emit(DiaryState.loaded(
+      plantEvents: plantEvents,
+      plantNotes: plantNotes,
+    ));
     } catch (e) {
       final message = handleError(e);
       emit(DiaryState.error(message: message));
@@ -154,11 +150,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     required DateTime eventDate,
   }) async {
     List<DiaryDocsResponseEntity> plantNotes = [];
-  if (state is Loaded) {
-    plantNotes = (state as Loaded).plantNotes;
-  }
+    if (state is Loaded) {
+      plantNotes = (state as Loaded).plantNotes;
+    }
 
-  emit(const DiaryState.loading());
+    emit(const DiaryState.loading());
     try {
       await _diaryRepository.addEvent(
         userPlantId: userPlantId,
@@ -181,23 +177,21 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     required String userPlantId,
     required String noteText,
   }) async {
-    List<DiaryDocsResponseEntity> plantEvents = [];
-  if (state is Loaded) {
-    plantEvents = (state as Loaded).plantEvents;
-  }
+    final List<DiaryDocsResponseEntity> plantEvents =
+        state is Loaded ? (state as Loaded).plantEvents : [];
 
-  emit(const DiaryState.loading());
     try {
+      print('Adding note for userPlantId=$userPlantId with text="$noteText"');
       await _diaryRepository.addNote(
         userPlantId: userPlantId,
         noteText: noteText,
       );
+      print('Note added successfully');
       final allNotes = await _diaryRepository.getNotes();
-      
+
       final plantNotes =
           allNotes.where((e) => e.userPlantId == userPlantId).toList();
 
- 
       emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: plantNotes));
     } catch (e) {
       final message = handleError(e);

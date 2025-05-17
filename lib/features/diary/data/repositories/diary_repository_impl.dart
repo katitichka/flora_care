@@ -10,8 +10,8 @@ class DiaryRepositoryImpl implements DiaryRepository {
     : _diaryDataProvider = diaryDataProvider;
 
   @override
-  Future<List<DiaryDocsResponseEntity>> getDiary() async {
-    final dtos = await _diaryDataProvider.getDiary();
+  Future<List<DiaryDocsResponseEntity>> getDiary({required userPlantId}) async {
+    final dtos = await _diaryDataProvider.getDiary(userPlantId: userPlantId,);
     return dtos
         .map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto))
         .toList();
@@ -33,7 +33,7 @@ class DiaryRepositoryImpl implements DiaryRepository {
   @override
   Future<List<DiaryDocsResponseEntity>> addEvent({
     required String userPlantId,
-    required DateTime eventDate,
+    final DateTime? eventDat,
   }) async {
     await _diaryDataProvider.addEvent(
       userPlantId: userPlantId,
@@ -80,3 +80,5 @@ class DiaryRepositoryImpl implements DiaryRepository {
   }
 
 }
+
+

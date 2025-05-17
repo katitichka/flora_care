@@ -2,7 +2,7 @@ import 'package:flora_care/features/diary/domain/entities/diary_docs_response_en
 
 
 abstract interface class DiaryRepository{
-  Future<List<DiaryDocsResponseEntity>> getDiary();
+  Future<List<DiaryDocsResponseEntity>> getDiary({required String userPlantId,});
 
   Future<List<DiaryDocsResponseEntity>> getEvents();
 
