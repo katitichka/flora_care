@@ -22,7 +22,13 @@ class UserPlantCard extends StatelessWidget {
       onLongPress: () => _showDeleteMenu(context, userPlant.id),
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: const BorderSide(
+            color: Color.fromARGB(255, 0, 89, 33),
+            width: 2,
+          ),
+        ),
         child: Container(
           padding: const EdgeInsets.all(15),
           height: 115,
@@ -50,10 +56,10 @@ class UserPlantCard extends StatelessWidget {
                                   ),
                                 ),
                           )
-                          : Container(), // Нужно добавить, если условие false
+                          : Container(),
                 ),
               ),
-              const SizedBox(width: 20), // Отступ между изображением и текстом
+              const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +80,8 @@ class UserPlantCard extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.opacity, color: Colors.blue),
+                icon: const Icon(Icons.water_drop, color: Colors.blue),
+                iconSize: 40,
                 tooltip: 'Записать полив',
                 onPressed: () {
                   if (onWater != null) {

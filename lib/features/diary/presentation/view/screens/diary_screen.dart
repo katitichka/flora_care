@@ -66,29 +66,27 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
     final result = await showDialog<String>(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Добавить заметку'),
-            content: TextField(
-              controller: noteController,
-              autofocus: true,
-              maxLines: null,
-              decoration: const InputDecoration(
-                hintText: 'Введите текст заметки',
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Отмена'),
-              ),
-              TextButton(
-                onPressed:
-                    () => Navigator.of(context).pop(noteController.text.trim()),
-                child: const Text('Добавить'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Добавить заметку'),
+        content: TextField(
+          controller: noteController,
+          autofocus: true,
+          maxLines: null,
+          decoration: const InputDecoration(
+            hintText: 'Введите текст заметки',
           ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(noteController.text.trim()),
+            child: const Text('Добавить'),
+          ),
+        ],
+      ),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -96,6 +94,47 @@ class _DiaryScreenState extends State<DiaryScreen> {
         DiaryEvent.addNote(userPlantId: widget.userPlantId, noteText: result),
       );
     }
+  }
+
+  void _showDeleteDialog(BuildContext context, DiaryDocsResponseEntity item) {
+    final isEvent = item.eventDate != null;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Подтвердите удаление'),
+        content: Text('Вы уверены, что хотите удалить эту ${isEvent ? 'запись о поливе' : 'заметку'}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              if (isEvent) {
+                context.read<DiaryBloc>().add(
+                  DiaryEvent.modifyEvent(
+                    userPlantId: widget.userPlantId,
+                    isDelete: true,
+                    eventId: item.id,
+                  ),
+                );
+              } else {
+                context.read<DiaryBloc>().add(
+                  DiaryEvent.modifyNote(
+                    userPlantId: widget.userPlantId,
+                    isDelete: true,
+                    noteId: item.id,
+                  ),
+                );
+              }
+            },
+            child: const Text('Удалить', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -113,6 +152,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                   title: 'История поливов',
                   entries: plantEvents,
                   onPressed: () => _addEvent(context),
+                  onLongPress: (event) => _showDeleteDialog(context, event),
                   itemBuilder: (context, event) => ListTile(
                     title: Text(
                       'Полив: ${DateFormat('dd-MM-yyyy в HH:mm').format(event.eventDate!)}',
@@ -124,6 +164,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                   title: 'Заметки',
                   entries: plantNotes.where((e) => e.note != null).toList(),
                   onPressed: () => _addNote(context),
+                  onLongPress: (note) => _showDeleteDialog(context, note),
                   itemBuilder: (context, note) => ListTile(
                     title: Text(note.note ?? ''),
                     subtitle: Text(
@@ -144,6 +185,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     required String title,
     required List<DiaryDocsResponseEntity> entries,
     required VoidCallback onPressed,
+    required Function(DiaryDocsResponseEntity) onLongPress,
     required Widget Function(BuildContext, DiaryDocsResponseEntity) itemBuilder,
   }) {
     return Expanded(
@@ -170,6 +212,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             child: DiarySection(
               entries: entries,
               itemBuilder: itemBuilder,
+              onLongPress: onLongPress,
             ),
           ),
         ],

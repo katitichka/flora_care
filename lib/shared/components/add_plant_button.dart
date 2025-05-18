@@ -9,7 +9,6 @@ class AddPlantButton {
 
   const AddPlantButton({required this.plant});
 
-  // Метод, который можно вызвать из любого места
   Future<void> onPressed(BuildContext context) async {
     final userId = pocketBase.authStore.model?.id ?? '';
     final textController = TextEditingController();
@@ -48,6 +47,7 @@ class AddPlantButton {
                         content: Text('Растение с таким именем уже существует'),
                       ),
                     );
+                    return;
                   } else {
                     Navigator.pop(context, textController.text);
                   }
@@ -72,6 +72,19 @@ class AddPlantButton {
             duration: Duration(seconds: 2),
           ),
         );
+        
+        final isUnique = await context
+            .read<UserPlantsBloc>()
+            .isPlantNameUnique(userPlantName, userId);
+
+        if (!isUnique) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Растение с таким именем уже существует'),
+            ),
+          );
+          return;
+        }
 
         context.read<UserPlantsBloc>().add(
           UserPlantsEvent.addUserPlant(

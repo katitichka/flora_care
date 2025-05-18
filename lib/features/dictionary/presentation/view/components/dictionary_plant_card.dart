@@ -1,9 +1,6 @@
 import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_response_entity.dart';
-import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart';
-import 'package:flora_care/main.dart';
 import 'package:flora_care/shared/components/add_plant_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DictionaryPlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
@@ -14,8 +11,11 @@ class DictionaryPlantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.all(16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Color.fromARGB(255, 0, 89, 33), width: 2),
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: onTap,
@@ -31,16 +31,17 @@ class DictionaryPlantCard extends StatelessWidget {
                   child: Image.network(
                     plant.image,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: Colors.grey[200],
-                      child: const Center(
-                        child: Icon(
-                          Icons.image_not_supported,
-                          size: 30,
-                          color: Colors.grey,
+                    errorBuilder:
+                        (context, error, stackTrace) => Container(
+                          color: Colors.grey[200],
+                          child: const Center(
+                            child: Icon(
+                              Icons.image_not_supported,
+                              size: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                   ),
                 ),
               ),
@@ -54,31 +55,32 @@ class DictionaryPlantCard extends StatelessWidget {
                     Text(
                       plant.scientificName,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       plant.commonName,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              // Кнопка добавления
               IconButton(
                 icon: const Icon(
-                  Icons.add_circle_outline,
+                  Icons.library_add,
                   color: Color.fromARGB(255, 0, 89, 33),
                 ),
-                onPressed: () => AddPlantButton(plant: plant).onPressed(context),
+                iconSize: 40,
+                onPressed:
+                    () => AddPlantButton(plant: plant).onPressed(context),
               ),
             ],
           ),
@@ -87,4 +89,3 @@ class DictionaryPlantCard extends StatelessWidget {
     );
   }
 }
-

@@ -100,10 +100,10 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
 
   Future<bool> isPlantNameUnique(String name, String userId) async {
     try {
-      await pocketBase
-          .collection('user_plants')
-          .getFirstListItem('user_id = "$userId" && user_pant_name = "$name"');
-      return false;
+      final plants = await _userPlantsRepository.getAllUserPlants();
+      return !plants.any(
+        (plant) => plant.userPlantName.toLowerCase() == name.toLowerCase(),
+      );
     } catch (e) {
       return true;
     }
@@ -122,13 +122,6 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
       }
 
       await _userPlantsRepository.deleteUserPlant(userPlantId: userPlantId);
-
-      // final freshPlants = await _userPlantsRepository.getAllUserPlants();
-
-      // emit(UserPlantsState.actionSuccess(
-      //   message: 'Растение успешно удалено',
-      //   userPlants: freshPlants,
-      // ));
     } catch (e) {
       emit(
         UserPlantsState.actionFail(
@@ -155,12 +148,12 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
       );
       print('Events after add: $events');
       if (state is Loaded) {
-      emit(state); 
-    }
+        emit(state);
+      }
     } catch (e) {
       print('Events after failed: $e');
       emit(
-            UserPlantsState.actionFail(
+        UserPlantsState.actionFail(
           message: handleError(e),
           userPlants: currentPlants,
         ),
