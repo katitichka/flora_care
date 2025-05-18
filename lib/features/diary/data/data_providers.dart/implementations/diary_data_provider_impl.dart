@@ -11,12 +11,11 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
   Future<List<DiaryDocsResponseDto>> getDiary({
     required String userPlantId,
   }) async {
-    final res = await _pocketBase
-        .collection('diary')
-        .getList(
-          expand: 'user_plant_id',
-        );
-    print('GEBUG PRINT RES: $res');
+    final res = await _pocketBase.collection('diary').getList(
+      filter: 'user_plant_id = "$userPlantId"',
+      expand: 'user_plant_id',
+      perPage: 50,
+    );
     return res.items
         .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
         .toList();
@@ -24,12 +23,11 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
 
   @override
   Future<List<DiaryDocsResponseDto>> getEvents(String userPlantId) async {
-    final res = await _pocketBase
-        .collection('diary')
-        .getList(
-          expand: 'user_plant_id',
-        );
-
+    final res = await _pocketBase.collection('diary').getList(
+      filter: 'user_plant_id = "$userPlantId" && event_date != ""',
+      expand: 'user_plant_id',
+      perPage: 50,
+    );
     return res.items
         .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
         .toList();
@@ -37,12 +35,11 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
 
   @override
   Future<List<DiaryDocsResponseDto>> getNotes(String userPlantId) async {
-    final res = await _pocketBase
-        .collection('diary')
-        .getList(
-          expand: 'user_plant_id',
-        );
-
+    final res = await _pocketBase.collection('diary').getList(
+      filter: 'user_plant_id = "$userPlantId" && note != ""',
+      expand: 'user_plant_id',
+      perPage: 50,
+    );
     return res.items
         .map((e) => DiaryDocsResponseDto.fromJson(e.toJson()))
         .toList();
