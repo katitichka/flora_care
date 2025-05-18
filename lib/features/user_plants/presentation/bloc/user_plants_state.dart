@@ -9,7 +9,6 @@ sealed class UserPlantsState with _$UserPlantsState {
   }) = Loaded;
   const factory UserPlantsState.actionSuccess({
     required String message,
-    required List<UserPlantsDocsResponseEntity> userPlants,
     }) = ActionSuccess;
   const factory UserPlantsState.actionFail({
     required String message,

@@ -572,17 +572,10 @@ as List<UserPlantsDocsResponseEntity>,
 
 
 class ActionSuccess with DiagnosticableTreeMixin implements UserPlantsState {
-  const ActionSuccess({required this.message, required final  List<UserPlantsDocsResponseEntity> userPlants}): _userPlants = userPlants;
+  const ActionSuccess({required this.message});
   
 
  final  String message;
- final  List<UserPlantsDocsResponseEntity> _userPlants;
- List<UserPlantsDocsResponseEntity> get userPlants {
-  if (_userPlants is EqualUnmodifiableListView) return _userPlants;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_userPlants);
-}
-
 
 /// Create a copy of UserPlantsState
 /// with the given fields replaced by the non-null parameter values.
@@ -595,21 +588,21 @@ $ActionSuccessCopyWith<ActionSuccess> get copyWith => _$ActionSuccessCopyWithImp
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'UserPlantsState.actionSuccess'))
-    ..add(DiagnosticsProperty('message', message))..add(DiagnosticsProperty('userPlants', userPlants));
+    ..add(DiagnosticsProperty('message', message));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionSuccess&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._userPlants, _userPlants));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionSuccess&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message,const DeepCollectionEquality().hash(_userPlants));
+int get hashCode => Object.hash(runtimeType,message);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UserPlantsState.actionSuccess(message: $message, userPlants: $userPlants)';
+  return 'UserPlantsState.actionSuccess(message: $message)';
 }
 
 
@@ -620,7 +613,7 @@ abstract mixin class $ActionSuccessCopyWith<$Res> implements $UserPlantsStateCop
   factory $ActionSuccessCopyWith(ActionSuccess value, $Res Function(ActionSuccess) _then) = _$ActionSuccessCopyWithImpl;
 @useResult
 $Res call({
- String message, List<UserPlantsDocsResponseEntity> userPlants
+ String message
 });
 
 
@@ -637,11 +630,10 @@ class _$ActionSuccessCopyWithImpl<$Res>
 
 /// Create a copy of UserPlantsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? userPlants = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(ActionSuccess(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,userPlants: null == userPlants ? _self._userPlants : userPlants // ignore: cast_nullable_to_non_nullable
-as List<UserPlantsDocsResponseEntity>,
+as String,
   ));
 }
 

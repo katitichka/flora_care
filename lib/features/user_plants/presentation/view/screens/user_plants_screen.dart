@@ -22,6 +22,7 @@ class UserPlantsScreen extends StatelessWidget {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
+        buildWhen: (prev, curr) => curr is! ActionSuccess && curr is! ActionFail,
         builder: (context, state) {
           switch (state) {
             case Initial():

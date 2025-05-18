@@ -154,12 +154,9 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
         eventDate: DateTime.now(),
       );
       print('Events after add: $events');
-      emit(
-        UserPlantsState.actionSuccess(
-          message: 'Полив записан',
-          userPlants: currentPlants,
-        ),
-      );
+      if (state is Loaded) {
+      emit(state); 
+    }
     } catch (e) {
       print('Events after failed: $e');
       emit(
