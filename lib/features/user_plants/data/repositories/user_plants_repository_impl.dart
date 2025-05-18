@@ -53,4 +53,15 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
         .map((dto) => UserPlantsDocsResponseMapper.fromDto(dto: dto))
         .toList();
   }
+  
+  @override
+  Future<void> addWatering({
+    required String userPlantId,
+    required DateTime wateredAt,
+  }) async {
+    await _userPlantsDataProvider.addWatering(
+      userPlantId: userPlantId,
+      wateredAt: wateredAt,
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flora_care/common/utils/error_handler.dart';
+import 'package:flora_care/features/diary/domain/repositories/diary_repository.dart';
 import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs_response_entity.dart';
 import 'package:flora_care/features/user_plants/domain/repositories/user_plants_repository.dart';
 import 'package:flora_care/main.dart';
@@ -12,10 +13,14 @@ part 'user_plants_bloc.freezed.dart';
 
 class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
   final UserPlantsRepository _userPlantsRepository;
+  final DiaryRepository _diaryRepository;
 
-  UserPlantsBloc({required UserPlantsRepository userPlantsRepository})
-    : _userPlantsRepository = userPlantsRepository,
-      super(const UserPlantsState.initial()) {
+  UserPlantsBloc({
+    required UserPlantsRepository userPlantsRepository,
+    required DiaryRepository diaryRepository,
+  }) : _userPlantsRepository = userPlantsRepository,
+       _diaryRepository = diaryRepository,
+       super(const UserPlantsState.initial()) {
     on<UserPlantsEvent>(
       (event, emit) => switch (event) {
         _GetAllUserPlants() => _getAllUserPlants(emit: emit),
@@ -28,6 +33,10 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
             userPlantName: userPlantName,
           ),
         _DeleteUserPlant(:final userPlantId) => _deleteUserPlant(
+          emit: emit,
+          userPlantId: userPlantId,
+        ),
+        _WaterPlant(:final userPlantId) => _waterPlant(
           emit: emit,
           userPlantId: userPlantId,
         ),
@@ -123,6 +132,38 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
     } catch (e) {
       emit(
         UserPlantsState.actionFail(
+          message: handleError(e),
+          userPlants: currentPlants,
+        ),
+      );
+    }
+  }
+
+  Future<void> _waterPlant({
+    required Emitter<UserPlantsState> emit,
+    required String userPlantId,
+  }) async {
+    final currentPlants =
+        state is Loaded
+            ? (state as Loaded).userPlants
+            : <UserPlantsDocsResponseEntity>[];
+
+    try {
+      final events = await _diaryRepository.addEvent(
+        userPlantId: userPlantId,
+        eventDate: DateTime.now(),
+      );
+      print('Events after add: $events');
+      emit(
+        UserPlantsState.actionSuccess(
+          message: 'Полив записан',
+          userPlants: currentPlants,
+        ),
+      );
+    } catch (e) {
+      print('Events after failed: $e');
+      emit(
+            UserPlantsState.actionFail(
           message: handleError(e),
           userPlants: currentPlants,
         ),

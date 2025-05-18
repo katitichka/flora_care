@@ -17,4 +17,7 @@ sealed class UserPlantsEvent with _$UserPlantsEvent {
   const factory UserPlantsEvent.search({
     required String query,
   }) = _Search;
+  const factory UserPlantsEvent.waterPlant({
+    required String userPlantId
+  }) = _WaterPlant;
 }

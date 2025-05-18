@@ -1,5 +1,6 @@
 import 'package:flora_care/features/user_plants/domain/repositories/user_plants_repository.dart';
 import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart';
+import 'package:flora_care/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +18,7 @@ class UserPlantsProvider extends StatelessWidget {
     return BlocProvider(
       create:
           (context) =>
-              UserPlantsBloc(userPlantsRepository: userPlantsRepository)
+              UserPlantsBloc(userPlantsRepository: userPlantsRepository, diaryRepository: diaryRepository)
                 ..add(const UserPlantsEvent.getAllUserPlants()),
       child: child,
     );

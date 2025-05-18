@@ -5,7 +5,7 @@ class UserPlantCard extends StatelessWidget {
   final UserPlantsDocsResponseEntity userPlant;
   final VoidCallback? onTap;
   final Function(String) onDelete;
-  final Future<void> Function(String userPlantId)? onWater;
+  final void Function(String userPlantId)? onWater;
 
   const UserPlantCard({
     super.key,
@@ -65,18 +65,23 @@ class UserPlantCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // IconButton(
-              //   icon: const Icon(Icons.opacity, color: Colors.blue),
-              //   tooltip: 'Записать полив',
-              //   onPressed: () {
-              //     onWatering(userPlant.id);
-              //     ScaffoldMessenger.of(context).showSnackBar(
-              //       SnackBar(
-              //         content: Text('Полив растения ${userPlant.userPlantName} записан'),
-              //         duration: const Duration(seconds: 2))
-              //       );
-              //       },
-              // ),
+              IconButton(
+                icon: const Icon(Icons.opacity, color: Colors.blue),
+                tooltip: 'Записать полив',
+                onPressed: () {
+                  if (onWater != null) {
+                    onWater!(userPlant.id);
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Полив растения ${userPlant.userPlantName} записан',
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

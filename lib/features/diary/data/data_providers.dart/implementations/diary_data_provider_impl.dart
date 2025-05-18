@@ -3,18 +3,17 @@ import 'package:flora_care/features/diary/data/data_providers.dart/diary_data_pr
 import 'package:pocketbase/pocketbase.dart';
 
 class DiaryDataProviderImpl implements DiaryDataProvider {
-  final PocketBase _pb;
+  final PocketBase _pocketBase;
 
-  DiaryDataProviderImpl({required PocketBase pocketBase}) : _pb = pocketBase;
+  DiaryDataProviderImpl({required PocketBase pocketBase}) : _pocketBase = pocketBase;
 
   @override
   Future<List<DiaryDocsResponseDto>> getDiary({
     required String userPlantId,
   }) async {
-    final res = await _pb
+    final res = await _pocketBase
         .collection('diary')
         .getList(
-          filter: 'user_plant_id = "$userPlantId"',
           expand: 'user_plant_id',
         );
     print('GEBUG PRINT RES: $res');
@@ -25,11 +24,9 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
 
   @override
   Future<List<DiaryDocsResponseDto>> getEvents(String userPlantId) async {
-    final res = await _pb
+    final res = await _pocketBase
         .collection('diary')
         .getList(
-          filter:
-              'user_plant_id = "$userPlantId" && defined(event_date) && event_date != ""',
           expand: 'user_plant_id',
         );
 
@@ -40,11 +37,9 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
 
   @override
   Future<List<DiaryDocsResponseDto>> getNotes(String userPlantId) async {
-    final res = await _pb
+    final res = await _pocketBase
         .collection('diary')
         .getList(
-          filter:
-              'user_plant_id = "$userPlantId" && defined(note) && note != ""',
           expand: 'user_plant_id',
         );
 
@@ -58,7 +53,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
     required String userPlantId,
     DateTime? eventDate,
   }) async {
-    await _pb
+    await _pocketBase
         .collection('diary')
         .create(
           body: {
@@ -75,7 +70,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
     required String userPlantId,
     required String noteText,
   }) async {
-    await _pb
+    await _pocketBase
         .collection('diary')
         .create(body: {'user_plant_id': userPlantId, 'note': noteText});
 
@@ -90,12 +85,12 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
     DateTime? newEventDate,
   }) async {
     if (isDelete) {
-      await _pb.collection('diary').delete(eventId);
+      await _pocketBase.collection('diary').delete(eventId);
     } else {
       if (newEventDate == null) {
         throw ArgumentError('newEventDate is required when updating');
       }
-      await _pb
+      await _pocketBase
           .collection('diary')
           .update(
             eventId,
@@ -113,21 +108,20 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
     String? noteText,
   }) async {
     if (isDelete) {
-      await _pb.collection('diary').delete(noteId);
+      await _pocketBase.collection('diary').delete(noteId);
     } else {
       if (noteText == null) {
         throw ArgumentError('noteText is required when updating');
       }
-      await _pb.collection('diary').update(noteId, body: {'note': noteText});
+      await _pocketBase.collection('diary').update(noteId, body: {'note': noteText});
     }
     return getNotes(userPlantId);
   }
   Future<void> debugDiaryRaw(String userPlantId) async {
-  final res = await _pb.collection('diary').getList(
+  final res = await _pocketBase.collection('diary').getList(
     filter: 'user_plant_id = "$userPlantId"',
     perPage: 50,
   );
-  // Выводим то, что вернул сервер
   for (final item in res.items) {
     print(item.toJson());
   }

@@ -18,10 +18,7 @@ sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
 
     @JsonKey(name: 'user_plant_id') required String userPlantId,
 
-    @JsonKey(
-      name: 'expand',
-      fromJson: _userPlantDataFromJson,
-    )
+    @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson)
     UserPlantsDocsResponseDto? userPlantData,
   }) = _DiaryDocsResponseDto;
 
@@ -29,9 +26,12 @@ sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
       _$DiaryDocsResponseDtoFromJson(json);
 }
 
-UserPlantsDocsResponseDto? _userPlantDataFromJson(Map<String, dynamic>? expand) {
+UserPlantsDocsResponseDto? _userPlantDataFromJson(
+  Map<String, dynamic>? expand,
+) {
   if (expand == null) return null;
   final raw = expand['user_plant_id'];
+  print('From Json raw: $raw');
   return raw is Map<String, dynamic>
       ? UserPlantsDocsResponseDto.fromJson(raw)
       : null;

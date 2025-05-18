@@ -13,4 +13,8 @@ abstract interface class UserPlantsRepository {
   Future<List<UserPlantsDocsResponseEntity>> deleteUserPlant({
     required String userPlantId,
   });
+  Future<void> addWatering({
+    required String userPlantId,
+    required DateTime wateredAt,
+  });
 }

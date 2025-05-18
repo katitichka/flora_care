@@ -92,4 +92,21 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
         .map((record) => UserPlantsDocsResponseDto.fromJson(record.toJson()))
         .toList();
   }
+
+  @override
+  Future<void> addWatering({
+    required String userPlantId,
+    required DateTime wateredAt,
+  }) async {
+    try {
+      await _pocketBase.collection('diary').create(
+        body: {
+          'user_plant_id': userPlantId,
+          'watered_at'    : wateredAt.toIso8601String(),
+        },
+      );
+    } catch (e) {
+      throw Exception('Failed to add watering: $e');
+    }
+  }
 }

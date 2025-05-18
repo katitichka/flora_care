@@ -307,6 +307,78 @@ as String,
 }
 
 /// @nodoc
+
+
+class _WaterPlant with DiagnosticableTreeMixin implements UserPlantsEvent {
+  const _WaterPlant({required this.userPlantId});
+  
+
+ final  String userPlantId;
+
+/// Create a copy of UserPlantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$WaterPlantCopyWith<_WaterPlant> get copyWith => __$WaterPlantCopyWithImpl<_WaterPlant>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'UserPlantsEvent.waterPlant'))
+    ..add(DiagnosticsProperty('userPlantId', userPlantId));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WaterPlant&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,userPlantId);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'UserPlantsEvent.waterPlant(userPlantId: $userPlantId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$WaterPlantCopyWith<$Res> implements $UserPlantsEventCopyWith<$Res> {
+  factory _$WaterPlantCopyWith(_WaterPlant value, $Res Function(_WaterPlant) _then) = __$WaterPlantCopyWithImpl;
+@useResult
+$Res call({
+ String userPlantId
+});
+
+
+
+
+}
+/// @nodoc
+class __$WaterPlantCopyWithImpl<$Res>
+    implements _$WaterPlantCopyWith<$Res> {
+  __$WaterPlantCopyWithImpl(this._self, this._then);
+
+  final _WaterPlant _self;
+  final $Res Function(_WaterPlant) _then;
+
+/// Create a copy of UserPlantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,}) {
+  return _then(_WaterPlant(
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$UserPlantsState implements DiagnosticableTreeMixin {
 
 
