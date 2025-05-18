@@ -99,8 +99,8 @@ $UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData {
 /// @nodoc
 @JsonSerializable()
 
-class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
-  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date')@SafeDateTimeConverter() this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) this.userPlantData});
+class _DiaryDocsResponseDto extends DiaryDocsResponseDto {
+  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date')@SafeDateTimeConverter() this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) this.userPlantData}): super._();
   factory _DiaryDocsResponseDto.fromJson(Map<String, dynamic> json) => _$DiaryDocsResponseDtoFromJson(json);
 
 @override final  String collectionId;

@@ -9,6 +9,7 @@ sealed class DiaryDocsResponseEntity with _$DiaryDocsResponseEntity {
     required String id,
     final String? note,
     final DateTime? eventDate,
+    final String? formattedEventDate,
     required String userPlantId,
   }) = _DiaryDocsResponseEntity;
 }

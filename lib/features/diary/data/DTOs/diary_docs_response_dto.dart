@@ -1,12 +1,15 @@
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
 import 'package:flora_care/utils/json_datetime_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 part 'diary_docs_response_dto.freezed.dart';
 part 'diary_docs_response_dto.g.dart';
 
 @freezed
 sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
+  const DiaryDocsResponseDto._();
+  
   const factory DiaryDocsResponseDto({
     required String collectionId,
     required String collectionName,
@@ -30,6 +33,12 @@ sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
       _$DiaryDocsResponseDtoFromJson(json);
 }
 
+extension DiaryDocsResponseDtoExt on DiaryDocsResponseDto {
+  String get formattedEventDate {
+    if (eventDate == null) return '';
+    return DateFormat('dd-MM-yyyy в HH:mm').format(eventDate!);
+  }
+}
 
 UserPlantsDocsResponseDto? _userPlantDataFromJson(
   Map<String, dynamic>? expand,

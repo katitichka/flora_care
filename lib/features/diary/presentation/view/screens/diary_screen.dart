@@ -2,6 +2,7 @@ import 'package:flora_care/features/diary/presentation/view/components/diary_sec
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart';
+import 'package:intl/intl.dart';
 
 class DiaryScreen extends StatefulWidget {
   final String plantName;
@@ -109,12 +110,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
               children: [
                 Expanded(
                   child: DiarySection(
-                    title: 'События',
+                    title: 'История поливов',
                     entries: plantEvents,
                     itemBuilder:
                         (context, event) => ListTile(
                           title: Text(
-                            'Событие: ${event.eventDate?.toLocal().toString().split(" ")[0] ?? "-"}',
+                            'Полив: ${DateFormat('dd-MM-yyyy в HH:mm').format(event.eventDate!)}',
                           ),
                         ),
                   ),
