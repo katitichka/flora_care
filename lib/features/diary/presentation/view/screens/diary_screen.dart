@@ -1,3 +1,4 @@
+import 'package:flora_care/features/diary/domain/entities/diary_docs_response_entity.dart';
 import 'package:flora_care/features/diary/presentation/view/components/diary_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,26 +109,26 @@ class _DiaryScreenState extends State<DiaryScreen> {
             Error(:final message) => Center(child: Text(message)),
             Loaded(:final plantEvents, :final plantNotes) => Column(
               children: [
-                Expanded(
-                  child: DiarySection(
-                    title: 'История поливов',
-                    entries: plantEvents,
-                    itemBuilder:
-                        (context, event) => ListTile(
-                          title: Text(
-                            'Полив: ${DateFormat('dd-MM-yyyy в HH:mm').format(event.eventDate!)}',
-                          ),
-                        ),
+                _buildSectionWithButton(
+                  title: 'История поливов',
+                  entries: plantEvents,
+                  onPressed: () => _addEvent(context),
+                  itemBuilder: (context, event) => ListTile(
+                    title: Text(
+                      'Полив: ${DateFormat('dd-MM-yyyy в HH:mm').format(event.eventDate!)}',
+                    ),
                   ),
                 ),
                 const Divider(height: 1),
-                Expanded(
-                  child: DiarySection(
-                    title: 'Заметки',
-                    entries: plantNotes.where((e) => e.note != null).toList(),
-                    itemBuilder:
-                        (context, note) =>
-                            ListTile(title: Text(note.note ?? '')),
+                _buildSectionWithButton(
+                  title: 'Заметки',
+                  entries: plantNotes.where((e) => e.note != null).toList(),
+                  onPressed: () => _addNote(context),
+                  itemBuilder: (context, note) => ListTile(
+                    title: Text(note.note ?? ''),
+                    subtitle: Text(
+                      'Создано: ${DateFormat('dd-MM-yyyy в HH:mm').format(DateTime.parse(note.created))}',
+                    ),
                   ),
                 ),
               ],
@@ -136,21 +137,40 @@ class _DiaryScreenState extends State<DiaryScreen> {
           };
         },
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
+    );
+  }
+
+  Widget _buildSectionWithButton({
+    required String title,
+    required List<DiaryDocsResponseEntity> entries,
+    required VoidCallback onPressed,
+    required Widget Function(BuildContext, DiaryDocsResponseEntity) itemBuilder,
+  }) {
+    return Expanded(
+      child: Column(
         children: [
-          FloatingActionButton.extended(
-            heroTag: 'add_event',
-            onPressed: () => _addEvent(context),
-            icon: const Icon(Icons.event),
-            label: const Text('Добавить событие'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: onPressed,
+                  tooltip: 'Добавить ${title.toLowerCase()}',
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 12),
-          FloatingActionButton.extended(
-            heroTag: 'add_note',
-            onPressed: () => _addNote(context),
-            icon: const Icon(Icons.note_add),
-            label: const Text('Добавить заметку'),
+          Expanded(
+            child: DiarySection(
+              entries: entries,
+              itemBuilder: itemBuilder,
+            ),
           ),
         ],
       ),

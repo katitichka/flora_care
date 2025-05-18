@@ -28,22 +28,30 @@ class UserPlantCard extends StatelessWidget {
           height: 115,
           child: Row(
             children: [
-              SizedBox(
-                height: 100,
-                width: 80,
-                child:
-                    userPlant.plantData?.image != null
-                        ? Image.network(
-                          userPlant.plantData!.image,
-                          fit: BoxFit.cover,
-                        )
-                        : Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                        ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SizedBox(
+                  width: 80,
+                  height: 80,
+                  child:
+                      userPlant.plantData?.image != null
+                          ? Image.network(
+                            userPlant.plantData!.image,
+                            fit: BoxFit.cover,
+                            errorBuilder:
+                                (context, error, stackTrace) => Container(
+                                  color: Colors.grey[200],
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      size: 30,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                          )
+                          : Container(), // Нужно добавить, если условие false
+                ),
               ),
               const SizedBox(width: 20), // Отступ между изображением и текстом
               Expanded(

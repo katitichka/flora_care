@@ -64,7 +64,6 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
     required int page,
     required int limit,
   }) async {
-    // emit(const DictionaryState.loading());
     try {
       final List<DictionaryDocsResponseEntity> plants;
       List<DictionaryDocsResponseEntity> filterPlants = [];
@@ -82,6 +81,7 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
                           ))),
                 )
                 .toList();
+                
       } else {
         plants = [];
       }

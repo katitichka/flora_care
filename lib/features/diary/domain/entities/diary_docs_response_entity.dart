@@ -8,6 +8,7 @@ sealed class DiaryDocsResponseEntity with _$DiaryDocsResponseEntity {
   const factory DiaryDocsResponseEntity({
     required String id,
     final String? note,
+    required String created,
     final DateTime? eventDate,
     final String? formattedEventDate,
     required String userPlantId,

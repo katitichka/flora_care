@@ -17,9 +17,27 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _loadData() {
+    if (_isSearching && _query.isNotEmpty) {
+      context.read<DictionaryBloc>().add(
+        DictionaryEvent.search(query: _query, page: 1, limit: 20),
+      );
+    } else {
+      context.read<DictionaryBloc>().add(
+        const DictionaryEvent.getAll(page: 1, limit: 20),
+      );
+    }
   }
 
   void _toggleSearch() {
@@ -28,18 +46,14 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       if (!_isSearching) {
         _searchController.clear();
         _query = '';
-        context.read<DictionaryBloc>().add(
-          const DictionaryEvent.getAll(page: 1, limit: 20),
-        );
+        _loadData();
       }
     });
   }
 
   void _onSearchChanges(String value) {
     _query = value;
-    context.read<DictionaryBloc>().add(
-      DictionaryEvent.search(query: _query, page: 1, limit: 20),
-    );
+    _loadData();
   }
 
   @override
@@ -66,48 +80,62 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       ),
       body: BlocBuilder<DictionaryBloc, DictionaryState>(
         builder: (context, state) {
-          switch (state) {
-            case Initial():
-              return const Center(child: Text('Ничего не загружено'));
-            case Loading():
-              return const Center(child: CircularProgressIndicator());
-            case Error(message: final msg):
-              return Center(child: Text('Ошибка: $msg'));
-            case Loaded(plants: final plants, filterPlants: final filterPlants):
-              return Builder(
-                builder: (context) {
-                  if (filterPlants.isNotEmpty) {
-                    return ViewPlants(plants: filterPlants);
-                  } else {
-                    return ViewPlants(plants: plants);
-                  }
-                },
-              );
-            default:
-              return const SizedBox.shrink();
-          }
+          return _buildContent(state);
         },
       ),
     );
   }
-}
 
-class ViewPlants extends StatelessWidget {
-  final List<DictionaryDocsResponseEntity> plants;
+  Widget _buildContent(DictionaryState state) {
+    if (state is Loading && !_isSearching) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-  const ViewPlants({super.key, required this.plants});
+    if (state is Error) {
+      return Center(child: Text('Ошибка: ${state.message}'));
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: plants.length,
-      itemBuilder: (context, index) {
-        final plant = plants[index];
-        return DictionaryPlantCard(
-          plant: plant,
-          onTap: () => Navigator.pushNamed(context, '/plant', arguments: plant),
+    if (state is Loaded) {
+      final displayPlants = state.filterPlants.isNotEmpty 
+          ? state.filterPlants 
+          : state.plants;
+          
+      if (displayPlants.isEmpty) {
+        return Center(
+          child: Text(_isSearching 
+              ? 'Ничего не найдено' 
+              : 'Растения не загружены'),
         );
-      },
-    );
+      }
+
+      return RefreshIndicator(
+        notificationPredicate: (_) => !_isSearching,
+        onRefresh: () async {
+          if (!_isSearching) {
+            _loadData();
+            await context.read<DictionaryBloc>().stream.firstWhere(
+              (state) => state is Loaded || state is Error,
+            );
+          }
+        },
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: displayPlants.length,
+          itemBuilder: (context, index) {
+            final plant = displayPlants[index];
+            return DictionaryPlantCard(
+              plant: plant,
+              onTap: () => Navigator.pushNamed(
+                context, 
+                '/plant', 
+                arguments: plant,
+              ),
+            );
+          },
+        ),
+      );
+    }
+
+    return const Center(child: Text('Ничего не загружено'));
   }
 }

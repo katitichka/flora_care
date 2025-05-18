@@ -8,6 +8,7 @@ abstract class DiaryDocsResponseMapper {
       id: dto.id,
       note: dto.note,
       eventDate: dto.eventDate,
+      created: dto.created,
       formattedEventDate: dto.formattedEventDate,
       userPlantId: dto.userPlantId,
     );
