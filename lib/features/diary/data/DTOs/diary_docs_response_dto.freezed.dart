@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryDocsResponseDto {
 
- String get collectionId; String get collectionName; String get id; String get created; String get updated;@JsonKey(name: 'event_date') DateTime? get eventDate; String? get note;@JsonKey(name: 'user_plant_id') String get userPlantId;@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? get userPlantData;
+ String get collectionId; String get collectionName; String get id; String get created; String get updated;@JsonKey(name: 'event_date')@SafeDateTimeConverter() DateTime? get eventDate; String? get note;@JsonKey(name: 'user_plant_id') String get userPlantId;@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? get userPlantData;
 /// Create a copy of DiaryDocsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $DiaryDocsResponseDtoCopyWith<$Res>  {
   factory $DiaryDocsResponseDtoCopyWith(DiaryDocsResponseDto value, $Res Function(DiaryDocsResponseDto) _then) = _$DiaryDocsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? userPlantData
+ String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date')@SafeDateTimeConverter() DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? userPlantData
 });
 
 
@@ -100,7 +100,7 @@ $UserPlantsDocsResponseDtoCopyWith<$Res>? get userPlantData {
 @JsonSerializable()
 
 class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
-  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date') this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) this.userPlantData});
+  const _DiaryDocsResponseDto({required this.collectionId, required this.collectionName, required this.id, required this.created, required this.updated, @JsonKey(name: 'event_date')@SafeDateTimeConverter() this.eventDate, this.note, @JsonKey(name: 'user_plant_id') required this.userPlantId, @JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) this.userPlantData});
   factory _DiaryDocsResponseDto.fromJson(Map<String, dynamic> json) => _$DiaryDocsResponseDtoFromJson(json);
 
 @override final  String collectionId;
@@ -108,7 +108,7 @@ class _DiaryDocsResponseDto implements DiaryDocsResponseDto {
 @override final  String id;
 @override final  String created;
 @override final  String updated;
-@override@JsonKey(name: 'event_date') final  DateTime? eventDate;
+@override@JsonKey(name: 'event_date')@SafeDateTimeConverter() final  DateTime? eventDate;
 @override final  String? note;
 @override@JsonKey(name: 'user_plant_id') final  String userPlantId;
 @override@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) final  UserPlantsDocsResponseDto? userPlantData;
@@ -146,7 +146,7 @@ abstract mixin class _$DiaryDocsResponseDtoCopyWith<$Res> implements $DiaryDocsR
   factory _$DiaryDocsResponseDtoCopyWith(_DiaryDocsResponseDto value, $Res Function(_DiaryDocsResponseDto) _then) = __$DiaryDocsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date') DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? userPlantData
+ String collectionId, String collectionName, String id, String created, String updated,@JsonKey(name: 'event_date')@SafeDateTimeConverter() DateTime? eventDate, String? note,@JsonKey(name: 'user_plant_id') String userPlantId,@JsonKey(name: 'expand', fromJson: _userPlantDataFromJson) UserPlantsDocsResponseDto? userPlantData
 });
 
 

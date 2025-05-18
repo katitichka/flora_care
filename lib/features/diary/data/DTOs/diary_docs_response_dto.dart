@@ -1,4 +1,5 @@
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
+import 'package:flora_care/utils/json_datetime_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'diary_docs_response_dto.freezed.dart';
@@ -13,7 +14,10 @@ sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
     required String created,
     required String updated,
 
-    @JsonKey(name: 'event_date') DateTime? eventDate,
+    @JsonKey(name: 'event_date')
+    @SafeDateTimeConverter()
+    DateTime? eventDate,
+
     String? note,
 
     @JsonKey(name: 'user_plant_id') required String userPlantId,
@@ -25,6 +29,7 @@ sealed class DiaryDocsResponseDto with _$DiaryDocsResponseDto {
   factory DiaryDocsResponseDto.fromJson(Map<String, dynamic> json) =>
       _$DiaryDocsResponseDtoFromJson(json);
 }
+
 
 UserPlantsDocsResponseDto? _userPlantDataFromJson(
   Map<String, dynamic>? expand,
