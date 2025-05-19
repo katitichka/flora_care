@@ -29,7 +29,6 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
           page: page,
           limit: limit,
         ),
-        // _GetById(:final id) => _getById(emit: emit, id: id),
       },
     );
   }
@@ -97,26 +96,4 @@ class DictionaryBloc extends Bloc<DictionaryEvent, DictionaryState> {
     }
   }
 
-  // Future<void> _getById({
-  //   required Emitter<DictionaryState> emit,
-  //   required String id,
-  // }) async {
-  //   emit(const DictionaryState.loading());
-  //   try {
-  //     final plant = await _dictionaryRepository.getPlantById(id);
-  //     emit(DictionaryState.loaded(plants: [plant]));
-  //   } catch (e) {
-  //     String message;
-  //     if (e is DictionaryDocsResponseException) {
-  //       message = e.message;
-  //     } else {
-  //       message = handleError(e);
-  //     }
-  //     emit(
-  //       DictionaryState.error(
-  //         message: message,
-  //       ),
-  //     );
-  //   }
-  // }
 }

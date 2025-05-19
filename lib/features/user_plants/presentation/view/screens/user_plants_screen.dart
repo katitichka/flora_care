@@ -22,7 +22,8 @@ class UserPlantsScreen extends StatelessWidget {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
-        buildWhen: (prev, curr) => curr is! ActionSuccess && curr is! ActionFail,
+        buildWhen:
+            (prev, curr) => curr is! ActionSuccess && curr is! ActionFail,
         builder: (context, state) {
           switch (state) {
             case Initial():
@@ -66,6 +67,7 @@ class UserPlantsScreen extends StatelessWidget {
               );
 
             case ActionSuccess():
+              return const SizedBox.shrink();
             case ActionFail():
               return const Center(child: Text('Произошла ошибка при действии'));
           }

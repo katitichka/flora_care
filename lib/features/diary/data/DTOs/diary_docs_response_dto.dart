@@ -1,5 +1,5 @@
 import 'package:flora_care/features/user_plants/data/DTOs/user_plants_docs_response_dto.dart';
-import 'package:flora_care/utils/json_datetime_converter.dart';
+import 'package:flora_care/common/utils/json_datetime_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 

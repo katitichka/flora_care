@@ -1,9 +1,6 @@
 import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_response_entity.dart';
-import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart';
-import 'package:flora_care/main.dart';
 import 'package:flora_care/shared/components/add_plant_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
@@ -25,7 +22,6 @@ class PlantCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Название растения (как в изображении)
             Text(
               plant.scientificName.toUpperCase(),
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -43,7 +39,6 @@ class PlantCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Изображение растения
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -66,8 +61,7 @@ class PlantCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-
-
+            
             _buildInfoSection(context),
             const SizedBox(height: 24),
 

@@ -23,18 +23,4 @@ class DictionaryRepositoryImpl implements DictionaryRepository {
     return dtos.map((dto) => DictionaryDocsResponseMapper.fromDto(dto: dto)).toList();
   }
 
-
-    // @override
-  // Future<DictionaryDocsResponseEntity> getPlantById(String id) async {
-  //   try {
-  //     final result = await _pocketBase.collection('plants').getOne(id);
-  //     return DictionaryDocsResponseMapper.fromDto(
-  //       dto: DictionaryDocsResponseDto.fromJson(result.data),
-  //     );
-  //   } catch (e) {
-  //     debugPrint('Error in getPlantById: $e');
-  //     rethrow;
-  //   }
-  // }
-
 }

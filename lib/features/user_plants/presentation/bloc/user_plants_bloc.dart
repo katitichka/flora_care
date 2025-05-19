@@ -2,7 +2,6 @@ import 'package:flora_care/common/utils/error_handler.dart';
 import 'package:flora_care/features/diary/domain/repositories/diary_repository.dart';
 import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs_response_entity.dart';
 import 'package:flora_care/features/user_plants/domain/repositories/user_plants_repository.dart';
-import 'package:flora_care/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

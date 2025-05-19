@@ -7,10 +7,6 @@ sealed class DictionaryEvent with _$DictionaryEvent {
     required int limit,
   }) = _GetAll;
 
-  // const factory DictionaryEvent.getById({
-  //   required String id,
-  // }) = _GetById;
-
   const factory DictionaryEvent.search({
     required String query,
     required int page,

@@ -45,9 +45,7 @@ Future<void> main() async {
           userPlant.items
               .map((item) => UserPlantsDocsResponseDto.fromJson(item.toJson()))
               .toList();
-      // print('UserPlants $resUserPlants');
       print('Найдено растений пользователя: ${resUserPlants.length}');
-      // print("Starting app...");
 
       runApp(
         App(
