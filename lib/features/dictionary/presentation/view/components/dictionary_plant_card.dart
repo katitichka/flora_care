@@ -6,6 +6,7 @@ class DictionaryPlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
   final VoidCallback? onTap;
 
+
   const DictionaryPlantCard({super.key, required this.plant, this.onTap});
 
   @override
@@ -46,7 +47,6 @@ class DictionaryPlantCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              // Текстовая информация
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

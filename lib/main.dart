@@ -36,16 +36,17 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final authData = await pocketBase
-          .collection('users')
-          .authWithPassword('testemail@email.com', 'test12345');
-      print('Успешная авторизация: ${authData.record?.id}');
-      final userPlant = await pocketBase.collection('user_plants').getList();
-      final resUserPlants =
-          userPlant.items
-              .map((item) => UserPlantsDocsResponseDto.fromJson(item.toJson()))
-              .toList();
-      print('Найдено растений пользователя: ${resUserPlants.length}');
+
+      // final authData = await pocketBase
+      //     .collection('users')
+      //     .authWithPassword('testemail@email.com', 'test12345');
+      // print('Успешная авторизация: ${authData.record?.id}');
+      // final userPlant = await pocketBase.collection('user_plants').getList();
+      // final resUserPlants =
+      //     userPlant.items
+      //         .map((item) => UserPlantsDocsResponseDto.fromJson(item.toJson()))
+      //         .toList();
+      // print('Найдено растений пользователя: ${resUserPlants.length}');
 
       runApp(
         App(

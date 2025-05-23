@@ -12,7 +12,13 @@ class MainScreen extends StatefulWidget {
 class _MainscreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [UserPlantsScreen(), DictionaryScreen()];
+  List<Widget> get _screens => [
+  UserPlantsScreen(onAddPlant: () {
+    _onTabNavigationBar(1); 
+  }),
+  
+  const DictionaryScreen(),
+];
 
   void _onTabNavigationBar(int index) {
     setState(() {
@@ -39,6 +45,7 @@ class _MainscreenState extends State<MainScreen> {
         selectedItemColor: const Color.fromARGB(255, 20, 117, 24),
         onTap: _onTabNavigationBar,
       ),
+      
     );
   }
 }

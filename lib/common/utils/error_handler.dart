@@ -15,25 +15,30 @@ String handleError(dynamic error) {
   }
 
   if (error is ClientException) {
-    final message = error.toString();
-    if (message.contains('Connection reset by peer') || message.contains('SocketException')) {
-      return 'Проблемы с соединением. Проверьте интернет.';
+    final response = error.response;
+
+    final errorMessage = response['message'] ?? response['error'] ?? null;
+    if (errorMessage is String) {
+      return errorMessage;
     }
-    if (message.contains('404')) {
-      return 'Данные не найдены.';
+
+    if (response['data'] is Map<String, dynamic>) {
+      final firstError = (response['data'] as Map).values.first;
+      if (firstError is List && firstError.isNotEmpty) {
+        return firstError.first.toString();
+      }
     }
-    if (message.contains('500')) {
-      return 'Ошибка сервера. Попробуйте позже.';
-    }
-    return 'Неизвестная ошибка сервера.';
+
+    return 'Ошибка запроса. Проверьте введённые данные.';
   }
 
   if (error is DictionaryDocsResponseException) {
-    return error.message; 
+    return error.message;
   }
 
   return 'Произошла непредвиденная ошибка. Попробуйте позже.';
 }
+
 
 void handleException(dynamic error) {
   if (error is SocketException) {

@@ -1,6 +1,5 @@
 import 'package:flora_care/features/authentication/presentation/view/screens/login_screen.dart';
-import 'package:flora_care/features/diary/domain/repositories/diary_repository.dart';
-import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart';
+import 'package:flora_care/features/authentication/presentation/view/screens/register_screen.dart';
 import 'package:flora_care/features/diary/presentation/view/screens/diary_screen.dart';
 import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_response_entity.dart';
 import 'package:flora_care/features/dictionary/presentation/view/screens/dictionary_screen.dart';
@@ -12,9 +11,10 @@ import 'package:flutter/material.dart';
 
 final Map<String, Widget Function(BuildContext)> routes = {
   '/': (context) {
-    final isAuthenticated = pocketBase.authStore.isValid;
-    return isAuthenticated ? const MainScreen() : const LoginScreen();
+    return pocketBase.authStore.isValid ? const MainScreen() : const LoginScreen();
   },
+  '/login': (context) => const LoginScreen(),
+  '/register': (context) => const RegisterScreen(),
   '/diary': (context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
@@ -26,7 +26,11 @@ final Map<String, Widget Function(BuildContext)> routes = {
   },
 
   '/dictionary': (context) => DictionaryScreen(),
-  '/home': (context) => UserPlantsScreen(),
+  '/home': (context) => UserPlantsScreen(
+  onAddPlant: () {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const MainScreen()));
+  },
+),
   '/plant': (context) {
     final plant =
         ModalRoute.of(context)!.settings.arguments

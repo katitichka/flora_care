@@ -1,8 +1,7 @@
-import 'package:flora_care/features/authentication/data/DTOs/auth_docs_response_dto.dart';
+import 'package:flora_care/features/authentication/domain/entities/auth_docs_response_entity.dart';
 
-
-abstract class AuthDataProviderImpl {
-  Future<AuthDocsResponseDto> login({
+abstract class AuthRepository {
+  Future<AuthDocsResponseEntity> login({
     required String email,
     required String password,
   });
@@ -15,7 +14,7 @@ abstract class AuthDataProviderImpl {
 
   bool get isAuthenticated;
 
-  AuthDocsResponseDto? getCurrentUser();
+  AuthDocsResponseEntity? getCurrentUser();
 
   void logout();
 }

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserPlantsScreen extends StatelessWidget {
-  const UserPlantsScreen({super.key});
+    final VoidCallback? onAddPlant;
+  const UserPlantsScreen({super.key,  required this.onAddPlant});
 
   @override
   Widget build(BuildContext context) {
@@ -13,17 +14,16 @@ class UserPlantsScreen extends StatelessWidget {
       body: BlocConsumer<UserPlantsBloc, UserPlantsState>(
         listener: (context, state) {
           if (state is ActionSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
           } else if (state is ActionFail) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
           }
         },
-        buildWhen:
-            (prev, curr) => curr is! ActionSuccess && curr is! ActionFail,
+        buildWhen: (prev, curr) => curr is! ActionSuccess && curr is! ActionFail,
         builder: (context, state) {
           switch (state) {
             case Initial():
@@ -33,37 +33,61 @@ class UserPlantsScreen extends StatelessWidget {
             case Error(message: final msg):
               return Center(child: Text('Ошибка: $msg'));
             case Loaded(userPlants: final userPlants):
-              if (userPlants.isEmpty) {
-                return const Center(child: Text('У вас пока нет растений'));
-              }
-              return ListView.builder(
-                itemCount: userPlants.length,
-                itemBuilder: (context, index) {
-                  return UserPlantCard(
-                    userPlant: userPlants[index],
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/diary',
-                        arguments: {
-                          'plantName': userPlants[index].userPlantName,
-                          'userPlantId': userPlants[index].id,
-                        },
-                      );
-                    },
-                    onDelete: (userPlantId) {
-                      context.read<UserPlantsBloc>().add(
-                        UserPlantsEvent.deleteUserPlant(
-                          userPlantId: userPlantId,
+              return Column(
+                children: [
+                  Expanded(
+                    child: userPlants.isEmpty
+                        ? const Center(child: Text('У вас пока нет растений'))
+                        : ListView.builder(
+                            itemCount: userPlants.length,
+                            itemBuilder: (context, index) {
+                              return UserPlantCard(
+                                userPlant: userPlants[index],
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/diary',
+                                    arguments: {
+                                      'plantName': userPlants[index].userPlantName,
+                                      'userPlantId': userPlants[index].id,
+                                    },
+                                  );
+                                },
+                                onDelete: (userPlantId) {
+                                  context.read<UserPlantsBloc>().add(
+                                    UserPlantsEvent.deleteUserPlant(
+                                      userPlantId: userPlantId,
+                                    ),
+                                  );
+                                },
+                                onWater: (id) => context.read<UserPlantsBloc>().add(
+                                  UserPlantsEvent.waterPlant(userPlantId: id),
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 0, 89, 33),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 16),
                         ),
-                      );
-                    },
-                    onWater:
-                        (id) => context.read<UserPlantsBloc>().add(
-                          UserPlantsEvent.waterPlant(userPlantId: id),
+                        onPressed: onAddPlant,
+                        child: const Text(
+                          'Добавить растение',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
-                  );
-                },
+                      ),
+                    ),
+                  ),
+                ],
               );
 
             case ActionSuccess():

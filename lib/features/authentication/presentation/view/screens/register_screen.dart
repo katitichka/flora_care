@@ -3,41 +3,39 @@ import 'package:flora_care/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   String? error;
   bool isLoading = false;
 
-  Future<void> login() async {
-    setState(() {
-      isLoading = true;
-      error = null;
-    });
-
+  Future<void> register() async {
     try {
       await pocketBase
           .collection('users')
-          .authWithPassword(emailController.text, passwordController.text);
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/');
-      }
+          .create(
+            body: {
+              "email": emailController.text,
+              "password": passwordController.text,
+              "passwordConfirm": passwordController.text,
+              "username": nameController.text,
+            },
+          );
+
+      Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       setState(() {
-        error = handleError(e); 
+        error = handleError(e);
       });
-    } finally {
-      if (mounted) {
-        setState(() => isLoading = false);
-      }
     }
   }
 
@@ -74,19 +72,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        Text(
-                          'Приветствуем Вас в цветочном помощнике!',
-                          style: GoogleFonts.notoSans(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                        const Text(
+                          'Создать аккаунт',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         const SizedBox(height: 20),
-                        Text(
-                          'Войти в аккаунт',
-                          style: GoogleFonts.notoSans(
-                            fontSize: 20,
-                            color: Colors.white,
+                        TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            hintText: 'Ваше имя',
+                            labelStyle: GoogleFonts.notoSans(
+                              color: const Color.fromARGB(255, 108, 108, 108),
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 214, 214, 214),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 2.0,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -110,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 20),
                         TextField(
-                          controller: passwordController, 
+                          controller: passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'Введите пароль',
@@ -128,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
                         if (error != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 16),
@@ -140,7 +145,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.error_outline, color: Colors.red),
+                                  const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                  ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
@@ -152,6 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                        const SizedBox(height: 20),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -160,35 +169,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    'Нет аккаунта?',
+                                    'Есть аккаунт?',
                                     style: TextStyle(
                                       color: Color.fromARGB(179, 217, 217, 217),
                                     ),
                                   ),
                                   TextButton(
-                                    onPressed: isLoading
-                                        ? null
-                                        : () => Navigator.pushReplacementNamed(
-                                              context,
-                                              '/register',
-                                            ),
+                                    onPressed:
+                                        isLoading
+                                            ? null
+                                            : () =>
+                                                Navigator.pushReplacementNamed(
+                                                  context,
+                                                  '/login',
+                                                ),
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
                                       minimumSize: Size(0, 0),
-                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       alignment: Alignment.centerLeft,
                                     ),
                                     child: const Text(
-                                      'Зарегистрироваться',
+                                      'Войти',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 20), 
+                            const SizedBox(width: 20),
                             ElevatedButton(
-                              onPressed: isLoading ? null : login,
+                              onPressed: isLoading ? null : register,
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 9,
@@ -208,23 +220,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              child: isLoading
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
+                              child:
+                                  isLoading
+                                      ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                      : const Text(
+                                        'Создать',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    )
-                                  : const Text(
-                                      'Войти',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
                             ),
                           ],
                         ),
@@ -240,3 +253,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+// SizedBox(
+//                           width: double.infinity,
+//                           child: ElevatedButton(
+//                             onPressed: register,
+//                             style: ElevatedButton.styleFrom(
+//                               padding: const EdgeInsets.symmetric(vertical: 16),
+//                             ),
+//                             child: const Text('Создать'),
+//                           ),
+//                         ),
