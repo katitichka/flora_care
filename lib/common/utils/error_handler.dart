@@ -29,7 +29,7 @@ String handleError(dynamic error) {
       }
     }
 
-    return 'Ошибка запроса. Проверьте введённые данные.';
+    return 'Ошибка запроса. Попробуйте еще раз.';
   }
 
   if (error is DictionaryDocsResponseException) {

@@ -139,8 +139,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final halfScreenHeight = (screenHeight - kToolbarHeight - 100) / 2; // Subtract app bar height and some padding
+
     return Scaffold(
-      appBar: AppBar(title: Text('Дневник растения "${widget.plantName}"')),
+      appBar: AppBar(title: const Text('Дневник')),
       body: BlocBuilder<DiaryBloc, DiaryState>(
         builder: (context, state) {
           return switch (state) {
@@ -148,28 +151,157 @@ class _DiaryScreenState extends State<DiaryScreen> {
             Error(:final message) => Center(child: Text(message)),
             Loaded(:final plantEvents, :final plantNotes) => Column(
               children: [
-                _buildSectionWithButton(
-                  title: 'История поливов',
-                  entries: plantEvents,
-                  onPressed: () => _addEvent(context),
-                  onLongPress: (event) => _showDeleteDialog(context, event),
-                  itemBuilder: (context, event) => ListTile(
-                    title: Text(
-                      'Полив: ${DateFormat('dd-MM-yyyy в HH:mm').format(event.eventDate!)}',
-                    ),
+                // Plant name with underline
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.plantName,
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        height: 2,
+                        width: 100,
+                        color: Colors.green,
+                        margin: const EdgeInsets.only(bottom: 8),
+                      ),
+                    ],
                   ),
                 ),
-                const Divider(height: 1),
-                _buildSectionWithButton(
-                  title: 'Заметки',
-                  entries: plantNotes.where((e) => e.note != null).toList(),
-                  onPressed: () => _addNote(context),
-                  onLongPress: (note) => _showDeleteDialog(context, note),
-                  itemBuilder: (context, note) => ListTile(
-                    title: Text(note.note ?? ''),
-                    subtitle: Text(
-                      'Создано: ${DateFormat('dd-MM-yyyy в HH:mm').format(DateTime.parse(note.created))}',
-                    ),
+                
+                // Watering history section (fixed height with internal scrolling)
+                Container(
+                  height: halfScreenHeight,
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'История полива',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () => _addEvent(context),
+                              tooltip: 'Добавить полив',
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(color: Colors.green, height: 1),
+                      Expanded(
+                        child: plantEvents.isEmpty
+                            ? const Center(child: Text('Нет записей о поливе'))
+                            : ListView.builder(
+                                itemCount: plantEvents.length,
+                                itemBuilder: (context, index) {
+                                  final event = plantEvents[index];
+                                  return GestureDetector(
+                                    onLongPress: () => _showDeleteDialog(context, event),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(DateFormat('dd.MM').format(event.eventDate!)),
+                                              Text(DateFormat('HH:mm').format(event.eventDate!)),
+                                            ],
+                                          ),
+                                        ),
+                                        if (index != plantEvents.length - 1)
+                                          const Divider(color: Colors.green, height: 1),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Notes section (fixed height with internal scrolling)
+                Container(
+                  height: halfScreenHeight,
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Заметки',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () => _addNote(context),
+                              tooltip: 'Добавить заметку',
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(color: Colors.green, height: 1),
+                      Expanded(
+                        child: plantNotes.where((e) => e.note != null).isEmpty
+                            ? const Center(child: Text('Нет заметок'))
+                            : ListView.builder(
+                                itemCount: plantNotes.where((e) => e.note != null).length,
+                                itemBuilder: (context, index) {
+                                  final note = plantNotes.where((e) => e.note != null).toList()[index];
+                                  return GestureDetector(
+                                    onLongPress: () => _showDeleteDialog(context, note),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${DateFormat('dd.MM').format(DateTime.parse(note.created))}',
+                                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(note.note ?? ''),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        if (index != plantNotes.where((e) => e.note != null).length - 1)
+                                          const Divider(color: Colors.green, height: 1),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -177,45 +309,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
             _ => const SizedBox.shrink(),
           };
         },
-      ),
-    );
-  }
-
-  Widget _buildSectionWithButton({
-    required String title,
-    required List<DiaryDocsResponseEntity> entries,
-    required VoidCallback onPressed,
-    required Function(DiaryDocsResponseEntity) onLongPress,
-    required Widget Function(BuildContext, DiaryDocsResponseEntity) itemBuilder,
-  }) {
-    return Expanded(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: onPressed,
-                  tooltip: 'Добавить ${title.toLowerCase()}',
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: DiarySection(
-              entries: entries,
-              itemBuilder: itemBuilder,
-              onLongPress: onLongPress,
-            ),
-          ),
-        ],
       ),
     );
   }
