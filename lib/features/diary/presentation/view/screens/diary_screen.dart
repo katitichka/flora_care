@@ -1,5 +1,4 @@
 import 'package:flora_care/features/diary/domain/entities/diary_docs_response_entity.dart';
-import 'package:flora_care/features/diary/presentation/view/components/diary_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart';
@@ -66,27 +65,29 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
     final result = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Добавить заметку'),
-        content: TextField(
-          controller: noteController,
-          autofocus: true,
-          maxLines: null,
-          decoration: const InputDecoration(
-            hintText: 'Введите текст заметки',
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Добавить заметку'),
+            content: TextField(
+              controller: noteController,
+              autofocus: true,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Введите текст заметки',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Отмена'),
+              ),
+              TextButton(
+                onPressed:
+                    () => Navigator.of(context).pop(noteController.text.trim()),
+                child: const Text('Добавить'),
+              ),
+            ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Отмена'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(noteController.text.trim()),
-            child: const Text('Добавить'),
-          ),
-        ],
-      ),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -98,217 +99,265 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   void _showDeleteDialog(BuildContext context, DiaryDocsResponseEntity item) {
     final isEvent = item.eventDate != null;
-    
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Подтвердите удаление'),
-        content: Text('Вы уверены, что хотите удалить эту ${isEvent ? 'запись о поливе' : 'заметку'}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Отмена'),
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Подтвердите удаление'),
+            content: Text(
+              'Вы уверены, что хотите удалить эту ${isEvent ? 'запись о поливе' : 'заметку'}?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Отмена'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (isEvent) {
+                    context.read<DiaryBloc>().add(
+                      DiaryEvent.modifyEvent(
+                        userPlantId: widget.userPlantId,
+                        isDelete: true,
+                        eventId: item.id,
+                      ),
+                    );
+                  } else {
+                    context.read<DiaryBloc>().add(
+                      DiaryEvent.modifyNote(
+                        userPlantId: widget.userPlantId,
+                        isDelete: true,
+                        noteId: item.id,
+                      ),
+                    );
+                  }
+                },
+                child: const Text(
+                  'Удалить',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              if (isEvent) {
-                context.read<DiaryBloc>().add(
-                  DiaryEvent.modifyEvent(
-                    userPlantId: widget.userPlantId,
-                    isDelete: true,
-                    eventId: item.id,
-                  ),
-                );
-              } else {
-                context.read<DiaryBloc>().add(
-                  DiaryEvent.modifyNote(
-                    userPlantId: widget.userPlantId,
-                    isDelete: true,
-                    noteId: item.id,
-                  ),
-                );
-              }
-            },
-            child: const Text('Удалить', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final halfScreenHeight = (screenHeight - kToolbarHeight - 100) / 2; // Subtract app bar height and some padding
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Дневник')),
+      appBar: AppBar(title: Text('Дневник: ${widget.plantName}')),
       body: BlocBuilder<DiaryBloc, DiaryState>(
         builder: (context, state) {
-          return switch (state) {
-            Loading() => const Center(child: CircularProgressIndicator()),
-            Error(:final message) => Center(child: Text(message)),
-            Loaded(:final plantEvents, :final plantNotes) => Column(
-              children: [
-                // Plant name with underline
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.plantName,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Container(
-                        height: 2,
-                        width: 100,
-                        color: Colors.green,
-                        margin: const EdgeInsets.only(bottom: 8),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Watering history section (fixed height with internal scrolling)
-                Container(
-                  height: halfScreenHeight,
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'История полива',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () => _addEvent(context),
-                              tooltip: 'Добавить полив',
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(color: Colors.green, height: 1),
-                      Expanded(
-                        child: plantEvents.isEmpty
-                            ? const Center(child: Text('Нет записей о поливе'))
-                            : ListView.builder(
-                                itemCount: plantEvents.length,
-                                itemBuilder: (context, index) {
-                                  final event = plantEvents[index];
-                                  return GestureDetector(
-                                    onLongPress: () => _showDeleteDialog(context, event),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(DateFormat('dd.MM').format(event.eventDate!)),
-                                              Text(DateFormat('HH:mm').format(event.eventDate!)),
-                                            ],
-                                          ),
-                                        ),
-                                        if (index != plantEvents.length - 1)
-                                          const Divider(color: Colors.green, height: 1),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Notes section (fixed height with internal scrolling)
-                Container(
-                  height: halfScreenHeight,
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Заметки',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () => _addNote(context),
-                              tooltip: 'Добавить заметку',
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(color: Colors.green, height: 1),
-                      Expanded(
-                        child: plantNotes.where((e) => e.note != null).isEmpty
-                            ? const Center(child: Text('Нет заметок'))
-                            : ListView.builder(
-                                itemCount: plantNotes.where((e) => e.note != null).length,
-                                itemBuilder: (context, index) {
-                                  final note = plantNotes.where((e) => e.note != null).toList()[index];
-                                  return GestureDetector(
-                                    onLongPress: () => _showDeleteDialog(context, note),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${DateFormat('dd.MM').format(DateTime.parse(note.created))}',
-                                                style: const TextStyle(fontWeight: FontWeight.bold),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Expanded(
-                                                child: Text(note.note ?? ''),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        if (index != plantNotes.where((e) => e.note != null).length - 1)
-                                          const Divider(color: Colors.green, height: 1),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            _ => const SizedBox.shrink(),
-          };
+          if (state is Loading)
+            return const Center(child: CircularProgressIndicator());
+          if (state is Error) return Center(child: Text(state.message));
+          if (state is Loaded) return _buildContent(context, state);
+          return const SizedBox();
         },
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, Loaded state) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final sectionHeight = constraints.maxHeight * 0.45;
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              // История полива
+              _buildEventSection(
+                context,
+                height: sectionHeight,
+                events: state.plantEvents,
+                onAdd: () => _addEvent(context),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Заметки
+              _buildNotesSection(
+                context,
+                height: sectionHeight,
+                notes: state.plantNotes.where((n) => n.note != null).toList(),
+                onAdd: () => _addNote(context),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildEventSection(
+    BuildContext context, {
+    required double height,
+    required List<DiaryDocsResponseEntity> events,
+    required VoidCallback onAdd,
+  }) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: height),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.green, width: 2.0),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Text(
+                    'История полива',
+                    style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(icon: const Icon(Icons.add), onPressed: onAdd),
+                ],
+              ),
+            ),
+            Expanded(
+              child:
+                  events.isEmpty
+                      ? const Center(child: Text('Нет записей о поливе'))
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: events.length,
+                        itemBuilder: (context, index) {
+                          final event = events[index];
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      DateFormat(
+                                        'dd.MM',
+                                      ).format(event.eventDate!),
+                                    ),
+                                    Text(
+                                      DateFormat(
+                                        'HH:mm',
+                                      ).format(event.eventDate!),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (index != events.length - 1)
+                                const Divider(
+                                  height: 1,
+                                  indent: 16,
+                                  endIndent: 16,
+                                  color: Colors.green,
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotesSection(
+    BuildContext context, {
+    required double height,
+    required List<DiaryDocsResponseEntity> notes,
+    required VoidCallback onAdd,
+  }) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: height),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.green, width: 2.0),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Text(
+                    'Заметки',
+                    style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(icon: const Icon(Icons.add), onPressed: onAdd),
+                ],
+              ),
+            ),
+            Expanded(
+              child:
+                  notes.isEmpty
+                      ? const Center(child: Text('Нет заметок'))
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: notes.length,
+                        itemBuilder: (context, index) {
+                          final note = notes[index];
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 16,
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(
+                                      DateFormat(
+                                        'dd.MM',
+                                      ).format(DateTime.parse(note.created)),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(note.note ?? ''),
+                                  ],
+                                ),
+                              ),
+                              if (index != notes.length - 1)
+                                const Divider(
+                                  height: 1,
+                                  indent: 16,
+                                  endIndent: 16,
+                                  color: Colors.green,
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+            ),
+          ],
+        ),
       ),
     );
   }

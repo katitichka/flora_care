@@ -1,0 +1,62 @@
+@startuml Flora Care Component Diagram
+
+skinparam componentStyle rectangle
+skinparam component {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  ArrowColor #000000
+}
+
+package "Flora Care Application" {
+  [Main App Component] as main
+  
+  package "Core Features" {
+    [Authentication Module] as auth
+    [Plant Dictionary] as dict
+    [User Plants Manager] as plants
+    [Plant Diary] as diary
+  }
+
+  package "Common Components" {
+    [Theme Manager] as theme
+    [Shared Utils] as utils
+  }
+
+  package "External Services" {
+    [Local Storage] as storage
+    [Network Service] as network
+  }
+
+  package "Platform Specific" {
+    [Android Platform] as android
+    [iOS Platform] as ios
+    [Web Platform] as web
+    [Desktop Platforms] as desktop
+  }
+}
+
+' Relationships
+main --> auth : uses
+main --> theme : uses
+main --> utils : uses
+
+auth --> storage : uses
+auth --> network : uses
+
+plants --> dict : uses
+plants --> storage : uses
+plants --> network : uses
+
+diary --> plants : uses
+diary --> storage : uses
+
+dict --> network : uses
+dict --> storage : uses
+
+' Platform connections
+android --> main : implements
+ios --> main : implements
+web --> main : implements
+desktop --> main : implements
+
+@enduml 
