@@ -39,6 +39,11 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
           emit: emit,
           userPlantId: userPlantId,
         ),
+        _UpdatePlantName(:final userPlantId, :final newName) => _updatePlantName(
+          emit: emit,
+          userPlantId: userPlantId,
+          newName: newName,
+        ),
       },
     );
   }
@@ -159,4 +164,51 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
       );
     }
   }
+ Future<void> _updatePlantName({
+  required Emitter<UserPlantsState> emit,
+  required String userPlantId,
+  required String newName,
+}) async {
+  if (state is! Loaded) return;
+  
+  final currentPlants = (state as Loaded).userPlants;
+
+  try {
+    final isUnique = await _userPlantsRepository.isPlantNameUnique(
+      name: newName,
+      userId: await _userPlantsRepository.getCurrentUserId(),
+    );
+
+    if (!isUnique) {
+      emit(UserPlantsState.actionFail(
+        message: 'Растение с таким именем уже существует',
+        userPlants: currentPlants,
+      ));
+      return;
+    }
+
+    // Update in repository
+    await _userPlantsRepository.updatePlantName(
+      userPlantId: userPlantId,
+      newName: newName,
+    );
+
+    // Update local state
+    final updatedPlants = currentPlants.map((plant) {
+      if (plant.id == userPlantId) {
+        return plant.copyWith(userPlantName: newName);
+      }
+      return plant;
+    }).toList();
+
+    emit(UserPlantsState.loaded(userPlants: updatedPlants));
+    emit(UserPlantsState.actionSuccess(message: 'Имя растения изменено'));
+  } catch (e) {
+    emit(UserPlantsState.actionFail(
+      message: handleError(e),
+      userPlants: currentPlants,
+    ));
+  }
 }
+}
+

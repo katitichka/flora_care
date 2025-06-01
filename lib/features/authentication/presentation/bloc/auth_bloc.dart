@@ -31,6 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _Logout() => _onLogout(emit: emit),
       },
     );
+    add(const AuthEvent.checkAuth());
   }
 
   Future<void> _onLogin({

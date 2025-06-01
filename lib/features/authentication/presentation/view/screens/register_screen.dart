@@ -1,10 +1,12 @@
 import 'package:flora_care/common/utils/error_handler.dart';
-import 'package:flora_care/main.dart';
+import 'package:flora_care/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final AuthRepository authRepository;
+  
+  const RegisterScreen({super.key, required this.authRepository});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -19,23 +21,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isLoading = false;
 
   Future<void> register() async {
+    setState(() {
+      isLoading = true;
+      error = null;
+    });
+    
     try {
-      await pocketBase
-          .collection('users')
-          .create(
-            body: {
-              "email": emailController.text,
-              "password": passwordController.text,
-              "passwordConfirm": passwordController.text,
-              "username": nameController.text,
-            },
-          );
+      await widget.authRepository.register(
+        username: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
-      Navigator.pushReplacementNamed(context, '/login');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
     } catch (e) {
       setState(() {
         error = handleError(e);
       });
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -175,14 +185,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                    onPressed:
-                                        isLoading
-                                            ? null
-                                            : () =>
-                                                Navigator.pushReplacementNamed(
-                                                  context,
-                                                  '/login',
-                                                ),
+                                    onPressed: isLoading
+                                        ? null
+                                        : () => Navigator.pushReplacementNamed(
+                                              context,
+                                              '/login',
+                                            ),
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
                                       minimumSize: Size(0, 0),
@@ -220,24 +228,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                 ),
                               ),
-                              child:
-                                  isLoading
-                                      ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                      : const Text(
-                                        'Создать',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                              child: isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
                                       ),
+                                    )
+                                  : const Text(
+                                      'Создать',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ],
                         ),
@@ -253,13 +260,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-// SizedBox(
-//                           width: double.infinity,
-//                           child: ElevatedButton(
-//                             onPressed: register,
-//                             style: ElevatedButton.styleFrom(
-//                               padding: const EdgeInsets.symmetric(vertical: 16),
-//                             ),
-//                             child: const Text('Создать'),
-//                           ),
-//                         ),

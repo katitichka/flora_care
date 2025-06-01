@@ -379,6 +379,80 @@ as String,
 }
 
 /// @nodoc
+
+
+class _UpdatePlantName with DiagnosticableTreeMixin implements UserPlantsEvent {
+  const _UpdatePlantName({required this.userPlantId, required this.newName});
+  
+
+ final  String userPlantId;
+ final  String newName;
+
+/// Create a copy of UserPlantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdatePlantNameCopyWith<_UpdatePlantName> get copyWith => __$UpdatePlantNameCopyWithImpl<_UpdatePlantName>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'UserPlantsEvent.updatePlantName'))
+    ..add(DiagnosticsProperty('userPlantId', userPlantId))..add(DiagnosticsProperty('newName', newName));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdatePlantName&&(identical(other.userPlantId, userPlantId) || other.userPlantId == userPlantId)&&(identical(other.newName, newName) || other.newName == newName));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,userPlantId,newName);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'UserPlantsEvent.updatePlantName(userPlantId: $userPlantId, newName: $newName)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdatePlantNameCopyWith<$Res> implements $UserPlantsEventCopyWith<$Res> {
+  factory _$UpdatePlantNameCopyWith(_UpdatePlantName value, $Res Function(_UpdatePlantName) _then) = __$UpdatePlantNameCopyWithImpl;
+@useResult
+$Res call({
+ String userPlantId, String newName
+});
+
+
+
+
+}
+/// @nodoc
+class __$UpdatePlantNameCopyWithImpl<$Res>
+    implements _$UpdatePlantNameCopyWith<$Res> {
+  __$UpdatePlantNameCopyWithImpl(this._self, this._then);
+
+  final _UpdatePlantName _self;
+  final $Res Function(_UpdatePlantName) _then;
+
+/// Create a copy of UserPlantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userPlantId = null,Object? newName = null,}) {
+  return _then(_UpdatePlantName(
+userPlantId: null == userPlantId ? _self.userPlantId : userPlantId // ignore: cast_nullable_to_non_nullable
+as String,newName: null == newName ? _self.newName : newName // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$UserPlantsState implements DiagnosticableTreeMixin {
 
 

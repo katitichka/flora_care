@@ -7,43 +7,44 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
   UserPlantDataProviderImpl({required PocketBase pocketBase})
     : _pocketBase = pocketBase;
 
- @override
+  @override
   Future<List<UserPlantsDocsResponseDto>> getAllUserPlants() async {
     try {
-      final plantModels = await _pocketBase.collection('user_plants').getList(
-        expand: 'plant_id',
-      );
+      final plantModels = await _pocketBase
+          .collection('user_plants')
+          .getList(expand: 'plant_id');
 
-      final plantsList = plantModels.items.map((plantModel) {
-        final dto = UserPlantsDocsResponseDto.fromJson(plantModel.toJson());
+      final plantsList =
+          plantModels.items.map((plantModel) {
+            final dto = UserPlantsDocsResponseDto.fromJson(plantModel.toJson());
 
-        final expandedPlants = plantModel.expand['plant_id'] as List<dynamic>?;
-        if (expandedPlants is List) {
-          final expandedPlant = expandedPlants!.first;
-          final imageValue = expandedPlant.getStringValue('image');
-          if (imageValue != null) {
-            final imageUrl = _pocketBase.files
-                .getUrl(expandedPlant, imageValue)
-                .toString();
-            if (dto.plantData != null) {
-              final updatedPlant = dto.plantData!.copyWith(image: imageUrl);
-              return dto.copyWith(plantData: updatedPlant);
+            final expandedPlants =
+                plantModel.expand['plant_id'] as List<dynamic>?;
+            if (expandedPlants is List) {
+              final expandedPlant = expandedPlants!.first;
+              final imageValue = expandedPlant.getStringValue('image');
+              if (imageValue != null) {
+                final imageUrl =
+                    _pocketBase.files
+                        .getUrl(expandedPlant, imageValue)
+                        .toString();
+                if (dto.plantData != null) {
+                  final updatedPlant = dto.plantData!.copyWith(image: imageUrl);
+                  return dto.copyWith(plantData: updatedPlant);
+                }
+                print('Expanded plant data: ${expandedPlant.toJson()}');
+                print('Image files: $imageValue');
+              }
             }
-            print('Expanded plant data: ${expandedPlant.toJson()}');
-            print('Image files: $imageValue');
-          }
-        }
 
-        return dto;
-      }).toList();
+            return dto;
+          }).toList();
 
       return plantsList;
     } catch (e) {
       throw Exception('Failed to get user plants: $e');
     }
   }
-
-
 
   @override
   Future<List<UserPlantsDocsResponseDto>> addUserPlant({
@@ -99,14 +100,34 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
     required DateTime wateredAt,
   }) async {
     try {
-      await _pocketBase.collection('diary').create(
-        body: {
-          'user_plant_id': userPlantId,
-          'watered_at'    : wateredAt.toIso8601String(),
-        },
-      );
+      await _pocketBase
+          .collection('diary')
+          .create(
+            body: {
+              'user_plant_id': userPlantId,
+              'watered_at': wateredAt.toIso8601String(),
+            },
+          );
     } catch (e) {
       throw Exception('Failed to add watering: $e');
     }
+  }
+
+  @override
+  Future<void> updatePlantName({
+    required String userPlantId,
+    required String newName,
+  }) async {
+    try {
+      await _pocketBase
+          .collection('user_plants')
+          .update(userPlantId, body: {'user_plant_name': newName});
+    } catch (e) {
+      throw Exception('Failed to update plant name: $e');
+    }
+  }
+  @override
+  Future<String> getCurrentUserId() async {
+    return _pocketBase.authStore.model?.id ?? '';
   }
 }

@@ -3,7 +3,8 @@ import 'package:flora_care/features/user_plants/presentation/view/screens/user_p
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final String userId;
+  const MainScreen({super.key, required this.userId});
 
   @override
   State<MainScreen> createState() => _MainscreenState();
@@ -12,13 +13,13 @@ class MainScreen extends StatefulWidget {
 class _MainscreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  List<Widget> get _screens => [
-  UserPlantsScreen(onAddPlant: () {
-    _onTabNavigationBar(1); 
-  }),
-  
-  const DictionaryScreen(),
-];
+  late final List<Widget> _screens = [
+    UserPlantsScreen(
+      userId: widget.userId,
+      onAddPlant: () => _onTabNavigationBar(1),
+    ),
+    DictionaryScreen(userId: widget.userId),
+  ];
 
   void _onTabNavigationBar(int index) {
     setState(() {
@@ -45,7 +46,6 @@ class _MainscreenState extends State<MainScreen> {
         selectedItemColor: const Color.fromARGB(255, 20, 117, 24),
         onTap: _onTabNavigationBar,
       ),
-      
     );
   }
 }

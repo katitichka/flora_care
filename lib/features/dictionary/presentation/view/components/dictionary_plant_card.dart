@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 class DictionaryPlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
   final VoidCallback? onTap;
+  final String userId;
 
-
-  const DictionaryPlantCard({super.key, required this.plant, this.onTap});
+  const DictionaryPlantCard({super.key, required this.plant, this.onTap, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class DictionaryPlantCard extends StatelessWidget {
                 ),
                 iconSize: 40,
                 onPressed:
-                    () => AddPlantButton(plant: plant).onPressed(context),
+                    () => AddPlantButton(plant: plant, userId: userId).onPressed(context),
               ),
             ],
           ),

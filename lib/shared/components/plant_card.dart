@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class PlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
+  final String userId;
 
-  const PlantCard({super.key, required this.plant});
+  const PlantCard({super.key, required this.plant, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +26,17 @@ class PlantCard extends StatelessWidget {
             Text(
               plant.scientificName.toUpperCase(),
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               plant.commonName,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: Colors.grey[600],
-                  ),
+                fontStyle: FontStyle.italic,
+                color: Colors.grey[600],
+              ),
             ),
             const SizedBox(height: 16),
 
@@ -46,22 +47,23 @@ class PlantCard extends StatelessWidget {
                   plant.image,
                   height: 200,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    height: 200,
-                    color: Colors.grey[200],
-                    child: const Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 50,
-                        color: Colors.grey,
+                  errorBuilder:
+                      (context, error, stackTrace) => Container(
+                        height: 200,
+                        color: Colors.grey[200],
+                        child: const Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
                 ),
               ),
             ),
             const SizedBox(height: 24),
-            
+
             _buildInfoSection(context),
             const SizedBox(height: 24),
 
@@ -69,15 +71,19 @@ class PlantCard extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 0, 89, 33),
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
                 ),
-                onPressed: () => AddPlantButton(plant: plant).onPressed(context),
+                onPressed:
+                    () => AddPlantButton(
+                      plant: plant,
+                      userId: userId,
+                    ).onPressed(context),
                 child: const Text(
                   'Добавить в мои растения',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
@@ -110,20 +116,11 @@ class PlantCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
-        ),
+        Text(title, style: const TextStyle(fontSize: 16, color: Colors.grey)),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         const Divider(height: 1, color: Colors.grey),

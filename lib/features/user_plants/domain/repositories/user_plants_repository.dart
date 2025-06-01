@@ -17,4 +17,10 @@ abstract interface class UserPlantsRepository {
     required String userPlantId,
     required DateTime wateredAt,
   });
+  Future<void> updatePlantName({
+    required String userPlantId,
+    required String newName,
+  });
+  Future<bool> isPlantNameUnique({required String name, required String userId});
+  Future<String> getCurrentUserId();
 }

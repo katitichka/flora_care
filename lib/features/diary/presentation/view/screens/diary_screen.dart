@@ -1,7 +1,8 @@
 import 'package:flora_care/features/diary/domain/entities/diary_docs_response_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart';
+import 'package:flora_care/features/diary/presentation/bloc/diary_bloc.dart' as diary_bloc;
+import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart' as user_plants_bloc;
 import 'package:intl/intl.dart';
 
 class DiaryScreen extends StatefulWidget {
@@ -22,8 +23,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<DiaryBloc>().add(
-      DiaryEvent.getDiary(userPlantId: widget.userPlantId),
+    context.read<diary_bloc.DiaryBloc>().add(
+      diary_bloc.DiaryEvent.getDiary(userPlantId: widget.userPlantId),
     );
   }
 
@@ -52,8 +53,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
       addedTime.minute,
     );
 
-    context.read<DiaryBloc>().add(
-      DiaryEvent.addEvent(
+    context.read<diary_bloc.DiaryBloc>().add(
+      diary_bloc.DiaryEvent.addEvent(
         userPlantId: widget.userPlantId,
         eventDate: resultDate,
       ),
@@ -91,8 +92,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
     );
 
     if (result != null && result.isNotEmpty) {
-      context.read<DiaryBloc>().add(
-        DiaryEvent.addNote(userPlantId: widget.userPlantId, noteText: result),
+      context.read<diary_bloc.DiaryBloc>().add(
+        diary_bloc.DiaryEvent.addNote(userPlantId: widget.userPlantId, noteText: result),
       );
     }
   }
@@ -117,16 +118,16 @@ class _DiaryScreenState extends State<DiaryScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   if (isEvent) {
-                    context.read<DiaryBloc>().add(
-                      DiaryEvent.modifyEvent(
+                    context.read<diary_bloc.DiaryBloc>().add(
+                      diary_bloc.DiaryEvent.modifyEvent(
                         userPlantId: widget.userPlantId,
                         isDelete: true,
                         eventId: item.id,
                       ),
                     );
                   } else {
-                    context.read<DiaryBloc>().add(
-                      DiaryEvent.modifyNote(
+                    context.read<diary_bloc.DiaryBloc>().add(
+                      diary_bloc.DiaryEvent.modifyNote(
                         userPlantId: widget.userPlantId,
                         isDelete: true,
                         noteId: item.id,
@@ -144,23 +145,75 @@ class _DiaryScreenState extends State<DiaryScreen> {
     );
   }
 
+Future<void> _changePlantName(BuildContext context) async {
+  final textController = TextEditingController(text: widget.plantName);
+  
+  final newName = await showDialog<String>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Изменить имя растения'),
+      content: TextField(
+        controller: textController,
+        autofocus: true,
+        decoration: const InputDecoration(
+          hintText: 'Введите новое имя растения',
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Отмена'),
+        ),
+        TextButton(
+          onPressed: () async {
+            if (textController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Введите имя растения')),
+              );
+              return;
+            }
+
+            if (textController.text == widget.plantName) {
+              Navigator.of(context).pop();
+              return;
+            }
+
+            Navigator.pop(context, textController.text);
+          },
+          child: const Text('Готово'),
+        ),
+      ],
+    ),
+  );
+
+  if (newName != null && newName.isNotEmpty) {
+    context.read<user_plants_bloc.UserPlantsBloc>().add(
+      user_plants_bloc.UserPlantsEvent.updatePlantName(
+        userPlantId: widget.userPlantId,
+        newName: newName,
+      ),
+    );
+  }
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Дневник: ${widget.plantName}')),
-      body: BlocBuilder<DiaryBloc, DiaryState>(
+      body: BlocBuilder<diary_bloc.DiaryBloc, diary_bloc.DiaryState>(
         builder: (context, state) {
-          if (state is Loading)
+          if (state is diary_bloc.Loading)
             return const Center(child: CircularProgressIndicator());
-          if (state is Error) return Center(child: Text(state.message));
-          if (state is Loaded) return _buildContent(context, state);
+          if (state is diary_bloc.Error) return Center(child: Text(state.message));
+          if (state is diary_bloc.Loaded) return _buildContent(context, state);
           return const SizedBox();
         },
       ),
     );
   }
 
-  Widget _buildContent(BuildContext context, Loaded state) {
+  Widget _buildContent(BuildContext context, diary_bloc.Loaded state) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final sectionHeight = constraints.maxHeight * 0.45;

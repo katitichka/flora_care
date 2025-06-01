@@ -13,7 +13,7 @@ abstract class AuthRepository {
   });
 
   bool get isAuthenticated;
-
+  String? get currentUserId;
   AuthDocsResponseEntity? getCurrentUser();
 
   void logout();

@@ -20,4 +20,8 @@ sealed class UserPlantsEvent with _$UserPlantsEvent {
   const factory UserPlantsEvent.waterPlant({
     required String userPlantId
   }) = _WaterPlant;
+  const factory UserPlantsEvent.updatePlantName({
+    required String userPlantId,
+    required String newName,
+  }) = _UpdatePlantName;
 }

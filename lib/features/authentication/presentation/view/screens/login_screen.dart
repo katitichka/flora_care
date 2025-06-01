@@ -1,10 +1,12 @@
 import 'package:flora_care/common/utils/error_handler.dart';
+import 'package:flora_care/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flora_care/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final AuthRepository authRepository;
+  const LoginScreen({super.key, required this.authRepository});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -13,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
   String? error;
   bool isLoading = false;
 
@@ -24,21 +25,25 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      await pocketBase
-          .collection('users')
-          .authWithPassword(emailController.text, passwordController.text);
+    await widget.authRepository.login(
+          email: emailController.text, 
+          password: passwordController.text,
+        );
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/');
       }
     } catch (e) {
       setState(() {
-        error = handleError(e); 
+        error = handleError(e);
       });
     } finally {
       if (mounted) {
         setState(() => isLoading = false);
       }
     }
+  }
+ String _parseError(dynamic error) {
+    return error.toString();
   }
 
   @override
@@ -110,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 20),
                         TextField(
-                          controller: passwordController, 
+                          controller: passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'Введите пароль',
@@ -139,7 +144,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.error_outline, color: Colors.red),
+                                  const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                  ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
@@ -166,16 +174,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                    onPressed: isLoading
-                                        ? null
-                                        : () => Navigator.pushReplacementNamed(
-                                              context,
-                                              '/register',
-                                            ),
+                                    onPressed:
+                                        isLoading
+                                            ? null
+                                            : () =>
+                                                Navigator.pushReplacementNamed(
+                                                  context,
+                                                  '/register',
+                                                ),
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
                                       minimumSize: Size(0, 0),
-                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                       alignment: Alignment.centerLeft,
                                     ),
                                     child: const Text(
@@ -186,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 20), 
+                            const SizedBox(width: 20),
                             ElevatedButton(
                               onPressed: isLoading ? null : login,
                               style: ElevatedButton.styleFrom(
@@ -208,23 +219,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              child: isLoading
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
+                              child:
+                                  isLoading
+                                      ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                      : const Text(
+                                        'Войти',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    )
-                                  : const Text(
-                                      'Войти',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
                             ),
                           ],
                         ),

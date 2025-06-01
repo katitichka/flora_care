@@ -6,7 +6,7 @@ import 'package:flora_care/features/user_plants/domain/repositories/user_plants_
 class UserPlantsRepositoryImpl implements UserPlantsRepository {
   final UserPlantsDataProvider _userPlantsDataProvider;
 
-  UserPlantsRepositoryImpl({
+  UserPlantsRepositoryImpl( {
     required UserPlantsDataProvider userPlantsDataProvider,
   }) : _userPlantsDataProvider = userPlantsDataProvider;
 
@@ -63,5 +63,27 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
       userPlantId: userPlantId,
       wateredAt: wateredAt,
     );
+  }
+  @override
+  Future<void> updatePlantName({
+    required String userPlantId,
+    required String newName,
+  }) async {
+    await _userPlantsDataProvider.updatePlantName(
+      userPlantId: userPlantId,
+      newName: newName,
+    );
+  }
+  @override
+  Future<bool> isPlantNameUnique({required String name, required String userId}) async {
+    final plants = await _userPlantsDataProvider.getAllUserPlants();
+    return !plants.any(
+      (plant) => plant.userPlantName.toLowerCase() == name.toLowerCase(),
+    );
+  }
+
+  @override
+  Future<String> getCurrentUserId() async {
+    return await _userPlantsDataProvider.getCurrentUserId();
   }
 }

@@ -7,6 +7,6 @@ abstract class AuthDocsResponseMapper {
       id: dto.id,
       email: dto.email,
       verified: dto.verified,
-      );
+    );
   }
 }

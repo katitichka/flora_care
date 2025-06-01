@@ -12,9 +12,16 @@ abstract interface class UserPlantsDataProvider {
   Future<List<UserPlantsDocsResponseDto>> deleteUserPlant({
     required String userPlantId,
   });
-   
+
   Future<void> addWatering({
     required String userPlantId,
     required DateTime wateredAt,
   });
+
+  Future<void> updatePlantName({
+    required String userPlantId,
+    required String newName,
+  });
+  
+  Future<String> getCurrentUserId();
 }

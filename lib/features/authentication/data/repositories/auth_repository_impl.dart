@@ -1,8 +1,7 @@
-import 'package:flora_care/features/authentication/data/data_providers/implementations/auth_data_provider_impl.dart';
 import 'package:flora_care/features/authentication/data/mappers/auth_docs_response_mapper.dart';
 import 'package:flora_care/features/authentication/domain/entities/auth_docs_response_entity.dart';
 import 'package:flora_care/features/authentication/domain/repositories/auth_repository.dart';
-
+import 'package:flora_care/features/authentication/data/data_providers/auth_data_provider.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataProvider dataProvider;
 
@@ -32,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   AuthDocsResponseEntity? getCurrentUser() {
-    final dto = dataProvider.getCurrentUser();
+    final dto = dataProvider.currentUser;
     if (dto == null) return null;
     return AuthDocsResponseMapper.fromDto(dto: dto);
   }
@@ -44,4 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
   void logout() {
     dataProvider.logout();
   }
+
+  @override
+  String? get currentUserId => dataProvider.currentUser?.id; 
 }

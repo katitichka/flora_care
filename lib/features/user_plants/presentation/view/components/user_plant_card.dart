@@ -1,5 +1,7 @@
 import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs_response_entity.dart';
+import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserPlantCard extends StatelessWidget {
   final UserPlantsDocsResponseEntity userPlant;
@@ -97,6 +99,10 @@ class UserPlantCard extends StatelessWidget {
                   );
                 },
               ),
+              IconButton(
+  icon: const Icon(Icons.edit),
+  onPressed: () => _showEditDialog(context, userPlant.id, userPlant.userPlantName),
+),
             ],
           ),
         ),
@@ -163,4 +169,40 @@ class UserPlantCard extends StatelessWidget {
           ),
     );
   }
+  void _showEditDialog(BuildContext context, String plantId, String currentName) {
+  final textController = TextEditingController(text: currentName);
+  
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Edit Plant Name'),
+      content: TextField(
+        controller: textController,
+        decoration: const InputDecoration(
+          hintText: 'Enter new plant name',
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            if (textController.text.trim().isNotEmpty) {
+              context.read<UserPlantsBloc>().add(
+                UserPlantsEvent.updatePlantName(
+                  userPlantId: plantId,
+                  newName: textController.text.trim(),
+                ),
+              );
+              Navigator.pop(context);
+            }
+          },
+          child: const Text('Save'),
+        ),
+      ],
+    ),
+  );
+}
 }

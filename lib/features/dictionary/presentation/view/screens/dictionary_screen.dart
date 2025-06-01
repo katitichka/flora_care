@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flora_care/features/dictionary/presentation/bloc/dictionary_bloc.dart';
 
 class DictionaryScreen extends StatefulWidget {
-  const DictionaryScreen({super.key});
+  const DictionaryScreen({super.key, required this.userId});
+  final String userId;
 
   @override
   State<StatefulWidget> createState() => _DictionaryScreenState();
@@ -59,17 +60,18 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Поиск ...',
-                  border: InputBorder.none,
-                ),
-                onChanged: _onSearchChanges,
-              )
-            : const Text('Справочник растений'),
+        title:
+            _isSearching
+                ? TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Поиск ...',
+                    border: InputBorder.none,
+                  ),
+                  onChanged: _onSearchChanges,
+                )
+                : const Text('Справочник растений'),
         actions: [
           IconButton(
             icon: Icon(_isSearching ? Icons.close : Icons.search),
@@ -95,15 +97,14 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     }
 
     if (state is Loaded) {
-      final displayPlants = state.filterPlants.isNotEmpty 
-          ? state.filterPlants 
-          : state.plants;
-          
+      final displayPlants =
+          state.filterPlants.isNotEmpty ? state.filterPlants : state.plants;
+
       if (displayPlants.isEmpty) {
         return Center(
-          child: Text(_isSearching 
-              ? 'Ничего не найдено' 
-              : 'Растения не загружены'),
+          child: Text(
+            _isSearching ? 'Ничего не найдено' : 'Растения не загружены',
+          ),
         );
       }
 
@@ -124,11 +125,9 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
             final plant = displayPlants[index];
             return DictionaryPlantCard(
               plant: plant,
-              onTap: () => Navigator.pushNamed(
-                context, 
-                '/plant', 
-                arguments: plant,
-              ),
+              onTap:
+                  () =>
+                      Navigator.pushNamed(context, '/plant', arguments: plant), userId: widget.userId,
             );
           },
         ),
