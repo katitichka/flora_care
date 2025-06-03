@@ -3,7 +3,7 @@ import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bl
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserPlantCard extends StatelessWidget {
+class UserPlantCard extends StatefulWidget {
   final UserPlantsDocsResponseEntity userPlant;
   final VoidCallback? onTap;
   final Function(String) onDelete;
@@ -18,99 +18,160 @@ class UserPlantCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      onLongPress: () => _showDeleteMenu(context, userPlant.id),
-      child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-          side: const BorderSide(
-            color: Color.fromARGB(255, 0, 89, 33),
-            width: 2,
+  State<UserPlantCard> createState() => _UserPlantCardState();
+}
+
+class _UserPlantCardState extends State<UserPlantCard> {
+  late UserPlantsDocsResponseEntity _currentPlant;
+  late DateTime? _lastWatering;
+  late int _wateringFreq;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentPlant = widget.userPlant;
+    _lastWatering = _currentPlant.lastWateringDate;
+    _wateringFreq = _currentPlant.plantData?.wateringFreq ?? 0;
+  }
+
+  Color _getWaterIconColor() {
+    if (_lastWatering == null) return Colors.red;
+    final daysSinceWatering = DateTime.now().difference(_lastWatering!).inDays;
+
+    if (daysSinceWatering < _wateringFreq) return Colors.green;
+    if (daysSinceWatering == _wateringFreq) return Colors.orange;
+    return Colors.red;
+  }
+
+  void _handleWaterPlant() async {
+    final originalLastWatering = _lastWatering;
+
+    setState(() => _lastWatering = DateTime.now());
+
+    try {
+      if (widget.onWater != null) {
+        widget.onWater!(_currentPlant.id);
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Полив растения ${_currentPlant.userPlantName} записан',
           ),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(15),
-          height: 115,
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: SizedBox(
-                  width: 80,
-                  height: 80,
-                  child:
-                      userPlant.plantData?.image != null
-                          ? Image.network(
-                            userPlant.plantData!.image,
-                            fit: BoxFit.cover,
-                            errorBuilder:
-                                (context, error, stackTrace) => Container(
-                                  color: Colors.grey[200],
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.image_not_supported,
-                                      size: 30,
-                                      color: Colors.grey,
+      );
+    } catch (e) {
+      setState(() => _lastWatering = originalLastWatering);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Ошибка: $e')));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<UserPlantsBloc, UserPlantsState>(
+      listener: (context, state) {
+        if (state is Loaded) {
+          final updatedPlant = state.userPlants.firstWhere(
+            (p) => p.id == _currentPlant.id,
+            orElse: () => _currentPlant,
+          );
+          setState(() => _currentPlant = updatedPlant);
+        }
+      },
+      child: GestureDetector(
+        onTap: widget.onTap,
+        onLongPress: () => _showActionMenu(context, _currentPlant.id),
+        child: Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: const BorderSide(
+              color: Color.fromARGB(255, 0, 89, 33),
+              width: 2,
+            ),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            height: 115,
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    width: 80,
+                    height: 80,
+                    child:
+                        _currentPlant.plantData?.image != null
+                            ? Image.network(
+                              _currentPlant.plantData!.image,
+                              fit: BoxFit.cover,
+                              errorBuilder:
+                                  (context, error, stackTrace) => Container(
+                                    color: Colors.grey[200],
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.image_not_supported,
+                                        size: 30,
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
-                                ),
-                          )
-                          : Container(),
+                            )
+                            : Container(),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      userPlant.userPlantName,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _currentPlant.userPlantName,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                  ],
+                      const SizedBox(height: 4),
+                    ],
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.water_drop, color: Colors.blue),
-                iconSize: 40,
-                tooltip: 'Записать полив',
-                onPressed: () {
-                  if (onWater != null) {
-                    onWater!(userPlant.id);
-                  }
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Полив растения ${userPlant.userPlantName} записан',
-                      ),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-  icon: const Icon(Icons.edit),
-  onPressed: () => _showEditDialog(context, userPlant.id, userPlant.userPlantName),
-),
-            ],
+                IconButton(
+                  icon: Icon(Icons.water_drop, color: _getWaterIconColor()),
+                  iconSize: 40,
+                  tooltip: 'Записать полив',
+                  onPressed: _handleWaterPlant,
+                ),
+                IconButton(
+                    icon: const Icon(Icons.info_outline, color: Colors.green),
+                    iconSize: 24,
+                    tooltip: 'Информация о растении',
+                    onPressed: () {
+                      if (_currentPlant.plantData != null) {
+                        Navigator.pushNamed(
+                          context,
+                          '/plant',
+                          arguments: _currentPlant.plantData!,
+                        );
+                      }
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _showDeleteMenu(BuildContext context, String userPlantId) {
+  void _showActionMenu(BuildContext context, String userPlantId) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -120,6 +181,18 @@ class UserPlantCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 15),
+              ListTile(
+                leading: const Icon(Icons.edit, color: Colors.blue),
+                title: const Text('Редактировать имя'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showEditDialog(
+                    context,
+                    _currentPlant.id,
+                    _currentPlant.userPlantName,
+                  );
+                },
+              ),
               ListTile(
                 leading: const Icon(
                   Icons.delete,
@@ -158,7 +231,7 @@ class UserPlantCard extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  onDelete(userPlant.id);
+                  widget.onDelete(_currentPlant.id);
                 },
                 child: const Text(
                   'Удалить',
@@ -169,40 +242,46 @@ class UserPlantCard extends StatelessWidget {
           ),
     );
   }
-  void _showEditDialog(BuildContext context, String plantId, String currentName) {
-  final textController = TextEditingController(text: currentName);
-  
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Edit Plant Name'),
-      content: TextField(
-        controller: textController,
-        decoration: const InputDecoration(
-          hintText: 'Enter new plant name',
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            if (textController.text.trim().isNotEmpty) {
-              context.read<UserPlantsBloc>().add(
-                UserPlantsEvent.updatePlantName(
-                  userPlantId: plantId,
-                  newName: textController.text.trim(),
-                ),
-              );
-              Navigator.pop(context);
-            }
-          },
-          child: const Text('Save'),
-        ),
-      ],
-    ),
-  );
-}
+
+  void _showEditDialog(
+    BuildContext context,
+    String plantId,
+    String currentName,
+  ) {
+    final textController = TextEditingController(text: currentName);
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Edit Plant Name'),
+            content: TextField(
+              controller: textController,
+              decoration: const InputDecoration(
+                hintText: 'Enter new plant name',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (textController.text.trim().isNotEmpty) {
+                    context.read<UserPlantsBloc>().add(
+                      UserPlantsEvent.updatePlantName(
+                        userPlantId: plantId,
+                        newName: textController.text.trim(),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
+    );
+  }
 }

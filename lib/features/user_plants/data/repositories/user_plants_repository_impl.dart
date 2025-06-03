@@ -1,3 +1,4 @@
+import 'package:flora_care/features/diary/domain/repositories/diary_repository.dart';
 import 'package:flora_care/features/user_plants/data/data_providers/user_plants_data_provider.dart';
 import 'package:flora_care/features/user_plants/data/mappers/user_plants_docs_response_mapper.dart';
 import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs_response_entity.dart';
@@ -5,17 +6,27 @@ import 'package:flora_care/features/user_plants/domain/repositories/user_plants_
 
 class UserPlantsRepositoryImpl implements UserPlantsRepository {
   final UserPlantsDataProvider _userPlantsDataProvider;
+  final DiaryRepository _diaryRepository;
 
-  UserPlantsRepositoryImpl( {
+  UserPlantsRepositoryImpl({
     required UserPlantsDataProvider userPlantsDataProvider,
-  }) : _userPlantsDataProvider = userPlantsDataProvider;
+    required DiaryRepository diaryRepository,
+  }) : _userPlantsDataProvider = userPlantsDataProvider, _diaryRepository = diaryRepository;
 
   @override
   Future<List<UserPlantsDocsResponseEntity>> getAllUserPlants() async {
     final dtos = await _userPlantsDataProvider.getAllUserPlants();
-    return dtos
-        .map((dto) => UserPlantsDocsResponseMapper.fromDto(dto: dto))
-        .toList();
+
+    final plantsWithWatering = await Future.wait(
+      dtos.map((dto) async {
+        final lastWatering = await _diaryRepository.getLastWateringDate(dto.id);
+        return UserPlantsDocsResponseMapper.fromDto(
+          dto: dto,
+          lastWateringDate: lastWatering,
+        );
+      }),
+    );
+    return plantsWithWatering;
   }
 
   @override
@@ -36,9 +47,7 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
   Future<List<UserPlantsDocsResponseEntity>> deleteUserPlant({
     required String userPlantId,
   }) async {
-    await _userPlantsDataProvider.deleteUserPlant(
-      userPlantId: userPlantId,
-    );
+    await _userPlantsDataProvider.deleteUserPlant(userPlantId: userPlantId);
     return getAllUserPlants();
   }
 
@@ -46,14 +55,12 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
   Future<List<UserPlantsDocsResponseEntity>> searchPlants({
     required String query,
   }) async {
-    final dtos = await _userPlantsDataProvider.searchPlants(
-      query: query,
-    );
+    final dtos = await _userPlantsDataProvider.searchPlants(query: query);
     return dtos
         .map((dto) => UserPlantsDocsResponseMapper.fromDto(dto: dto))
         .toList();
   }
-  
+
   @override
   Future<void> addWatering({
     required String userPlantId,
@@ -64,6 +71,7 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
       wateredAt: wateredAt,
     );
   }
+
   @override
   Future<void> updatePlantName({
     required String userPlantId,
@@ -74,8 +82,12 @@ class UserPlantsRepositoryImpl implements UserPlantsRepository {
       newName: newName,
     );
   }
+
   @override
-  Future<bool> isPlantNameUnique({required String name, required String userId}) async {
+  Future<bool> isPlantNameUnique({
+    required String name,
+    required String userId,
+  }) async {
     final plants = await _userPlantsDataProvider.getAllUserPlants();
     return !plants.any(
       (plant) => plant.userPlantName.toLowerCase() == name.toLowerCase(),

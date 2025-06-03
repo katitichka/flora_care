@@ -10,7 +10,9 @@ class DiaryRepositoryImpl implements DiaryRepository {
     : _diaryDataProvider = diaryDataProvider;
 
   @override
-  Future<List<DiaryDocsResponseEntity>> getDiary({required String userPlantId}) async {
+  Future<List<DiaryDocsResponseEntity>> getDiary({
+    required String userPlantId,
+  }) async {
     final dtos = await _diaryDataProvider.getDiary(userPlantId: userPlantId);
     return dtos
         .map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto))
@@ -21,13 +23,17 @@ class DiaryRepositoryImpl implements DiaryRepository {
   Future<List<DiaryDocsResponseEntity>> getEvents(String userPlantId) async {
     final dtos = await _diaryDataProvider.getEvents(userPlantId);
     print("All events: $dtos");
-    return dtos.map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto)).toList();
+    return dtos
+        .map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto))
+        .toList();
   }
 
   @override
   Future<List<DiaryDocsResponseEntity>> getNotes(String userPlantId) async {
     final dtos = await _diaryDataProvider.getNotes(userPlantId);
-    return dtos.map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto)).toList();
+    return dtos
+        .map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto))
+        .toList();
   }
 
   @override
@@ -69,7 +75,7 @@ class DiaryRepositoryImpl implements DiaryRepository {
     );
     return getEvents(userPlantId);
   }
-  
+
   @override
   Future<List<DiaryDocsResponseEntity>> modifyNote({
     required String userPlantId,
@@ -84,5 +90,16 @@ class DiaryRepositoryImpl implements DiaryRepository {
       noteText: noteText,
     );
     return getNotes(userPlantId);
+  }
+
+  @override
+  Future<DateTime?> getLastWateringDate(String userPlantId) async {
+    final events = await getEvents(userPlantId);
+    final nonNullEvents = events.where((e) => e.eventDate != null).toList();
+    
+    if (nonNullEvents.isEmpty) return null;
+    nonNullEvents.sort((a, b) => b.eventDate!.compareTo(a.eventDate!));
+    
+    return nonNullEvents.first.eventDate;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flora_care/common/utils/error_handler.dart';
 import 'package:flora_care/features/authentication/domain/repositories/auth_repository.dart';
-import 'package:flora_care/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

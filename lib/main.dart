@@ -31,9 +31,6 @@ Future<void> main() async {
       final userPlantsDataProvider = UserPlantDataProviderImpl(
         pocketBase: pocketBase,
       );
-      final userPlantsRepository = UserPlantsRepositoryImpl(
-        userPlantsDataProvider: userPlantsDataProvider,  
-      );
       
       final diaryDataProvider = DiaryDataProviderImpl(
         pocketBase: pocketBase,
@@ -41,7 +38,10 @@ Future<void> main() async {
       final diaryRepository = DiaryRepositoryImpl(
         diaryDataProvider: diaryDataProvider,
       );
-      
+      final userPlantsRepository = UserPlantsRepositoryImpl(
+        userPlantsDataProvider: userPlantsDataProvider,  
+        diaryRepository: diaryRepository,
+      );
       final authRepository = AuthRepositoryImpl(authDataProvider);
 
       runApp(

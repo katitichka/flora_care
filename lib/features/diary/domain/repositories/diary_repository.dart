@@ -30,4 +30,6 @@ abstract interface class DiaryRepository {
     required bool isDelete,
     String? noteText,
   });
+
+  Future<DateTime?> getLastWateringDate(String userPlantId);
 }

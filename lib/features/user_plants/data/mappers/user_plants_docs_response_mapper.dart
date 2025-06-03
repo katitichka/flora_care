@@ -5,6 +5,7 @@ import 'package:flora_care/features/user_plants/domain/entities/user_plants_docs
 abstract class UserPlantsDocsResponseMapper {
   static UserPlantsDocsResponseEntity fromDto({
     required UserPlantsDocsResponseDto dto,
+    DateTime? lastWateringDate,
   }) {
     
     return UserPlantsDocsResponseEntity(
@@ -15,6 +16,7 @@ abstract class UserPlantsDocsResponseMapper {
       plantData: dto.plantData != null
           ? DictionaryDocsResponseMapper.fromDto(dto: dto.plantData!)
           : null,
+      lastWateringDate: lastWateringDate,
     );
   }
 }

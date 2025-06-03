@@ -11,5 +11,6 @@ sealed class UserPlantsDocsResponseEntity with _$UserPlantsDocsResponseEntity {
     required String plantId,
     required String userPlantName,
     DictionaryDocsResponseEntity? plantData,
+    DateTime? lastWateringDate,
   }) = _UserPlantsDocsResponseEntity;
 }
