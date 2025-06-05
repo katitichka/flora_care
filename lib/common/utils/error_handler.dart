@@ -31,13 +31,11 @@ void handleException(dynamic error) {
     final data = response['data'] as Map<String, dynamic>?;
 
     if (data != null) {
-      // Обработка ошибки email
       if (data['email'] is List && data['email'].isNotEmpty) {
         if (data['email'].first.toString().contains('already exists')) {
           throw DictionaryDocsResponseException('Пользователь с такой почтой уже зарегистрирован');
         }
       }
-      // Обработка ошибки username
       if (data['username'] is List && data['username'].isNotEmpty) {
         if (data['username'].first.toString().contains('already exists')) {
           throw DictionaryDocsResponseException('Пользователь с таким именем уже существует');
