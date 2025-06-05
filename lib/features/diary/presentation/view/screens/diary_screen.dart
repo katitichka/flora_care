@@ -98,10 +98,17 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   void _showDeleteDialog(BuildContext context, DiaryDocsResponseEntity item) {
     final isEvent = item.eventDate != null;
+    final bloc = context.read<diary_bloc.DiaryBloc>();
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => BlocListener<diary_bloc.DiaryBloc, diary_bloc.DiaryState>(
+      listener: (context, state) {
+        if (state is diary_bloc.Loaded) {
+          Navigator.pop(context); 
+        }
+      },
+      child: AlertDialog(
         title: const Text('Подтвердите удаление'),
         content: Text(
           'Вы уверены, что хотите удалить эту ${isEvent ? 'запись о поливе' : 'заметку'}?',
@@ -138,6 +145,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

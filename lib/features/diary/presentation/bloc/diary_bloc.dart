@@ -20,8 +20,14 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           emit: emit,
           userPlantId: userPlantId,
         ),
-        _GetEvents(:final userPlantId) => _getEvents(emit: emit, userPlantId: userPlantId),
-        _GetNotes(:final userPlantId) => _getNotes(emit: emit, userPlantId: userPlantId),
+        _GetEvents(:final userPlantId) => _getEvents(
+          emit: emit,
+          userPlantId: userPlantId,
+        ),
+        _GetNotes(:final userPlantId) => _getNotes(
+          emit: emit,
+          userPlantId: userPlantId,
+        ),
         _AddEvent(:final eventDate, :final userPlantId) => _addEvent(
           emit: emit,
           eventDate: eventDate,
@@ -32,13 +38,19 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           userPlantId: userPlantId,
           noteText: noteText,
         ),
-        _ModifyEvent(:final isDelete, :final eventId, :final userPlantId) => _modifyEvent(
-          emit: emit,
-          isDelete: isDelete,
-          eventId: eventId,
-          userPlantId: userPlantId,
-        ),
-        _ModifyNote(:final isDelete, :final noteId, :final noteText, :final userPlantId) =>
+        _ModifyEvent(:final isDelete, :final eventId, :final userPlantId) =>
+          _modifyEvent(
+            emit: emit,
+            isDelete: isDelete,
+            eventId: eventId,
+            userPlantId: userPlantId,
+          ),
+        _ModifyNote(
+          :final isDelete,
+          :final noteId,
+          :final noteText,
+          :final userPlantId,
+        ) =>
           _modifyNote(
             emit: emit,
             isDelete: isDelete,
@@ -51,42 +63,49 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   Future<void> _getDiary({
-  required Emitter<DiaryState> emit,
-  required String userPlantId,
-}) async {
-  emit(const DiaryState.loading());
-  try {
-    final plantEvents = await _diaryRepository.getEvents(userPlantId);
-    final plantNotes = await _diaryRepository.getNotes(userPlantId);
-    
-    plantEvents.sort((a, b) => (b.eventDate ?? DateTime(0))
-        .compareTo(a.eventDate ?? DateTime(0)));
-    final filteredNotes = plantNotes.where((note) => note.note?.isNotEmpty ?? false).toList();
+    required Emitter<DiaryState> emit,
+    required String userPlantId,
+  }) async {
+    emit(const DiaryState.loading());
+    try {
+      final plantEvents = await _diaryRepository.getEvents(userPlantId);
+      final plantNotes = await _diaryRepository.getNotes(userPlantId);
 
-    emit(DiaryState.loaded(
-      plantEvents: plantEvents,
-      plantNotes: filteredNotes,
-    ));
-  } catch (e) {
-    final message = handleError(e);
-    emit(DiaryState.error(message: message));
+      plantEvents.sort(
+        (a, b) =>
+            (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
+      );
+      final filteredNotes = plantNotes
+      .where((note) => note.note?.isNotEmpty ?? false)
+      .toList()
+      ..sort((a, b) => b.created.compareTo(a.created));
+
+      emit(
+        DiaryState.loaded(plantEvents: plantEvents, plantNotes: filteredNotes),
+      );
+    } catch (e) {
+      final message = handleError(e);
+      emit(DiaryState.error(message: message));
+    }
   }
-}
 
   Future<void> _getEvents({
-  required Emitter<DiaryState> emit,
-  required String userPlantId,
-}) async {
-  emit(const DiaryState.loading());
-  try {
-    final plantEvents = await _diaryRepository.getEvents(userPlantId);
-    emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: const []));
-  } catch (e) {
-    emit(DiaryState.error(message: handleError(e)));
+    required Emitter<DiaryState> emit,
+    required String userPlantId,
+  }) async {
+    emit(const DiaryState.loading());
+    try {
+      final plantEvents = await _diaryRepository.getEvents(userPlantId);
+      emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: const []));
+    } catch (e) {
+      emit(DiaryState.error(message: handleError(e)));
+    }
   }
-}
 
-  Future<void> _getNotes({required Emitter<DiaryState> emit, required String userPlantId,}) async {
+  Future<void> _getNotes({
+    required Emitter<DiaryState> emit,
+    required String userPlantId,
+  }) async {
     emit(const DiaryState.loading());
     try {
       final plantNotes = await _diaryRepository.getNotes(userPlantId);
@@ -98,64 +117,68 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   Future<void> _modifyEvent({
-  required Emitter<DiaryState> emit,
-  required bool isDelete,
-  required String eventId,
-  required String userPlantId, 
-}) async {
-  emit(const DiaryState.loading());
-  try {
-    await _diaryRepository.modifyEvent(
-      eventId: eventId,
-      isDelete: isDelete,
-      userPlantId: userPlantId,
-    );
+    required Emitter<DiaryState> emit,
+    required bool isDelete,
+    required String eventId,
+    required String userPlantId,
+  }) async {
+    emit(const DiaryState.loading());
+    try {
+      await _diaryRepository.modifyEvent(
+        eventId: eventId,
+        isDelete: isDelete,
+        userPlantId: userPlantId,
+      );
 
-    final plantEvents = await _diaryRepository.getEvents(userPlantId);
-    final List<DiaryDocsResponseEntity> currentNotes = state is Loaded 
-      ? (state as Loaded).plantNotes 
-      : [];
+      final plantEvents = await _diaryRepository.getEvents(userPlantId);
+      final plantNotes = await _diaryRepository.getNotes(userPlantId);
+       plantEvents.sort(
+      (a, b) => (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
+      );
+      final filteredNotes = plantNotes.where((note) => note.note?.isNotEmpty ?? false).toList();
 
-    emit(DiaryState.loaded(
-      plantEvents: plantEvents,
-      plantNotes: currentNotes,
-    ));
-  } catch (e) {
-    final message = handleError(e);
-    emit(DiaryState.error(message: message));
+      emit(
+        DiaryState.loaded(plantEvents: plantEvents, plantNotes: filteredNotes),
+      );
+    } catch (e) {
+      final message = handleError(e);
+      emit(DiaryState.error(message: message));
+    }
   }
-}
 
-Future<void> _modifyNote({
-  required Emitter<DiaryState> emit,
-  required bool isDelete,
-  required String noteId,
-  required String userPlantId, 
-  String? noteText,
-}) async {
-  emit(const DiaryState.loading());
-  try {
-    await _diaryRepository.modifyNote(
-      noteId: noteId,
-      isDelete: isDelete,
-      noteText: noteText,
-      userPlantId: userPlantId,
-    );
-
+  Future<void> _modifyNote({
+    required Emitter<DiaryState> emit,
+    required bool isDelete,
+    required String noteId,
+    required String userPlantId,
+    String? noteText,
+  }) async {
+    emit(const DiaryState.loading());
+    try {
+      await _diaryRepository.modifyNote(
+        noteId: noteId,
+        isDelete: isDelete,
+        noteText: noteText,
+        userPlantId: userPlantId,
+      );
+      final plantEvents = await _diaryRepository.getEvents(userPlantId);
     final plantNotes = await _diaryRepository.getNotes(userPlantId);
-    final List<DiaryDocsResponseEntity> currentEvents = state is Loaded 
-      ? (state as Loaded).plantEvents 
-      : [];
-
-    emit(DiaryState.loaded(
-      plantEvents: currentEvents,
-      plantNotes: plantNotes,
-    ));
-  } catch (e) {
-    final message = handleError(e);
-    emit(DiaryState.error(message: message));
+    
+    plantEvents.sort(
+      (a, b) => (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
+    );
+    final filteredNotes = plantNotes
+      .where((note) => note.note?.isNotEmpty ?? false)
+      .toList()
+      ..sort((a, b) => b.created.compareTo(a.created));
+      emit(
+        DiaryState.loaded(plantEvents: plantEvents, plantNotes: filteredNotes),
+      );
+    } catch (e) {
+      final message = handleError(e);
+      emit(DiaryState.error(message: message));
+    }
   }
-}
 
   Future<void> _addEvent({
     required Emitter<DiaryState> emit,
@@ -202,8 +225,11 @@ Future<void> _modifyNote({
       print('Note added successfully');
       final allNotes = await _diaryRepository.getNotes(userPlantId);
 
-      final plantNotes =
-          allNotes.where((e) => e.userPlantId == userPlantId).toList();
+      final plantNotes = allNotes
+      .where((e) => e.userPlantId == userPlantId)
+      .toList()
+      ..sort((a, b) => b.created.compareTo(a.created));
+
 
       emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: plantNotes));
     } catch (e) {

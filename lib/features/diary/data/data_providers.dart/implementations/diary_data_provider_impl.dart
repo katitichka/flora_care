@@ -36,7 +36,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
   @override
   Future<List<DiaryDocsResponseDto>> getNotes(String userPlantId) async {
     final res = await _pocketBase.collection('diary').getList(
-      filter: 'user_plant_id = "$userPlantId" && note != ""',
+      filter: 'user_plant_id = "$userPlantId"  && note != null && note != ""',
       expand: 'user_plant_id',
       perPage: 50,
     );
