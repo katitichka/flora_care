@@ -109,6 +109,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       }
 
       return RefreshIndicator(
+        color: Colors.green,
         notificationPredicate: (_) => !_isSearching,
         onRefresh: () async {
           if (!_isSearching) {

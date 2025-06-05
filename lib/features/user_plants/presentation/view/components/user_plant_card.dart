@@ -93,6 +93,7 @@ class _UserPlantCardState extends State<UserPlantCard> {
         onTap: widget.onTap,
         onLongPress: () => _showActionMenu(context, _currentPlant.id),
         child: Card(
+          color: Colors.white,
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -102,6 +103,7 @@ class _UserPlantCardState extends State<UserPlantCard> {
             ),
           ),
           child: Container(
+            color: Colors.white,
             padding: const EdgeInsets.all(15),
             height: 115,
             child: Row(
