@@ -66,29 +66,27 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
     final result = await showDialog<String>(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Добавить заметку'),
-            content: TextField(
-              controller: noteController,
-              autofocus: true,
-              maxLines: null,
-              decoration: const InputDecoration(
-                hintText: 'Введите текст заметки',
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Отмена'),
-              ),
-              TextButton(
-                onPressed:
-                    () => Navigator.of(context).pop(noteController.text.trim()),
-                child: const Text('Добавить'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Добавить заметку'),
+        content: TextField(
+          controller: noteController,
+          autofocus: true,
+          maxLines: null,
+          decoration: const InputDecoration(
+            hintText: 'Введите текст заметки',
           ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(noteController.text.trim()),
+            child: const Text('Добавить'),
+          ),
+        ],
+      ),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -103,104 +101,59 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Подтвердите удаление'),
-            content: Text(
-              'Вы уверены, что хотите удалить эту ${isEvent ? 'запись о поливе' : 'заметку'}?',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Отмена'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (isEvent) {
-                    context.read<diary_bloc.DiaryBloc>().add(
-                      diary_bloc.DiaryEvent.modifyEvent(
-                        userPlantId: widget.userPlantId,
-                        isDelete: true,
-                        eventId: item.id,
-                      ),
-                    );
-                  } else {
-                    context.read<diary_bloc.DiaryBloc>().add(
-                      diary_bloc.DiaryEvent.modifyNote(
-                        userPlantId: widget.userPlantId,
-                        isDelete: true,
-                        noteId: item.id,
-                      ),
-                    );
-                  }
-                },
-                child: const Text(
-                  'Удалить',
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Подтвердите удаление'),
+        content: Text(
+          'Вы уверены, что хотите удалить эту ${isEvent ? 'запись о поливе' : 'заметку'}?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Отмена'),
           ),
-    );
-  }
-
-Future<void> _changePlantName(BuildContext context) async {
-  final textController = TextEditingController(text: widget.plantName);
-  
-  final newName = await showDialog<String>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Изменить имя растения'),
-      content: TextField(
-        controller: textController,
-        autofocus: true,
-        decoration: const InputDecoration(
-          hintText: 'Введите новое имя растения',
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Отмена'),
-        ),
-        TextButton(
-          onPressed: () async {
-            if (textController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Введите имя растения')),
-              );
-              return;
-            }
-
-            if (textController.text == widget.plantName) {
+          TextButton(
+            onPressed: () {
               Navigator.of(context).pop();
-              return;
-            }
-
-            Navigator.pop(context, textController.text);
-          },
-          child: const Text('Готово'),
-        ),
-      ],
-    ),
-  );
-
-  if (newName != null && newName.isNotEmpty) {
-    context.read<user_plants_bloc.UserPlantsBloc>().add(
-      user_plants_bloc.UserPlantsEvent.updatePlantName(
-        userPlantId: widget.userPlantId,
-        newName: newName,
+              if (isEvent) {
+                context.read<diary_bloc.DiaryBloc>().add(
+                  diary_bloc.DiaryEvent.modifyEvent(
+                    userPlantId: widget.userPlantId,
+                    isDelete: true,
+                    eventId: item.id,
+                  ),
+                );
+              } else {
+                context.read<diary_bloc.DiaryBloc>().add(
+                  diary_bloc.DiaryEvent.modifyNote(
+                    userPlantId: widget.userPlantId,
+                    isDelete: true,
+                    noteId: item.id,
+                  ),
+                );
+              }
+            },
+            child: const Text(
+              'Удалить',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
       ),
     );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Дневник: ${widget.plantName}')),
+      appBar: AppBar(
+        title: Text('Дневник: ${widget.plantName}'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => _changePlantName(context),
+          ),
+        ],
+      ),
       body: BlocBuilder<diary_bloc.DiaryBloc, diary_bloc.DiaryState>(
         builder: (context, state) {
           if (state is diary_bloc.Loading)
@@ -278,16 +231,17 @@ Future<void> _changePlantName(BuildContext context) async {
               ),
             ),
             Expanded(
-              child:
-                  events.isEmpty
-                      ? const Center(child: Text('Нет записей о поливе'))
-                      : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: events.length,
-                        itemBuilder: (context, index) {
-                          final event = events[index];
-                          return Column(
+              child: events.isEmpty
+                  ? const Center(child: Text('Нет записей о поливе'))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: events.length,
+                      itemBuilder: (context, index) {
+                        final event = events[index];
+                        return GestureDetector(
+                          onLongPress: () => _showDeleteDialog(context, event),
+                          child: Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -295,18 +249,13 @@ Future<void> _changePlantName(BuildContext context) async {
                                   vertical: 8,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      DateFormat(
-                                        'dd.MM',
-                                      ).format(event.eventDate!),
+                                      DateFormat('dd.MM').format(event.eventDate!),
                                     ),
                                     Text(
-                                      DateFormat(
-                                        'HH:mm',
-                                      ).format(event.eventDate!),
+                                      DateFormat('HH:mm').format(event.eventDate!),
                                     ),
                                   ],
                                 ),
@@ -319,9 +268,10 @@ Future<void> _changePlantName(BuildContext context) async {
                                   color: Colors.green,
                                 ),
                             ],
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
@@ -362,16 +312,17 @@ Future<void> _changePlantName(BuildContext context) async {
               ),
             ),
             Expanded(
-              child:
-                  notes.isEmpty
-                      ? const Center(child: Text('Нет заметок'))
-                      : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: notes.length,
-                        itemBuilder: (context, index) {
-                          final note = notes[index];
-                          return Column(
+              child: notes.isEmpty
+                  ? const Center(child: Text('Нет заметок'))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: notes.length,
+                      itemBuilder: (context, index) {
+                        final note = notes[index];
+                        return GestureDetector(
+                          onLongPress: () => _showDeleteDialog(context, note),
+                          child: Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -381,13 +332,10 @@ Future<void> _changePlantName(BuildContext context) async {
                                   bottom: 8,
                                 ),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
-                                      DateFormat(
-                                        'dd.MM',
-                                      ).format(DateTime.parse(note.created)),
+                                      DateFormat('dd.MM').format(DateTime.parse(note.created)),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -405,13 +353,65 @@ Future<void> _changePlantName(BuildContext context) async {
                                   color: Colors.green,
                                 ),
                             ],
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _changePlantName(BuildContext context) async {
+    final textController = TextEditingController(text: widget.plantName);
+    
+    final newName = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Изменить имя растения'),
+        content: TextField(
+          controller: textController,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'Введите новое имя растения',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (textController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Введите имя растения')),
+                );
+                return;
+              }
+
+              if (textController.text == widget.plantName) {
+                Navigator.of(context).pop();
+                return;
+              }
+
+              Navigator.pop(context, textController.text);
+            },
+            child: const Text('Готово'),
+          ),
+        ],
+      ),
+    );
+
+    if (newName != null && newName.isNotEmpty) {
+      context.read<user_plants_bloc.UserPlantsBloc>().add(
+        user_plants_bloc.UserPlantsEvent.updatePlantName(
+          userPlantId: widget.userPlantId,
+          newName: newName,
+        ),
+      );
+    }
   }
 }
