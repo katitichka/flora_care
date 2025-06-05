@@ -1,4 +1,5 @@
-import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart';
+import 'package:flora_care/features/authentication/presentation/bloc/auth_bloc.dart' as auth_bloc;
+import 'package:flora_care/features/user_plants/presentation/bloc/user_plants_bloc.dart' as user_plants_bloc;
 import 'package:flora_care/features/user_plants/presentation/view/components/user_plant_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,30 +11,39 @@ class UserPlantsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Мои растения')),
-      body: BlocConsumer<UserPlantsBloc, UserPlantsState>(
+      appBar: AppBar(
+        title: const Text('Мои растения'),
+        actions: [
+          IconButton(
+            tooltip: 'Выйти',
+            icon: const Icon(Icons.logout),
+            onPressed: () => _showLogoutConfirmation(context),
+          ),
+        ],
+      ),
+      body: BlocConsumer<user_plants_bloc.UserPlantsBloc, user_plants_bloc.UserPlantsState>(
         listener: (context, state) {
-          if (state is ActionSuccess) {
+          if (state is user_plants_bloc.ActionSuccess) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is ActionFail) {
+          } else if (state is user_plants_bloc.ActionFail) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         buildWhen:
-            (prev, curr) => curr is! ActionSuccess && curr is! ActionFail,
+            (prev, curr) => curr is! user_plants_bloc.ActionSuccess && curr is! user_plants_bloc.ActionFail,
         builder: (context, state) {
           switch (state) {
-            case Initial():
+            case user_plants_bloc.Initial():
               return const Center(child: Text('Ничего не загружено'));
-            case Loading():
+            case user_plants_bloc.Loading():
               return const Center(child: CircularProgressIndicator());
-            case Error(message: final msg):
+            case user_plants_bloc.Error(message: final msg):
               return Center(child: Text('Ошибка: $msg'));
-            case Loaded(userPlants: final userPlants):
+            case user_plants_bloc.Loaded(userPlants: final userPlants):
               return Column(
                 children: [
                   Expanded(
@@ -59,16 +69,16 @@ class UserPlantsScreen extends StatelessWidget {
                                     );
                                   },
                                   onDelete: (userPlantId) {
-                                    context.read<UserPlantsBloc>().add(
-                                      UserPlantsEvent.deleteUserPlant(
+                                    context.read<user_plants_bloc.UserPlantsBloc>().add(
+                                      user_plants_bloc.UserPlantsEvent.deleteUserPlant(
                                         userPlantId: userPlantId,
                                       ),
                                     );
                                   },
                                   onWater:
                                       (id) =>
-                                          context.read<UserPlantsBloc>().add(
-                                            UserPlantsEvent.waterPlant(
+                                          context.read<user_plants_bloc.UserPlantsBloc>().add(
+                                            user_plants_bloc.UserPlantsEvent.waterPlant(
                                               userPlantId: id,
                                             ),
                                           ),
@@ -98,13 +108,45 @@ class UserPlantsScreen extends StatelessWidget {
                 ],
               );
 
-            case ActionSuccess():
+            case user_plants_bloc.ActionSuccess():
               return const SizedBox.shrink();
-            case ActionFail():
+            case user_plants_bloc.ActionFail():
               return const Center(child: Text('Произошла ошибка при действии'));
           }
         },
       ),
+    );
+  }
+  void _showLogoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Выход из аккаунта'),
+          content: const Text('Вы уверены, что хотите выйти?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Отмена'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _logout(context);
+              },
+              child: const Text('Выйти'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _logout(BuildContext context) {
+    context.read<auth_bloc.AuthBloc>().add(const auth_bloc.AuthEvent.logout());
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/',
+      (route) => false,
     );
   }
 }

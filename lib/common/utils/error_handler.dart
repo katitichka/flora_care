@@ -8,37 +8,18 @@ class DictionaryDocsResponseException implements Exception {
   @override
   String toString() => 'DictionaryDocsResponseException: $message';
 }
-
 String handleError(dynamic error) {
-  if (error is SocketException) {
-    return 'Нет интернет-соединения. Проверьте подключение.';
-  }
-
-  if (error is ClientException) {
-    final response = error.response;
-
-    final errorMessage = response['message'] ?? response['error'] ?? null;
-    if (errorMessage is String) {
-      return errorMessage;
-    }
-
-    if (response['data'] is Map<String, dynamic>) {
-      final firstError = (response['data'] as Map).values.first;
-      if (firstError is List && firstError.isNotEmpty) {
-        return firstError.first.toString();
-      }
-    }
-
-    return 'Ошибка запроса. Попробуйте еще раз.';
-  }
-
   if (error is DictionaryDocsResponseException) {
     return error.message;
   }
-
+  if (error is SocketException) {
+    return 'Нет интернет-соединения. Проверьте подключение.';
+  }
+  if (error is ClientException) {
+    return 'Ошибка при обработке запроса. Попробуйте еще раз.';
+  }
   return 'Произошла непредвиденная ошибка. Попробуйте позже.';
 }
-
 
 void handleException(dynamic error) {
   if (error is SocketException) {
@@ -46,6 +27,24 @@ void handleException(dynamic error) {
   }
 
   if (error is ClientException) {
+    final response = error.response;
+    final data = response['data'] as Map<String, dynamic>?;
+
+    if (data != null) {
+      // Обработка ошибки email
+      if (data['email'] is List && data['email'].isNotEmpty) {
+        if (data['email'].first.toString().contains('already exists')) {
+          throw DictionaryDocsResponseException('Пользователь с такой почтой уже зарегистрирован');
+        }
+      }
+      // Обработка ошибки username
+      if (data['username'] is List && data['username'].isNotEmpty) {
+        if (data['username'].first.toString().contains('already exists')) {
+          throw DictionaryDocsResponseException('Пользователь с таким именем уже существует');
+        }
+      }
+    }
+
     final message = error.toString();
     if (message.contains('Connection reset by peer') || message.contains('SocketException')) {
       throw DictionaryDocsResponseException('Проблемы с соединением. Проверьте интернет.');
