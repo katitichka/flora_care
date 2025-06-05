@@ -7,6 +7,7 @@ import 'package:flora_care/features/dictionary/data/data_poviders/implementation
 import 'package:flora_care/features/dictionary/data/repositoties/dictionary_repository_impl.dart';
 import 'package:flora_care/features/user_plants/data/data_providers/implementations/user_plant_data_provider_impl.dart';
 import 'package:flora_care/features/user_plants/data/repositories/user_plants_repository_impl.dart';
+import 'package:flora_care/shared/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flora_care/app.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await NotificationService().initialize();
       final prefs = await SharedPreferences.getInstance();
       final pocketBase = PocketBase('https://testovoe.pockethost.io');
       

@@ -2,6 +2,7 @@ import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_r
 import 'package:flora_care/shared/components/add_plant_button.dart';
 import 'package:flutter/material.dart';
 
+
 class PlantCard extends StatelessWidget {
   final DictionaryDocsResponseEntity plant;
   final String userId;
