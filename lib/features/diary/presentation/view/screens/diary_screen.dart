@@ -147,12 +147,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Дневник: ${widget.plantName}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _changePlantName(context),
-          ),
-        ],
+
       ),
       body: BlocBuilder<diary_bloc.DiaryBloc, diary_bloc.DiaryState>(
         builder: (context, state) {

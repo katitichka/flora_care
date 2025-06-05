@@ -268,11 +268,11 @@ class _UserPlantCardState extends State<UserPlantCard> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Edit Plant Name'),
+            title: const Text('Измениить имя растения'),
             content: TextField(
               controller: textController,
               decoration: const InputDecoration(
-                hintText: 'Enter new plant name',
+                hintText: 'Введите новое имя растения',
               ),
             ),
             actions: [

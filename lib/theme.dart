@@ -37,4 +37,10 @@ final appTheme = ThemeData(
     ),
   ),
   progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.green),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: Colors.green,
+      unselectedItemColor: Colors.grey,
+      selectedIconTheme: IconThemeData(size: 30),
+    ),
 );

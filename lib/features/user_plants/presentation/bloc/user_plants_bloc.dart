@@ -187,13 +187,11 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
       return;
     }
 
-    // Update in repository
     await _userPlantsRepository.updatePlantName(
       userPlantId: userPlantId,
       newName: newName,
     );
 
-    // Update local state
     final updatedPlants = currentPlants.map((plant) {
       if (plant.id == userPlantId) {
         return plant.copyWith(userPlantName: newName);
@@ -202,7 +200,6 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
     }).toList();
 
     emit(UserPlantsState.loaded(userPlants: updatedPlants));
-    emit(UserPlantsState.actionSuccess(message: 'Имя растения изменено'));
   } catch (e) {
     emit(UserPlantsState.actionFail(
       message: handleError(e),

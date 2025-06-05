@@ -33,8 +33,6 @@ class UserPlantsScreen extends StatelessWidget {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
-        buildWhen:
-            (prev, curr) => curr is! user_plants_bloc.ActionSuccess && curr is! user_plants_bloc.ActionFail,
         builder: (context, state) {
           switch (state) {
             case user_plants_bloc.Initial():
