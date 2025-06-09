@@ -22,7 +22,6 @@ class DiaryRepositoryImpl implements DiaryRepository {
   @override
   Future<List<DiaryDocsResponseEntity>> getEvents(String userPlantId) async {
     final dtos = await _diaryDataProvider.getEvents(userPlantId);
-    print("All events: $dtos");
     return dtos
         .map((dto) => DiaryDocsResponseMapper.fromDto(dto: dto))
         .toList();

@@ -32,8 +32,6 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
                   final updatedPlant = dto.plantData!.copyWith(image: imageUrl);
                   return dto.copyWith(plantData: updatedPlant);
                 }
-                print('Expanded plant data: ${expandedPlant.toJson()}');
-                print('Image files: $imageValue');
               }
             }
 
@@ -42,7 +40,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
 
       return plantsList;
     } catch (e) {
-      throw Exception('Failed to get user plants: $e');
+      throw Exception('Ошибка получения списка растений: $e');
     }
   }
 
@@ -64,7 +62,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
           );
       return getAllUserPlants();
     } catch (e) {
-      throw Exception('Failed to add plant: $e');
+      throw Exception('Ошибка добавления растения: $e');
     }
   }
 
@@ -76,7 +74,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
       await _pocketBase.collection('user_plants').delete(userPlantId);
       return getAllUserPlants();
     } catch (e) {
-      throw Exception('Failed to delete plant: $e');
+      throw Exception('Ошибка удаления растения: $e');
     }
   }
 
@@ -109,7 +107,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
             },
           );
     } catch (e) {
-      throw Exception('Failed to add watering: $e');
+      throw Exception('Ошибка добавления полива: $e');
     }
   }
 
@@ -123,7 +121,7 @@ class UserPlantDataProviderImpl implements UserPlantsDataProvider {
           .collection('user_plants')
           .update(userPlantId, body: {'user_plant_name': newName});
     } catch (e) {
-      throw Exception('Failed to update plant name: $e');
+      throw Exception('Ошибка изменения имени: $e');
     }
   }
   @override

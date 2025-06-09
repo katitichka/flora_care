@@ -50,7 +50,7 @@ class App extends StatelessWidget {
                 }
                 return MaterialPageRoute(
                   builder: (_) => const Scaffold(
-                    body: Center(child: Text('Page not found')),
+                    body: Center(child: Text('Страница не найдена')),
                   ),
                 );
               },

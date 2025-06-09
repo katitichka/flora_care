@@ -1,4 +1,3 @@
-// features/authentication/presentation/view/auth_provider.dart
 import 'package:flora_care/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flora_care/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';

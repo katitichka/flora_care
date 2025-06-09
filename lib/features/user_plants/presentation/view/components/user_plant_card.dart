@@ -34,7 +34,6 @@ class _UserPlantCardState extends State<UserPlantCard> {
     _wateringFreq = _currentPlant.plantData?.wateringFreq ?? 0;
   }
 
-
   Color _getWaterIconColor() {
     if (_lastWatering == null) return Colors.red;
     final daysSinceWatering = DateTime.now().difference(_lastWatering!).inDays;
@@ -49,7 +48,6 @@ class _UserPlantCardState extends State<UserPlantCard> {
     final daysSinceWatering = DateTime.now().difference(_lastWatering!).inDays;
     return daysSinceWatering >= _wateringFreq;
   }
-
 
   void _handleWaterPlant() async {
     final originalLastWatering = _lastWatering;
@@ -75,8 +73,6 @@ class _UserPlantCardState extends State<UserPlantCard> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserPlantsBloc, UserPlantsState>(
@@ -86,105 +82,115 @@ class _UserPlantCardState extends State<UserPlantCard> {
             (p) => p.id == _currentPlant.id,
             orElse: () => _currentPlant,
           );
-          setState(() => _currentPlant = updatedPlant);
         }
       },
-      child: GestureDetector(
-        onTap: widget.onTap,
-        onLongPress: () => _showActionMenu(context, _currentPlant.id),
-        child: Card(
-          color: Colors.white,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-            side: const BorderSide(
-              color: Color.fromARGB(255, 0, 89, 33),
-              width: 2,
-            ),
-          ),
-          child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(15),
-            height: 115,
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                    width: 80,
-                    height: 80,
-                    child:
-                        _currentPlant.plantData?.image != null
-                            ? Image.network(
-                              _currentPlant.plantData!.image,
-                              fit: BoxFit.cover,
-                              errorBuilder:
-                                  (context, error, stackTrace) => Container(
-                                    color: Colors.grey[200],
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.image_not_supported,
-                                        size: 30,
-                                        color: Colors.grey,
+      child: BlocBuilder<UserPlantsBloc, UserPlantsState>(
+        builder: (context, state) {
+          final currentPlant =
+              state is Loaded
+                  ? state.userPlants.firstWhere(
+                    (p) => p.id == widget.userPlant.id,
+                    orElse: () => widget.userPlant,
+                  )
+                  : widget.userPlant;
+
+          return GestureDetector(
+            onTap: widget.onTap,
+            onLongPress: () => _showActionMenu(context, _currentPlant.id),
+            child: Card(
+              color: Colors.white,
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+                side: const BorderSide(
+                  color: Color.fromARGB(255, 0, 89, 33),
+                  width: 2,
+                ),
+              ),
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(15),
+                height: 115,
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: SizedBox(
+                        width: 80,
+                        height: 80,
+                        child:
+                            _currentPlant.plantData?.image != null
+                                ? Image.network(
+                                  _currentPlant.plantData!.image,
+                                  fit: BoxFit.cover,
+                                  errorBuilder:
+                                      (context, error, stackTrace) => Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.image_not_supported,
+                                            size: 30,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                            )
-                            : Container(),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _currentPlant.userPlantName,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium?.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                                )
+                                : Container(),
                       ),
-                      const SizedBox(height: 4),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _currentPlant.userPlantName,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleMedium?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.water_drop, color: _getWaterIconColor()),
+                      iconSize: 40,
+                      tooltip: 'Записать полив',
+                      onPressed: _handleWaterPlant,
+                    ),
+
+                    IconButton(
+                      icon: const Icon(Icons.info_outline, color: Colors.green),
+                      iconSize: 24,
+                      tooltip: 'Информация о растении',
+                      onPressed: () {
+                        if (_currentPlant.plantData != null) {
+                          Navigator.pushNamed(
+                            context,
+                            '/plant',
+                            arguments: _currentPlant.plantData!,
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.water_drop, color: _getWaterIconColor()),
-                  iconSize: 40,
-                  tooltip: 'Записать полив',
-                  onPressed: _handleWaterPlant,
-                ),
-                
-                IconButton(
-                  icon: const Icon(Icons.info_outline, color: Colors.green),
-                  iconSize: 24,
-                  tooltip: 'Информация о растении',
-                  onPressed: () {
-                    if (_currentPlant.plantData != null) {
-                      Navigator.pushNamed(
-                        context,
-                        '/plant',
-                        arguments: _currentPlant.plantData!,
-                      );
-                    }
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
-  // Остальные методы (_showActionMenu, _confirmDelete, _showEditDialog) остаются без изменений
   void _showActionMenu(BuildContext context, String userPlantId) {
     showModalBottomSheet(
       context: context,

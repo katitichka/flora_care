@@ -5,7 +5,4 @@ abstract interface class DictionaryRepository {
     required int page,
     required int limit,
   }); 
-  // Future<DictionaryDocsResponseEntity> getPlantById(
-  //   String id,
-  // ); 
 }

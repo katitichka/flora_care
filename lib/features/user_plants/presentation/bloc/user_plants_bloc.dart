@@ -150,12 +150,10 @@ class UserPlantsBloc extends Bloc<UserPlantsEvent, UserPlantsState> {
         userPlantId: userPlantId,
         eventDate: DateTime.now(),
       );
-      print('Events after add: $events');
       if (state is Loaded) {
         emit(state);
       }
     } catch (e) {
-      print('Events after failed: $e');
       emit(
         UserPlantsState.actionFail(
           message: handleError(e),

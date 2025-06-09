@@ -5,8 +5,8 @@ import 'package:flora_care/features/diary/presentation/view/screens/diary_screen
 import 'package:flora_care/features/dictionary/domain/entities/dictionary_docs_response_entity.dart';
 import 'package:flora_care/features/dictionary/presentation/view/screens/dictionary_screen.dart';
 import 'package:flora_care/features/user_plants/presentation/view/screens/user_plants_screen.dart';
+import 'package:flora_care/mainScreen.dart';
 import 'package:flora_care/shared/components/plant_card.dart';
-import 'package:flora_care/shared/mainScreen.dart';
 import 'package:flutter/material.dart';
 
 Map<String, Widget Function(BuildContext)> getRoutes(AuthRepository authRepository) {
@@ -50,7 +50,7 @@ Map<String, Widget Function(BuildContext)> getRoutes(AuthRepository authReposito
           userId: authRepository.currentUserId ?? '',
         );
       }
-      return const Scaffold(body: Center(child: Text("Invalid plant data!")));
+      return const Scaffold(body: Center(child: Text("Непредвиденная ошибка, попробуйте позже.")));
     },
   };
 }

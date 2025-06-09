@@ -85,7 +85,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
       await _pocketBase.collection('diary').delete(eventId);
     } else {
       if (newEventDate == null) {
-        throw ArgumentError('newEventDate is required when updating');
+        throw ArgumentError('При обновлении необходимо указать новую дату события');
       }
       await _pocketBase
           .collection('diary')
@@ -108,7 +108,7 @@ class DiaryDataProviderImpl implements DiaryDataProvider {
       await _pocketBase.collection('diary').delete(noteId);
     } else {
       if (noteText == null) {
-        throw ArgumentError('noteText is required when updating');
+        throw ArgumentError('При обновлении нужен новый текст заметки');
       }
       await _pocketBase.collection('diary').update(noteId, body: {'note': noteText});
     }

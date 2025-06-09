@@ -20,9 +20,11 @@ class AuthDataProviderImpl implements AuthDataProvider {
   }) async {
     try {
       if (password.length < 8) {
-        throw DictionaryDocsResponseException('Пароль должен содержать минимум 8 символов');
+        throw DictionaryDocsResponseException(
+          'Пароль должен содержать минимум 8 символов',
+        );
       }
-      
+
       if (!_isValidEmail(email)) {
         throw DictionaryDocsResponseException('Введите корректный email адрес');
       }
@@ -41,80 +43,87 @@ class AuthDataProviderImpl implements AuthDataProvider {
   }
 
   @override
-Future<void> register({
-  required String username,
-  required String email,
-  required String password,
-}) async {
-  try {
-    await _pocketBase.collection('users').create(
-      body: {
-        'username': username,
-        'email': email,
-        'password': password,
-        'passwordConfirm': password,
-      },
-    );
-  } on ClientException catch (e) {
-    final response = e.response;
-    final data = response['data'];
-
-    // Обработка email
-    if (data?['email'] != null) {
-      final emailError = data['email'];
-      if (emailError['code'] == 'validation_invalid_email') {
-        if (emailError['message'].contains('already in use') ||
-            emailError['message'].contains('already exists')) {
-          throw DictionaryDocsResponseException(
-            'Пользователь с такой почтой уже зарегистрирован',
+  Future<void> register({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _pocketBase
+          .collection('users')
+          .create(
+            body: {
+              'username': username,
+              'email': email,
+              'password': password,
+              'passwordConfirm': password,
+            },
           );
-        } else if (emailError['message'].contains('valid email')) {
+    } on ClientException catch (e) {
+      final response = e.response;
+      final data = response['data'];
+
+      // Обработка email
+      if (data?['email'] != null) {
+        final emailError = data['email'];
+        if (emailError['code'] == 'validation_invalid_email') {
+          if (emailError['message'].contains('already in use') ||
+              emailError['message'].contains('already exists')) {
+            throw DictionaryDocsResponseException(
+              'Пользователь с такой почтой уже зарегистрирован',
+            );
+          } else if (emailError['message'].contains('valid email')) {
+            throw DictionaryDocsResponseException(
+              'Введите корректный email адрес',
+            );
+          }
+        }
+      }
+
+      // Обработка username
+      if (data?['username'] != null) {
+        final usernameError = data['username'];
+        if (usernameError['code'] == 'validation_invalid_username') {
+          if (usernameError['message'].contains('already in use') ||
+              usernameError['message'].contains('already exists')) {
+            throw DictionaryDocsResponseException(
+              'Пользователь с таким именем уже существует',
+            );
+          } else {
+            throw DictionaryDocsResponseException(
+              'Имя пользователя должно содержать от 3 до 20 символов (буквы, цифры, _)',
+            );
+          }
+        }
+      }
+
+      if (data?['password'] != null) {
+        if (password.length < 8) {
           throw DictionaryDocsResponseException(
-            'Введите корректный email адрес',
+            'Пароль должен содержать минимум 8 символов',
           );
         }
       }
-    }
-
-    // Обработка username
-    if (data?['username'] != null) {
-      final usernameError = data['username'];
-      if (usernameError['code'] == 'validation_invalid_username') {
-        if (usernameError['message'].contains('already in use') ||
-            usernameError['message'].contains('already exists')) {
-          throw DictionaryDocsResponseException(
-            'Пользователь с таким именем уже существует',
-          );
-        } else {
-          throw DictionaryDocsResponseException(
-            'Имя пользователя должно содержать от 3 до 20 символов (буквы, цифры, _)',
-          );
-        }
+      if (response['message']?.contains('Failed to create record') == true &&
+          data != null &&
+          data is Map &&
+          data.isNotEmpty) {
+        throw DictionaryDocsResponseException(
+          'Проверьте правильность введенных данных',
+        );
       }
-    }
 
-    if (data?['password'] != null) {
-      if (password.length < 8) {
-        throw DictionaryDocsResponseException('Пароль должен содержать минимум 8 символов');
-      }
-    }
-if (response['message']?.contains('Failed to create record') == true && 
-        data != null && data is Map && data.isNotEmpty) {
       throw DictionaryDocsResponseException(
-        'Проверьте правильность введенных данных',
+        response['message'] ?? 'Не удалось зарегистрироваться',
       );
+    } on SocketException {
+      throw DictionaryDocsResponseException('Нет интернет-соединения');
+    } catch (e) {
+      throw DictionaryDocsResponseException('Произошла непредвиденная ошибка');
     }
-
-    throw DictionaryDocsResponseException(
-      response['message'] ?? 'Не удалось зарегистрироваться',
-    );
-  } on SocketException {
-    throw DictionaryDocsResponseException('Нет интернет-соединения');
-  } catch (e) {
-    throw DictionaryDocsResponseException('Произошла непредвиденная ошибка');
   }
-}
- bool _isValidEmail(String email) {
+
+  bool _isValidEmail(String email) {
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );

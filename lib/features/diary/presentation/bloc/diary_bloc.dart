@@ -75,10 +75,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         (a, b) =>
             (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
       );
-      final filteredNotes = plantNotes
-      .where((note) => note.note?.isNotEmpty ?? false)
-      .toList()
-      ..sort((a, b) => b.created.compareTo(a.created));
+      final filteredNotes =
+          plantNotes.where((note) => note.note?.isNotEmpty ?? false).toList()
+            ..sort((a, b) => b.created.compareTo(a.created));
 
       emit(
         DiaryState.loaded(plantEvents: plantEvents, plantNotes: filteredNotes),
@@ -132,10 +131,12 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
 
       final plantEvents = await _diaryRepository.getEvents(userPlantId);
       final plantNotes = await _diaryRepository.getNotes(userPlantId);
-       plantEvents.sort(
-      (a, b) => (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
+      plantEvents.sort(
+        (a, b) =>
+            (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
       );
-      final filteredNotes = plantNotes.where((note) => note.note?.isNotEmpty ?? false).toList();
+      final filteredNotes =
+          plantNotes.where((note) => note.note?.isNotEmpty ?? false).toList();
 
       emit(
         DiaryState.loaded(plantEvents: plantEvents, plantNotes: filteredNotes),
@@ -162,15 +163,15 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         userPlantId: userPlantId,
       );
       final plantEvents = await _diaryRepository.getEvents(userPlantId);
-    final plantNotes = await _diaryRepository.getNotes(userPlantId);
-    
-    plantEvents.sort(
-      (a, b) => (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
-    );
-    final filteredNotes = plantNotes
-      .where((note) => note.note?.isNotEmpty ?? false)
-      .toList()
-      ..sort((a, b) => b.created.compareTo(a.created));
+      final plantNotes = await _diaryRepository.getNotes(userPlantId);
+
+      plantEvents.sort(
+        (a, b) =>
+            (b.eventDate ?? DateTime(0)).compareTo(a.eventDate ?? DateTime(0)),
+      );
+      final filteredNotes =
+          plantNotes.where((note) => note.note?.isNotEmpty ?? false).toList()
+            ..sort((a, b) => b.created.compareTo(a.created));
       emit(
         DiaryState.loaded(plantEvents: plantEvents, plantNotes: filteredNotes),
       );
@@ -217,19 +218,15 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         state is Loaded ? (state as Loaded).plantEvents : [];
 
     try {
-      print('Adding note for userPlantId=$userPlantId with text="$noteText"');
       await _diaryRepository.addNote(
         userPlantId: userPlantId,
         noteText: noteText,
       );
-      print('Note added successfully');
       final allNotes = await _diaryRepository.getNotes(userPlantId);
 
-      final plantNotes = allNotes
-      .where((e) => e.userPlantId == userPlantId)
-      .toList()
-      ..sort((a, b) => b.created.compareTo(a.created));
-
+      final plantNotes =
+          allNotes.where((e) => e.userPlantId == userPlantId).toList()
+            ..sort((a, b) => b.created.compareTo(a.created));
 
       emit(DiaryState.loaded(plantEvents: plantEvents, plantNotes: plantNotes));
     } catch (e) {

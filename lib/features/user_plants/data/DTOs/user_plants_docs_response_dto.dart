@@ -34,11 +34,9 @@ sealed class UserPlantsDocsResponseDto with _$UserPlantsDocsResponseDto {
 
 DictionaryDocsResponseDto? _plantDataFromJson(Map<String, dynamic>? json) {
   if (json == null) {
-    print("Received null plant data");
     return null;
   }
    if (!json.containsKey('plant_id')) {
-    print("Expand data does not contain 'plant_id'");
     return null;
   }
   final plantDataJson = json['plant_id'] as Map<String, dynamic>;

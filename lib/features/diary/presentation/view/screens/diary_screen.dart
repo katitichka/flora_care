@@ -105,6 +105,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
       builder: (context) => BlocListener<diary_bloc.DiaryBloc, diary_bloc.DiaryState>(
       listener: (context, state) {
         if (state is diary_bloc.Loaded) {
+          context.read<user_plants_bloc.UserPlantsBloc>().add(
+            user_plants_bloc.UserPlantsEvent.getAllUserPlants(),
+          );
           Navigator.pop(context); 
         }
       },
@@ -152,7 +155,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<user_plants_bloc.UserPlantsBloc>().add(
+          user_plants_bloc.UserPlantsEvent.getAllUserPlants(),
+        );
+        return true;
+      },
+    child: Scaffold(
       appBar: AppBar(
         title: Text('Дневник: ${widget.plantName}'),
 
@@ -166,6 +176,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
           return const SizedBox();
         },
       ),
+    ),
     );
   }
 
@@ -177,7 +188,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
         return SingleChildScrollView(
           child: Column(
             children: [
-              // История полива
               _buildEventSection(
                 context,
                 height: sectionHeight,
@@ -187,7 +197,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
               const SizedBox(height: 16),
 
-              // Заметки
               _buildNotesSection(
                 context,
                 height: sectionHeight,

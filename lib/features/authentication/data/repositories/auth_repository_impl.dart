@@ -1,4 +1,3 @@
-import 'package:flora_care/common/utils/error_handler.dart';
 import 'package:flora_care/features/authentication/data/mappers/auth_docs_response_mapper.dart';
 import 'package:flora_care/features/authentication/domain/entities/auth_docs_response_entity.dart';
 import 'package:flora_care/features/authentication/domain/repositories/auth_repository.dart';
